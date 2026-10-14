@@ -1,0 +1,4536 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <title>Mixed Practice: CMF + DOTS</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/white.min.css"
+    />
+    <style>
+      :root {
+        --ink: #1b2a41;
+        --pri: #2457c5;
+        --ok: #1a9a5b;
+        --bad: #d64545;
+        --soft: #eef3ff;
+        --mute: #4a5a73;
+        --card: #fff;
+        --line: #c9d6f2;
+        --chipbg: #1b2a41;
+        --prib: #2457c5;
+      }
+      .reveal {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        color: var(--ink);
+        font-size: 58px;
+      }
+      .reveal h1,
+      .reveal h2,
+      .reveal h3 {
+        font-family: inherit;
+        color: var(--ink);
+        text-transform: none;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        margin: 0 0 0.35em;
+      }
+      .reveal h1 {
+        font-size: 2em;
+      }
+      .reveal h2 {
+        font-size: 1.45em;
+      }
+      .reveal h3 {
+        font-size: 1em;
+        color: var(--pri);
+      }
+      .reveal .slides section {
+        text-align: center;
+      }
+      .tag {
+        display: inline-block;
+        background: var(--prib);
+        color: #fff;
+        border-radius: 30px;
+        padding: 0.1em 0.8em;
+        font-size: 0.55em;
+        font-weight: 700;
+        letter-spacing: 2px;
+        margin-bottom: 0.6em;
+      }
+      .math {
+        font-family: Cambria, "Times New Roman", serif;
+        font-style: italic;
+      }
+      .box {
+        background: var(--soft);
+        border: 4px solid var(--pri);
+        border-radius: 24px;
+        padding: 0.4em 0.9em;
+        margin: 0.3em auto;
+        display: inline-block;
+      }
+      .big {
+        font-size: 1.35em;
+      }
+      .sm {
+        font-size: 0.72em;
+        color: var(--mute);
+      }
+      .ok {
+        color: var(--ok);
+      }
+      .bad {
+        color: var(--bad);
+      }
+      .hl {
+        background: #fff3c4;
+        color: #1b2a41;
+        border-radius: 10px;
+        padding: 0 0.2em;
+      }
+      .reveal p {
+        margin: 0.35em 0;
+      }
+      .reveal ul,
+      .reveal ol {
+        display: block;
+        margin: 0 auto;
+        width: 90%;
+      }
+      .reveal li {
+        margin: 0.25em 0;
+      }
+      table.t {
+        margin: 0.3em auto;
+        border-collapse: collapse;
+        font-size: 0.85em;
+      }
+      table.t td,
+      table.t th {
+        border: 3px solid var(--line);
+        padding: 0.15em 0.6em;
+      }
+      table.t th {
+        background: var(--soft);
+      }
+      button.opt,
+      button.pair,
+      button.ctl,
+      button.dctl {
+        font: inherit;
+        font-size: 0.85em;
+        margin: 0.12em;
+        padding: 0.2em 0.85em;
+        border: 4px solid var(--pri);
+        background: var(--card);
+        color: var(--ink);
+        border-radius: 20px;
+        cursor: pointer;
+        touch-action: manipulation;
+      }
+      button.ctl,
+      button.dctl {
+        background: var(--prib);
+        color: #fff;
+      }
+      button.right {
+        background: var(--ok) !important;
+        border-color: var(--ok) !important;
+        color: #fff !important;
+      }
+      button.wrong {
+        background: var(--bad) !important;
+        border-color: var(--bad) !important;
+        color: #fff !important;
+      }
+      .fb {
+        min-height: 1.3em;
+        font-size: 0.85em;
+        font-weight: 700;
+      }
+      .score {
+        position: fixed;
+        right: 24px;
+        bottom: 18px;
+        background: var(--chipbg);
+        color: #fff;
+        border-radius: 30px;
+        padding: 0.2em 0.9em;
+        font-size: 36px;
+        z-index: 50;
+      }
+      .fl {
+        width: 88%;
+        margin: 0 auto;
+      }
+      .fl .n {
+        border-radius: 22px;
+        padding: 0.1em 0.7em;
+        margin: 0.05em auto;
+        font-size: 0.76em;
+        width: fit-content;
+        max-width: 100%;
+      }
+      .fl .q {
+        background: #fff3c4;
+        border: 4px solid #e0a800;
+      }
+      .fl .a {
+        background: var(--soft);
+        border: 4px solid var(--pri);
+      }
+      .fl .ar {
+        font-size: 0.5em;
+        color: var(--pri);
+        line-height: 1;
+      }
+      .stage {
+        width: 1200px;
+        height: 630px;
+        background: #0e1b33;
+        border-radius: 24px;
+      }
+      .cap {
+        font-size: 0.7em;
+        min-height: 2.4em;
+        margin: 0.2em auto;
+        width: 90%;
+      }
+      .two {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+        justify-content: center;
+        text-align: left;
+      }
+      .two > div {
+        flex: 1;
+      }
+      .memebox {
+        border: 5px dashed #9fb3de;
+        border-radius: 20px;
+        min-height: 360px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.6em;
+      }
+      .memebox img {
+        max-width: 100%;
+        max-height: 400px;
+        border-radius: 12px;
+      }
+      .reveal .slides section .sm b {
+        color: var(--ink);
+      }
+      .nogrid .gridr {
+        display: none;
+      }
+      .ctlrow {
+        font-size: 0.5em;
+        display: flex;
+        gap: 26px;
+        align-items: center;
+        justify-content: center;
+        margin: 0.15em 0;
+      }
+      input[type="range"] {
+        width: 300px;
+        height: 30px;
+        accent-color: var(--pri);
+        vertical-align: middle;
+      }
+      .pop {
+        position: fixed;
+        font-weight: 800;
+        color: var(--ok);
+        font-size: 46px;
+        pointer-events: none;
+        z-index: 99;
+        animation: pop 1.1s forwards;
+      }
+      @keyframes pop {
+        to {
+          transform: translateY(-90px);
+          opacity: 0;
+        }
+      }
+      .shk {
+        animation: shk 0.35s;
+      }
+      @keyframes shk {
+        25% {
+          transform: translateX(-10px);
+        }
+        75% {
+          transform: translateX(10px);
+        }
+      }
+      .tmr {
+        position: fixed;
+        left: 24px;
+        bottom: 18px;
+        z-index: 50;
+        display: flex;
+        gap: 8px;
+      }
+      .tmr button {
+        font: inherit;
+        font-size: 28px;
+        border: 0;
+        border-radius: 30px;
+        padding: 0.2em 0.8em;
+        background: var(--ink);
+        color: #fff;
+        cursor: pointer;
+      }
+      .reveal .slide-number {
+        font-size: 26px;
+        background: transparent;
+        color: #6a7a96;
+      }
+
+      html,
+      body,
+      .reveal * {
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+      }
+      .reveal {
+        -webkit-tap-highlight-color: transparent;
+      }
+      .reveal img {
+        -webkit-user-drag: none;
+      }
+      .score {
+        top: 16px !important;
+        right: 22px !important;
+        bottom: auto !important;
+      }
+      .tmr {
+        display: none !important;
+      }
+      #ink {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 25;
+        pointer-events: none;
+        touch-action: none;
+      }
+      #board {
+        position: fixed;
+        inset: 0;
+        background: #fff;
+        z-index: 20;
+        display: none;
+      }
+      #spot {
+        position: fixed;
+        inset: 0;
+        z-index: 24;
+        pointer-events: none;
+        display: none;
+      }
+      #laser {
+        position: fixed;
+        width: 38px;
+        height: 38px;
+        margin: -19px 0 0 -19px;
+        border-radius: 50%;
+        background: radial-gradient(
+          #ff3b3b 30%,
+          rgba(255, 59, 59, 0.4) 65%,
+          transparent 72%
+        );
+        z-index: 70;
+        pointer-events: none;
+        display: none;
+      }
+      #toast {
+        position: fixed;
+        top: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(20, 30, 50, 0.92);
+        color: #fff;
+        font-size: 26px;
+        padding: 0.3em 1em;
+        border-radius: 30px;
+        z-index: 80;
+        opacity: 0;
+        transition: opacity 0.4s;
+        pointer-events: none;
+      }
+      #tmpill {
+        position: fixed;
+        top: 16px;
+        left: 22px;
+        display: none;
+        z-index: 60;
+        font: inherit;
+        font-size: 36px;
+        background: var(--chipbg);
+        color: #fff;
+        border: 0;
+        border-radius: 30px;
+        padding: 0.15em 0.8em;
+        cursor: pointer;
+      }
+      #tmpill.done {
+        background: var(--bad);
+        animation: shk 0.5s 4;
+      }
+      #dockbtn {
+        position: fixed;
+        left: 18px;
+        bottom: 18px;
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        border: 5px solid #fff;
+        background: var(--chipbg);
+        font-size: 34px;
+        z-index: 60;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+        padding: 0;
+      }
+      #dockbtn.act {
+        border-color: var(--ring, #e5484d);
+      }
+      #dockbtn {
+        transition: opacity 0.5s;
+        touch-action: none;
+      }
+      #dockbtn.dim {
+        opacity: 0.35;
+      }
+      #dockbtn:hover {
+        opacity: 1;
+      }
+      #dock,
+      #dockbtn,
+      #tmpill,
+      #toast,
+      #edge {
+        font-family: "Segoe UI", system-ui, sans-serif;
+      }
+      #cust {
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 50%;
+        overflow: hidden;
+        width: 44px;
+        height: 44px;
+        margin: 0 4px;
+      }
+      #cust::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+      #cust::-webkit-color-swatch {
+        border: 4px solid #fff;
+        border-radius: 50%;
+      }
+      #cust::-moz-color-swatch {
+        border: 4px solid #fff;
+        border-radius: 50%;
+      }
+      #dock button {
+        min-width: 68px;
+      }
+      #edge {
+        position: fixed;
+        bottom: 120px;
+        width: 22px;
+        height: 90px;
+        background: rgba(36, 87, 197, 0.55);
+        border-radius: 0 16px 16px 0;
+        z-index: 60;
+        display: none;
+        cursor: pointer;
+      }
+      .reveal ol {
+        font-size: 0.74em;
+        line-height: 1.2;
+      }
+      .reveal ol li {
+        margin: 0.3em 0;
+      }
+      table.wt {
+        font-size: 0.68em;
+      }
+      table.wt td,
+      table.wt th {
+        padding: 0.1em 0.5em;
+      }
+      #dock {
+        position: fixed;
+        left: 104px;
+        bottom: 18px;
+        max-width: calc(100vw - 270px);
+        display: none;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+        background: rgba(20, 30, 50, 0.95);
+        padding: 10px 14px;
+        border-radius: 28px;
+        z-index: 60;
+        color: #fff;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      }
+      #dock.open {
+        display: flex;
+      }
+      .grp {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
+      .sep {
+        width: 2px;
+        height: 54px;
+        background: #ffffff33;
+        margin: 0 6px;
+      }
+      #dock button {
+        font: inherit;
+        background: transparent;
+        color: #fff;
+        border: 0;
+        border-radius: 16px;
+        min-width: 74px;
+        padding: 6px 4px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+      }
+      #dock button span {
+        font-size: 32px;
+        line-height: 1.1;
+      }
+      #dock button small {
+        font-size: 15px;
+        opacity: 0.85;
+      }
+      #dock button:hover {
+        background: #ffffff1f;
+      }
+      #dock button.on {
+        background: var(--prib);
+        box-shadow: 0 0 0 3px #fff inset;
+      }
+      #dock button.sw {
+        min-width: 0;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 4px solid #fff;
+        padding: 0;
+        margin: 0 3px;
+      }
+      #dock button.sw.on {
+        box-shadow: 0 0 0 4px var(--pri);
+      }
+      #dock #sizes button {
+        min-width: 56px;
+        height: 56px;
+        justify-content: center;
+      }
+      #dock #sizes i {
+        display: block;
+        border-radius: 50%;
+        background: #fff;
+      }
+      #cust {
+        width: 48px;
+        height: 48px;
+        border: 0;
+        background: none;
+        padding: 0;
+        cursor: pointer;
+      }
+      .tgrp span {
+        font-size: 30px;
+        margin-right: 2px;
+      }
+      .tgrp button {
+        min-width: 62px;
+        font-size: 24px;
+        font-weight: 700;
+        background: #ffffff1f;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
+        }
+      }
+      #hoView {
+        position: fixed;
+        inset: 0;
+        z-index: 95;
+        background: #5a6275;
+        overflow: auto;
+        display: none;
+        font-family: "Segoe UI", system-ui, sans-serif;
+      }
+      #hoView.open {
+        display: block;
+      }
+      #hoBar {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        background: #1b2a41;
+        color: #fff;
+        padding: 10px 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        font-size: 16px;
+      }
+      #hoBar select,
+      #hoBar input[type="text"] {
+        font: inherit;
+        font-size: 16px;
+        padding: 6px 8px;
+        border-radius: 8px;
+        border: 0;
+        max-width: 230px;
+      }
+      #hoBar label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      #hoBar input[type="checkbox"] {
+        transform: scale(1.4);
+      }
+      #hoBar button {
+        font: inherit;
+        font-size: 17px;
+        border: 0;
+        border-radius: 10px;
+        padding: 8px 16px;
+        background: #2457c5;
+        color: #fff;
+        cursor: pointer;
+      }
+      .hopage {
+        background: #fff;
+        color: #111;
+        margin: 16px auto;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+        position: relative;
+        box-sizing: border-box;
+        overflow: hidden;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        -webkit-user-select: none;
+      }
+      .hohead {
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        font-size: 11px;
+        border-bottom: 1px solid #333;
+        padding-bottom: 3px;
+        box-sizing: border-box;
+      }
+      .hofoot {
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
+        font-size: 10px;
+        color: #444;
+        border-top: 1px solid #aaa;
+        padding-top: 3px;
+        box-sizing: border-box;
+      }
+      .hocell {
+        position: absolute;
+      }
+      .hothumb {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid #888;
+        box-sizing: border-box;
+      }
+      .hobg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1600px;
+        height: 900px;
+        transform-origin: 0 0;
+      }
+      .hoframe {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1600px;
+        height: 900px;
+        transform-origin: 0 0;
+      }
+      .hocap {
+        font-size: 10px;
+        color: #555;
+        height: 16px;
+        line-height: 16px;
+      }
+      .holines {
+        background-image: repeating-linear-gradient(
+          #fff 0,
+          #fff 17px,
+          #c9c9c9 17px,
+          #c9c9c9 18px
+        );
+      }
+      .honotes {
+        font-size: 10.5px;
+        line-height: 1.3;
+        overflow: hidden;
+        color: #222;
+        border-left: 3px solid #2457c5;
+        padding-left: 6px;
+        box-sizing: border-box;
+      }
+      .ho-s {
+        position: absolute !important;
+        left: 0;
+        top: 0;
+        width: 1600px !important;
+        height: 900px !important;
+        transform: scale(0.92);
+        transform-origin: 50% 50%;
+        overflow: visible !important;
+      }
+      .ho-s .slides {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 1600px !important;
+        height: 900px !important;
+        transform: none !important;
+        margin: 0 !important;
+      }
+      .ho-s .slides > section {
+        display: block !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        width: 100% !important;
+        height: auto !important;
+      }
+      .ho-s .ctlrow,
+      .ho-s button.dctl,
+      .ho-s .score {
+        display: none !important;
+      }
+      .ho-s .fragment {
+        transition: none !important;
+      }
+      .hoL {
+        --ink: #1b2a41;
+        --pri: #2457c5;
+        --soft: #eef3ff;
+        --ok: #1a9a5b;
+        --bad: #d64545;
+        --mute: #4a5a73;
+        --card: #fff;
+        --line: #c9d6f2;
+        --chipbg: #1b2a41;
+        --prib: #2457c5;
+      }
+      @media print {
+        html,
+        body {
+          height: auto !important;
+          overflow: visible !important;
+          position: static !important;
+          background: #fff !important;
+        }
+        body > *:not(#hoView):not(#hoPageStyle) {
+          display: none !important;
+        }
+        #hoView {
+          position: static !important;
+          background: #fff !important;
+          overflow: visible !important;
+          display: block !important;
+        }
+        #hoBar {
+          display: none !important;
+        }
+        #hoPages {
+          zoom: 1 !important;
+        }
+        .hopage {
+          margin: 0 !important;
+          box-shadow: none !important;
+          break-after: page;
+          page-break-after: always;
+        }
+        .hopage:last-child {
+          break-after: auto;
+          page-break-after: auto;
+        }
+        * {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        html:not(.print-pdf) .reveal.ho-s {
+          background: transparent !important;
+          font-size: 58px !important;
+          position: absolute !important;
+          left: 0 !important;
+          top: 0 !important;
+          width: 1600px !important;
+          height: 900px !important;
+          overflow: visible !important;
+        }
+        html:not(.print-pdf) .reveal.ho-s .slides {
+          position: absolute !important;
+          left: 0 !important;
+          top: 0 !important;
+          width: 1600px !important;
+          height: 900px !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          overflow: visible !important;
+          transform: none !important;
+        }
+        html:not(.print-pdf) .reveal.ho-s .slides > section {
+          position: relative !important;
+          left: auto !important;
+          top: auto !important;
+          width: 100% !important;
+          height: auto !important;
+          display: block !important;
+          opacity: 1 !important;
+          visibility: visible !important;
+          transform: none !important;
+          overflow: visible !important;
+          page-break-after: auto !important;
+          break-after: auto !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        html:not(.print-pdf) .reveal.ho-s .fragment:not(.visible) {
+          opacity: 0 !important;
+          visibility: hidden !important;
+        }
+        html:not(.print-pdf) .reveal.ho-s .ctlrow,
+        html:not(.print-pdf) .reveal.ho-s button.dctl {
+          display: none !important;
+        }
+        html:not(.print-pdf) .reveal.ho-s {
+          transform: scale(0.92) !important;
+        }
+      }
+
+      .yy,
+      .nn {
+        display: inline-block;
+        border-radius: 14px;
+        padding: 0 0.45em;
+        font-weight: 800;
+        font-size: 0.8em;
+        color: #fff;
+      }
+      .yy {
+        background: #15803d;
+      }
+      .nn {
+        background: #b91c1c;
+      }
+      .flowwrap .side .tag {
+        font-size: 0.42em;
+        letter-spacing: 1px;
+        white-space: nowrap;
+      }
+      .flowwrap .side .sm {
+        font-size: 0.56em;
+      }
+      .flowwrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+      }
+      .flowwrap .side {
+        width: 330px;
+        text-align: left;
+      }
+
+      :root[data-theme="dark"] {
+        --ink: #e8eefc;
+        --pri: #6d9bff;
+        --soft: #1d2b4a;
+        --ok: #3ecf8e;
+        --bad: #ff7a7a;
+        --mute: #a9b8d6;
+        --card: #17233d;
+        --line: #34466e;
+        --chipbg: #31456f;
+        color-scheme: dark;
+      }
+      :root[data-theme="dark"] body,
+      :root[data-theme="dark"] .reveal-viewport {
+        background: #0e1626;
+      }
+      :root[data-theme="dark"] .slide-background {
+        filter: invert(0.9) hue-rotate(180deg);
+      }
+      :root[data-theme="dark"] #board {
+        background: #0e1626;
+      }
+      :root[data-theme="dark"] .reveal .controls {
+        color: #8fb0ff;
+      }
+      .reveal .slide-number {
+        color: var(--mute);
+      }
+      :root[data-theme="dark"] .reveal a {
+        color: #8fb0ff;
+      }
+      #dock #themes button {
+        min-width: 62px;
+      }
+
+      .wpanel {
+        width: 860px;
+        text-align: left;
+      }
+      #wchips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0.2em 0 0.3em;
+      }
+      .wchip {
+        font: inherit;
+        font-size: 0.5em;
+        font-family: Cambria, serif;
+        font-style: italic;
+        border: 4px solid var(--pri);
+        background: var(--card);
+        color: var(--ink);
+        border-radius: 18px;
+        padding: 0.1em 0.6em;
+        cursor: pointer;
+      }
+      .wchip.on {
+        background: var(--prib);
+        color: #fff;
+      }
+      .wchip.ok::after {
+        content: " ✓";
+        color: #1a9a5b;
+        font-style: normal;
+        font-weight: 800;
+      }
+      .wchip.on.ok::after {
+        color: #bff0d3;
+      }
+      #wexpr .foc {
+        color: #1b2a41;
+        background: #fff3c4;
+        border-radius: 12px;
+        padding: 0 0.12em;
+      }
+      #wexpr {
+        font-size: 1.25em;
+        line-height: 1.1;
+        min-height: 1.1em;
+      }
+      #wq {
+        font-size: 0.68em;
+        font-weight: 700;
+        min-height: 2.5em;
+        margin: 0.1em 0;
+      }
+      #wbtns button {
+        font: inherit;
+        font-size: 0.85em;
+        font-weight: 800;
+        border: 0;
+        border-radius: 22px;
+        color: #fff;
+        min-width: 210px;
+        padding: 0.12em 0.6em;
+        margin: 0 14px 0.1em 0;
+        cursor: pointer;
+        touch-action: manipulation;
+      }
+      .wyes {
+        background: #15803d;
+      }
+      .wno {
+        background: #b91c1c;
+      }
+      #wfb {
+        font-size: 0.56em;
+        font-weight: 700;
+        min-height: 1.5em;
+        color: #d64545;
+      }
+      #wwork div {
+        font-size: 0.58em;
+        font-family: Cambria, serif;
+        font-style: italic;
+        background: var(--soft);
+        border-left: 10px solid var(--pri);
+        border-radius: 10px;
+        padding: 0.05em 0.6em;
+        margin: 0.12em 0;
+      }
+      #wres {
+        font-size: 0.72em;
+        font-weight: 800;
+        color: #1a9a5b;
+        margin-top: 0.15em;
+      }
+      #wact {
+        margin-top: 0.1em;
+      }
+      #wact button {
+        font-size: 0.52em;
+      }
+      #walksvg.run .nd {
+        opacity: 0.28;
+      }
+      #walksvg .nd {
+        transition: opacity 0.45s;
+      }
+      #walksvg.run .nd.vis,
+      #walksvg.run .nd.cur {
+        opacity: 1;
+      }
+      #walksvg .cur polygon {
+        animation: pl 0.8s infinite alternate;
+      }
+      @keyframes pl {
+        from {
+          stroke-width: 5;
+        }
+        to {
+          stroke-width: 12;
+        }
+      }
+    </style>
+    <script>
+      try {
+        var m = localStorage.getItem("deckTheme") || "system",
+          d =
+            m === "dark" ||
+            (m === "system" &&
+              window.matchMedia &&
+              matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.setAttribute(
+          "data-theme",
+          d ? "dark" : "light",
+        );
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <noscript
+      >This lesson deck needs JavaScript. Please open it in a modern
+      browser.</noscript
+    ><canvas id="ink"></canvas>
+    <div id="board"></div>
+    <div id="spot"></div>
+    <div id="laser"></div>
+    <div id="toast"></div>
+    <button id="tmpill"></button>
+    <div id="edge"></div>
+    <button id="dockbtn" title="Tools (T) · drag me to move">🖱️</button>
+    <div id="dock">
+      <div class="grp" id="tools">
+        <button data-tool="nav" title="Navigate (N)">
+          <span>🖱️</span><small>Navigate</small></button
+        ><button data-tool="pen" title="Pen (P)">
+          <span>✏️</span><small>Pen</small></button
+        ><button data-tool="hl" title="Highlight (H)">
+          <span>🖍️</span><small>Highlight</small></button
+        ><button data-tool="eraser" title="Eraser (E)">
+          <span>🧽</span><small>Eraser</small></button
+        ><button data-tool="laser" title="Pointer (L)">
+          <span>🔴</span><small>Pointer</small></button
+        ><button data-tool="spot" title="Spotlight (S)">
+          <span>🔦</span><small>Spotlight</small>
+        </button>
+      </div>
+      <div class="sep"></div>
+      <div class="grp" id="colors">
+        <button class="sw" data-c="#e5484d" style="background: #e5484d"></button
+        ><button
+          class="sw"
+          data-c="#2457c5"
+          style="background: #2457c5"
+        ></button
+        ><button
+          class="sw"
+          data-c="#1a9a5b"
+          style="background: #1a9a5b"
+        ></button
+        ><button class="sw" data-c="ink" style="background: var(--ink)"></button
+        ><button
+          class="sw"
+          data-c="#f2a900"
+          style="background: #f2a900"
+        ></button
+        ><button
+          class="sw"
+          data-c="#8a4fd6"
+          style="background: #8a4fd6"
+        ></button
+        ><input type="color" id="cust" value="#e5484d" title="Custom color" />
+      </div>
+      <div class="grp" id="sizes">
+        <button data-sz="5" title="Thin">
+          <i style="width: 9px; height: 9px"></i></button
+        ><button data-sz="9" title="Medium">
+          <i style="width: 16px; height: 16px"></i></button
+        ><button data-sz="16" title="Thick">
+          <i style="width: 26px; height: 26px"></i>
+        </button>
+      </div>
+      <div class="sep"></div>
+      <div class="grp">
+        <button id="undo" title="Undo (Z)">
+          <span>↶</span><small>Undo</small></button
+        ><button id="clear" title="Clear (C)">
+          <span>🗑️</span><small>Clear</small></button
+        ><button id="boardbtn" title="Whiteboard (W)">
+          <span>⬜</span><small>Whiteboard</small>
+        </button>
+      </div>
+      <div class="sep"></div>
+      <div class="grp">
+        <button id="fsbtn" title="Full screen (F)">
+          <span>⛶</span><small>Full screen</small></button
+        ><button id="blank" title="Blank (B)">
+          <span>⏸</span><small>Blank</small></button
+        ><button id="ovw" title="Overview (O)">
+          <span>▦</span><small>Overview</small></button
+        ><button id="pin" title="Keep open ">
+          <span>📌</span><small>Keep open</small>
+        </button>
+      </div>
+      <div class="sep"></div>
+      <div class="grp" id="themes">
+        <button data-th="light" title="Light theme">
+          <span>☀️</span><small>Light</small></button
+        ><button data-th="dark" title="Dark theme">
+          <span>🌙</span><small>Dark</small></button
+        ><button data-th="system" title="Follow the device (D cycles)">
+          <span>🖥️</span><small>System</small>
+        </button>
+      </div>
+      <div class="sep"></div>
+      <div class="grp">
+        <button id="hobtn" title="Export handout">
+          <span>🖨️</span><small>Handout</small>
+        </button>
+      </div>
+      <div class="sep"></div>
+      <div class="grp tgrp">
+        <span>⏱</span><button data-t="60">1m</button
+        ><button data-t="120">2m</button><button data-t="300">5m</button>
+      </div>
+      <button
+        id="hidebtn"
+        title="Hide the round button (T or the edge tab brings it back)"
+      >
+        <span>🙈</span><small>Hide button</small></button
+      ><button id="dockx" title="Close toolbar (T)">
+        <span>✕</span><small>Close</small>
+      </button>
+    </div>
+    <div id="hoView">
+      <div id="hoBar">
+        <b>🖨️ Handout</b
+        ><select id="hoPaper">
+          <option value="short">Short bond (Letter) 8.5 × 11 in</option>
+          <option value="long">Long bond (Folio) 8.5 × 13 in</option>
+          <option value="a4">A4 8.27 × 11.69 in</option></select
+        ><select id="hoLay">
+          <option value="9">9 per page · slides + notes lines</option>
+          <option value="6">6 per page · larger + notes</option>
+          <option value="4">4 per page · large + notes</option>
+          <option value="18">18 per page · slides only</option></select
+        ><label
+          ><input type="checkbox" id="hoAll" checked /> Reveal all steps &amp;
+          answers</label
+        ><label
+          ><input type="checkbox" id="hoLight" checked /> Light colors (saves
+          ink)</label
+        ><label
+          ><input type="checkbox" id="hoTeach" /> Teacher copy (print slide
+          notes)</label
+        ><input
+          type="text"
+          id="hoHead"
+          placeholder="Header: course / lesson"
+        /><input
+          type="text"
+          id="hoFoot"
+          placeholder="Footer: teacher · school · date"
+        /><button id="hoPrint">Print / Save PDF</button
+        ><button id="hoClose" style="background: #6b7a99">Close</button>
+      </div>
+      <div id="hoPages"></div>
+    </div>
+    <style id="hoPageStyle"></style>
+    <div class="score" id="score">⭐ 0</div>
+    <div class="tmr">
+      <button id="tm">⏱ Timer</button><button id="tmx">✕</button>
+    </div>
+    <div class="reveal">
+      <div class="slides">
+        <section
+          data-background-gradient="linear-gradient(135deg,#dfe9ff,#fff4de)"
+        >
+          <div class="tag">WEEK 2 · DAY 4</div>
+          <h1>Mixed Practice: CMF + DOTS</h1>
+          <p class="sm">
+            → next topic &nbsp;·&nbsp; ↓ go deeper when the down arrow shows<br />🖱️
+            bottom-left: pen &amp; tools (press T)
+          </p>
+        </section>
+        <section>
+          <section data-background-color="#fff4de">
+            <div class="tag">VALUE FOCUS · WISDOM</div>
+            <p class="box big">
+              “Wisdom is pausing to assess a situation carefully before deciding
+              how to act.”
+            </p>
+          </section>
+          <section data-background-color="#fff4de">
+            <div class="tag">VALUE QUESTION</div>
+            <h2>Wisdom</h2>
+            <p class="big">
+              Before making an important decision, why is it wise to pause and
+              assess the situation first instead of just reacting?
+            </p>
+            <p class="sm">Take 2–3 quick answers</p>
+          </section>
+          <section data-background-color="#fff4de">
+            <div class="tag">VALUE QUESTION · REAL LIFE</div>
+            <h2>Wisdom beyond the classroom</h2>
+            <p class="big">
+              As a LIDEan student, how will you practice wisdom in your daily
+              life? Can you give me an example?
+            </p>
+            <p class="sm fragment">
+              Think: before a quiz · before you post · before you spend · before
+              you leave home…
+            </p>
+          </section>
+        </section>
+        <section data-background-color="#fff4de">
+          <div class="tag">MOTIVATION · READY OR NOT?</div>
+          <p class="big math">2x² − 8</p>
+          <p>Is this ready for the DOTS pattern right away?</p>
+          <p class="fragment">
+            Pause and assess before you act — that is wisdom.
+          </p>
+        </section>
+        <section data-background-color="#eaf1ff">
+          <div class="tag">OBJECTIVES</div>
+          <h2>By the end of today, you will…</h2>
+          <ol>
+            <li>
+              Decide whether a polynomial needs CMF only, DOTS only, or both.
+            </li>
+            <li>
+              Always factor out the GCF first, then check the remaining binomial
+              for DOTS.
+            </li>
+            <li>Factor completely by re-checking every factor.</li>
+            <li>
+              Recognize that a sum of squares (a² + b²) cannot be factored by
+              DOTS.
+            </li>
+            <li>
+              <b>VALUE ·</b> Practice <b>wisdom</b>: pause and assess before
+              acting — in math and in your daily life.
+            </li>
+          </ol>
+        </section>
+        <section>
+          <section data-background-color="#f1faf3">
+            <div class="tag">DISCOVER</div>
+            <h2>Try it first!</h2>
+            <p class="big math">2x² − 8</p>
+            <p>
+              Is this a difference of two squares? Factor it <b>right now</b>.
+            </p>
+            <p class="fragment">Stuck? 2 isn’t a perfect square… 🤔</p>
+            <p class="sm">↓ press down to see why</p>
+          </section>
+          <section>
+            <h2>Discover the order</h2>
+            <p class="big math">
+              2x² − 8 = <span class="fragment hl">2</span
+              ><span class="fragment">(x² − 4)</span
+              ><span class="fragment"> = 2(x + 2)(x − 2)</span>
+            </p>
+            <p class="fragment box">
+              💡 Common factor <b>first</b>. Then check for DOTS.
+            </p>
+          </section>
+        </section>
+        <section>
+          <section data-background-color="#fffbe6">
+            <div class="flowwrap">
+              <div class="side">
+                <div class="tag">DECISION FLOW</div>
+                <h2 style="font-size: 1.05em">What do I do first?</h2>
+                <p class="sm">
+                  <span class="yy">YES</span> do the green step<br /><span
+                    class="nn"
+                    >NO</span
+                  >
+                  move down the red arrow
+                </p>
+                <p class="sm">
+                  Click to reveal one step at a time.<br />↓ Then walk a case
+                  through it.
+                </p>
+              </div>
+              <svg
+                viewBox="0 0 1260 910"
+                style="height: 800px; width: 1108px; flex: none"
+              >
+                <defs>
+                  <marker
+                    id="mg"
+                    viewBox="0 0 10 10"
+                    refX="7"
+                    refY="5"
+                    markerWidth="4.2"
+                    markerHeight="4.2"
+                    orient="auto-start-reverse"
+                  >
+                    <path d="M0 0L10 5L0 10z" fill="#1a9a5b" />
+                  </marker>
+                  <marker
+                    id="mr"
+                    viewBox="0 0 10 10"
+                    refX="7"
+                    refY="5"
+                    markerWidth="4.2"
+                    markerHeight="4.2"
+                    orient="auto-start-reverse"
+                  >
+                    <path d="M0 0L10 5L0 10z" fill="#d64545" />
+                  </marker>
+                  <marker
+                    id="mk"
+                    viewBox="0 0 10 10"
+                    refX="7"
+                    refY="5"
+                    markerWidth="4.2"
+                    markerHeight="4.2"
+                    orient="auto-start-reverse"
+                  >
+                    <path d="M0 0L10 5L0 10z" fill="#2457c5" />
+                  </marker>
+                </defs>
+                <rect
+                  x="380"
+                  y="6"
+                  width="200"
+                  height="50"
+                  rx="25"
+                  fill="#2457c5"
+                />
+                <text
+                  x="480"
+                  y="31"
+                  font-size="30"
+                  font-weight="700"
+                  text-anchor="middle"
+                  dominant-baseline="central"
+                  fill="#fff"
+                  font-family="Segoe UI,system-ui,sans-serif"
+                >
+                  <tspan x="480" dy="0.0">Polynomial</tspan>
+                </text>
+                <path
+                  d="M480 56 V85"
+                  fill="none"
+                  stroke="#2457c5"
+                  stroke-width="7"
+                  stroke-linejoin="round"
+                  marker-end="url(#mk)"
+                />
+                <g class="fragment" data-fragment-index="1">
+                  <polygon
+                    points="480,85 730,165 480,245 230,165"
+                    fill="#fff3c4"
+                    stroke="#e0a800"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="480"
+                    y="165"
+                    font-size="38"
+                    font-weight="700"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1b2a41"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="480" dy="-21.849999999999998">
+                      Common factor in
+                    </tspan>
+                    <tspan x="480" dy="43.699999999999996">ALL terms?</tspan>
+                  </text>
+                </g>
+                <g class="fragment" data-fragment-index="2">
+                  <path
+                    d="M730 165 H846"
+                    fill="none"
+                    stroke="#1a9a5b"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                    marker-end="url(#mg)"
+                  />
+                  <rect
+                    x="742"
+                    y="110"
+                    width="96"
+                    height="44"
+                    rx="22"
+                    fill="#fff"
+                    stroke="#1a9a5b"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="790"
+                    y="133"
+                    font-size="28"
+                    font-weight="800"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1a9a5b"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="790" dy="0.0">YES</tspan>
+                  </text>
+                  <rect
+                    x="850"
+                    y="125"
+                    width="390"
+                    height="80"
+                    rx="22"
+                    fill="#e1f6ea"
+                    stroke="#1a9a5b"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="1045.0"
+                    y="165.0"
+                    font-size="36"
+                    font-weight="700"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1b2a41"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="1045.0" dy="0.0">Factor out the GCF</tspan>
+                  </text>
+                </g>
+                <g class="fragment" data-fragment-index="3">
+                  <path
+                    d="M1045 205 V300 H480"
+                    fill="none"
+                    stroke="#1a9a5b"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M480 245 V335"
+                    fill="none"
+                    stroke="#d64545"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                    marker-end="url(#mr)"
+                  />
+                  <rect
+                    x="512"
+                    y="250"
+                    width="96"
+                    height="44"
+                    rx="22"
+                    fill="#fff"
+                    stroke="#d64545"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="560"
+                    y="273"
+                    font-size="28"
+                    font-weight="800"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#d64545"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="560" dy="0.0">NO</tspan>
+                  </text>
+                  <polygon
+                    points="480,335 740,430 480,525 220,430"
+                    fill="#fff3c4"
+                    stroke="#e0a800"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="480"
+                    y="430"
+                    font-size="38"
+                    font-weight="700"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1b2a41"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="480" dy="-21.849999999999998">
+                      Two perfect squares
+                    </tspan>
+                    <tspan x="480" dy="43.699999999999996">
+                      being subtracted?
+                    </tspan>
+                  </text>
+                </g>
+                <g class="fragment" data-fragment-index="4">
+                  <path
+                    d="M740 430 H846"
+                    fill="none"
+                    stroke="#1a9a5b"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                    marker-end="url(#mg)"
+                  />
+                  <rect
+                    x="747"
+                    y="375"
+                    width="96"
+                    height="44"
+                    rx="22"
+                    fill="#fff"
+                    stroke="#1a9a5b"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="795"
+                    y="398"
+                    font-size="28"
+                    font-weight="800"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1a9a5b"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="795" dy="0.0">YES</tspan>
+                  </text>
+                  <rect
+                    x="850"
+                    y="383"
+                    width="400"
+                    height="94"
+                    rx="22"
+                    fill="#e8efff"
+                    stroke="#2457c5"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="1050.0"
+                    y="430.0"
+                    font-size="32"
+                    font-weight="700"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1b2a41"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="1050.0" dy="-18.4">DOTS:</tspan>
+                    <tspan x="1050.0" dy="36.8">a² − b² = (a+b)(a−b)</tspan>
+                  </text>
+                </g>
+                <g class="fragment" data-fragment-index="5">
+                  <path
+                    d="M1050 477 V570 H480"
+                    fill="none"
+                    stroke="#2457c5"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M480 525 V615"
+                    fill="none"
+                    stroke="#d64545"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                    marker-end="url(#mr)"
+                  />
+                  <rect
+                    x="512"
+                    y="526"
+                    width="96"
+                    height="44"
+                    rx="22"
+                    fill="#fff"
+                    stroke="#d64545"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="560"
+                    y="549"
+                    font-size="28"
+                    font-weight="800"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#d64545"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="560" dy="0.0">NO</tspan>
+                  </text>
+                  <polygon
+                    points="480,615 730,705 480,795 230,705"
+                    fill="#fff3c4"
+                    stroke="#e0a800"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="480"
+                    y="705"
+                    font-size="38"
+                    font-weight="700"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1b2a41"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="480" dy="-21.849999999999998">
+                      Can any factor be
+                    </tspan>
+                    <tspan x="480" dy="43.699999999999996">
+                      factored again?
+                    </tspan>
+                  </text>
+                </g>
+                <g class="fragment" data-fragment-index="6">
+                  <path
+                    d="M230 705 H100 V165 H226"
+                    fill="none"
+                    stroke="#1a9a5b"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                    marker-end="url(#mg)"
+                  />
+                  <rect
+                    x="52"
+                    y="418"
+                    width="96"
+                    height="44"
+                    rx="22"
+                    fill="#fff"
+                    stroke="#1a9a5b"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="100"
+                    y="441"
+                    font-size="28"
+                    font-weight="800"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1a9a5b"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="100" dy="0.0">YES ↑</tspan>
+                  </text>
+                  <path
+                    d="M480 795 V838"
+                    fill="none"
+                    stroke="#d64545"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                    marker-end="url(#mr)"
+                  />
+                  <rect
+                    x="512"
+                    y="796"
+                    width="96"
+                    height="44"
+                    rx="22"
+                    fill="#fff"
+                    stroke="#d64545"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="560"
+                    y="819"
+                    font-size="28"
+                    font-weight="800"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#d64545"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="560" dy="0.0">NO</tspan>
+                  </text>
+                  <rect
+                    x="170"
+                    y="842"
+                    width="620"
+                    height="62"
+                    rx="31"
+                    fill="#1a9a5b"
+                  />
+                  <text
+                    x="480"
+                    y="874"
+                    font-size="30"
+                    font-weight="700"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#fff"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="480" dy="0.0">
+                      DONE ✓ multiply back to check
+                    </tspan>
+                  </text>
+                </g>
+              </svg>
+            </div>
+          </section>
+          <section>
+            <div class="flowwrap" style="gap: 34px; align-items: center">
+              <svg
+                id="walksvg"
+                viewBox="0 0 600 890"
+                style="height: 840px; width: 566px; flex: none"
+              >
+                <defs>
+                  <marker
+                    id="wmg"
+                    viewBox="0 0 10 10"
+                    refX="7"
+                    refY="5"
+                    markerWidth="4.2"
+                    markerHeight="4.2"
+                    orient="auto-start-reverse"
+                  >
+                    <path d="M0 0L10 5L0 10z" fill="#1a9a5b" />
+                  </marker>
+                  <marker
+                    id="wmr"
+                    viewBox="0 0 10 10"
+                    refX="7"
+                    refY="5"
+                    markerWidth="4.2"
+                    markerHeight="4.2"
+                    orient="auto-start-reverse"
+                  >
+                    <path d="M0 0L10 5L0 10z" fill="#d64545" />
+                  </marker>
+                  <marker
+                    id="wmn"
+                    viewBox="0 0 10 10"
+                    refX="7"
+                    refY="5"
+                    markerWidth="4.2"
+                    markerHeight="4.2"
+                    orient="auto-start-reverse"
+                  >
+                    <path d="M0 0L10 5L0 10z" fill="#6b7a99" />
+                  </marker>
+                </defs>
+                <g class="nd" id="w_start">
+                  <rect
+                    x="130"
+                    y="4"
+                    width="200"
+                    height="40"
+                    rx="20"
+                    fill="#2457c5"
+                  />
+                  <text
+                    x="230"
+                    y="25"
+                    font-size="26"
+                    font-weight="700"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#fff"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="230" dy="0.0">Polynomial</tspan>
+                  </text>
+                </g>
+                <g class="nd" id="w_e0">
+                  <path
+                    d="M230 44 V74"
+                    fill="none"
+                    stroke="#6b7a99"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                    marker-end="url(#wmn)"
+                  />
+                </g>
+                <g class="nd" id="w_d1">
+                  <polygon
+                    points="230,76 380,158 230,240 80,158"
+                    fill="#fff3c4"
+                    stroke="#e0a800"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="230"
+                    y="158"
+                    font-size="28"
+                    font-weight="700"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1b2a41"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="230" dy="-16.099999999999998">
+                      Common factor
+                    </tspan>
+                    <tspan x="230" dy="32.199999999999996">in ALL terms?</tspan>
+                  </text>
+                </g>
+                <g class="nd" id="w_e1y">
+                  <path
+                    d="M380 158 H466"
+                    fill="none"
+                    stroke="#1a9a5b"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                    marker-end="url(#wmg)"
+                  />
+                  <rect
+                    x="389"
+                    y="105"
+                    width="70"
+                    height="34"
+                    rx="17"
+                    fill="#fff"
+                    stroke="#1a9a5b"
+                    stroke-width="4"
+                  />
+                  <text
+                    x="424"
+                    y="123"
+                    font-size="22"
+                    font-weight="800"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1a9a5b"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="424" dy="0.0">YES</tspan>
+                  </text>
+                </g>
+                <g class="nd" id="w_b1">
+                  <rect
+                    x="468"
+                    y="118"
+                    width="128"
+                    height="80"
+                    rx="22"
+                    fill="#e1f6ea"
+                    stroke="#1a9a5b"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="532.0"
+                    y="158.0"
+                    font-size="26"
+                    font-weight="700"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1b2a41"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="532.0" dy="-14.95">Take out</tspan>
+                    <tspan x="532.0" dy="29.9">the GCF</tspan>
+                  </text>
+                </g>
+                <g class="nd" id="w_e1j">
+                  <path
+                    d="M532 198 V285 H230"
+                    fill="none"
+                    stroke="#1a9a5b"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                  />
+                </g>
+                <g class="nd" id="w_e1na">
+                  <path
+                    d="M230 240 V285"
+                    fill="none"
+                    stroke="#d64545"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                  />
+                  <rect
+                    x="137"
+                    y="245"
+                    width="70"
+                    height="34"
+                    rx="17"
+                    fill="#fff"
+                    stroke="#d64545"
+                    stroke-width="4"
+                  />
+                  <text
+                    x="172"
+                    y="263"
+                    font-size="22"
+                    font-weight="800"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#d64545"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="172" dy="0.0">NO</tspan>
+                  </text>
+                </g>
+                <g class="nd" id="w_e1nb">
+                  <path
+                    d="M230 285 V348"
+                    fill="none"
+                    stroke="#6b7a99"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                    marker-end="url(#wmn)"
+                  />
+                </g>
+                <g class="nd" id="w_d2">
+                  <polygon
+                    points="230,350 380,432 230,514 80,432"
+                    fill="#fff3c4"
+                    stroke="#e0a800"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="230"
+                    y="432"
+                    font-size="28"
+                    font-weight="700"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1b2a41"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="230" dy="-16.099999999999998">Two squares</tspan>
+                    <tspan x="230" dy="32.199999999999996">with a minus?</tspan>
+                  </text>
+                </g>
+                <g class="nd" id="w_e2y">
+                  <path
+                    d="M380 432 H460"
+                    fill="none"
+                    stroke="#1a9a5b"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                    marker-end="url(#wmg)"
+                  />
+                  <rect
+                    x="389"
+                    y="379"
+                    width="70"
+                    height="34"
+                    rx="17"
+                    fill="#fff"
+                    stroke="#1a9a5b"
+                    stroke-width="4"
+                  />
+                  <text
+                    x="424"
+                    y="397"
+                    font-size="22"
+                    font-weight="800"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1a9a5b"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="424" dy="0.0">YES</tspan>
+                  </text>
+                </g>
+                <g class="nd" id="w_b2">
+                  <rect
+                    x="462"
+                    y="388"
+                    width="136"
+                    height="88"
+                    rx="22"
+                    fill="#e8efff"
+                    stroke="#2457c5"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="530.0"
+                    y="432.0"
+                    font-size="21"
+                    font-weight="700"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1b2a41"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="530.0" dy="-12.075">DOTS</tspan>
+                    <tspan x="530.0" dy="24.15">(a+b)(a−b)</tspan>
+                  </text>
+                </g>
+                <g class="nd" id="w_e2j">
+                  <path
+                    d="M532 476 V559 H230"
+                    fill="none"
+                    stroke="#1a9a5b"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                  />
+                </g>
+                <g class="nd" id="w_e2na">
+                  <path
+                    d="M230 514 V559"
+                    fill="none"
+                    stroke="#d64545"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                  />
+                  <rect
+                    x="137"
+                    y="521"
+                    width="70"
+                    height="34"
+                    rx="17"
+                    fill="#fff"
+                    stroke="#d64545"
+                    stroke-width="4"
+                  />
+                  <text
+                    x="172"
+                    y="539"
+                    font-size="22"
+                    font-weight="800"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#d64545"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="172" dy="0.0">NO</tspan>
+                  </text>
+                </g>
+                <g class="nd" id="w_e2nb">
+                  <path
+                    d="M230 559 V622"
+                    fill="none"
+                    stroke="#6b7a99"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                    marker-end="url(#wmn)"
+                  />
+                </g>
+                <g class="nd" id="w_d3">
+                  <polygon
+                    points="230,624 380,706 230,788 80,706"
+                    fill="#fff3c4"
+                    stroke="#e0a800"
+                    stroke-width="5"
+                  />
+                  <text
+                    x="230"
+                    y="706"
+                    font-size="25"
+                    font-weight="700"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1b2a41"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="230" dy="-14.374999999999998">
+                      Any factor that
+                    </tspan>
+                    <tspan x="230" dy="28.749999999999996">
+                      can factor more?
+                    </tspan>
+                  </text>
+                </g>
+                <g class="nd" id="w_e3y">
+                  <path
+                    d="M80 706 H40 V158 H76"
+                    fill="none"
+                    stroke="#1a9a5b"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                    marker-end="url(#wmg)"
+                  />
+                  <rect
+                    x="5"
+                    y="483"
+                    width="70"
+                    height="34"
+                    rx="17"
+                    fill="#fff"
+                    stroke="#1a9a5b"
+                    stroke-width="4"
+                  />
+                  <text
+                    x="40"
+                    y="501"
+                    font-size="22"
+                    font-weight="800"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#1a9a5b"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="40" dy="0.0">YES ↑</tspan>
+                  </text>
+                </g>
+                <g class="nd" id="w_e3n">
+                  <path
+                    d="M230 788 V830"
+                    fill="none"
+                    stroke="#d64545"
+                    stroke-width="7"
+                    stroke-linejoin="round"
+                    marker-end="url(#wmr)"
+                  />
+                  <rect
+                    x="137"
+                    y="792"
+                    width="70"
+                    height="34"
+                    rx="17"
+                    fill="#fff"
+                    stroke="#d64545"
+                    stroke-width="4"
+                  />
+                  <text
+                    x="172"
+                    y="810"
+                    font-size="22"
+                    font-weight="800"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#d64545"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="172" dy="0.0">NO</tspan>
+                  </text>
+                </g>
+                <g class="nd" id="w_done">
+                  <rect
+                    x="110"
+                    y="832"
+                    width="240"
+                    height="48"
+                    rx="24"
+                    fill="#1a9a5b"
+                  />
+                  <text
+                    x="230"
+                    y="857"
+                    font-size="28"
+                    font-weight="700"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="#fff"
+                    font-family="Segoe UI,system-ui,sans-serif"
+                  >
+                    <tspan x="230" dy="0.0">DONE ✓</tspan>
+                  </text>
+                </g>
+              </svg>
+              <div class="wpanel" data-prevent-swipe>
+                <div class="tag" style="font-size: 0.4em">
+                  INTERACTIVE WALK-THROUGH
+                </div>
+                <div id="wchips"></div>
+                <div id="wexpr" class="math">Pick a case ↑</div>
+                <div id="wq"></div>
+                <div id="wbtns">
+                  <button class="wyes" id="wy">YES</button
+                  ><button class="wno" id="wn">NO</button>
+                </div>
+                <div id="wfb"></div>
+                <div id="wwork"></div>
+                <div id="wres"></div>
+                <div id="wact">
+                  <button class="dctl" id="wchk">Multiply back ✓</button
+                  ><button class="dctl" id="wnext">Next case ▶</button>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section data-background-color="#fffbe6">
+            <div class="tag">DECISION FLOW · REFERENCE TABLE</div>
+            <h2 style="font-size: 1.05em">Follow the flow</h2>
+            <table class="t wt">
+              <tr>
+                <th>Expression</th>
+                <th>① Common factor?</th>
+                <th>② Two squares, minus?</th>
+                <th>③ Factor again?</th>
+                <th>Answer</th>
+              </tr>
+              <tr class="fragment">
+                <td class="math">3x² − 27</td>
+                <td><span class="yy">YES</span></td>
+                <td><span class="yy">YES</span></td>
+                <td><span class="nn">NO</span></td>
+                <td class="math">3(x+3)(x−3)</td>
+              </tr>
+              <tr class="fragment">
+                <td class="math">7x + 21</td>
+                <td><span class="yy">YES</span></td>
+                <td><span class="nn">NO</span></td>
+                <td><span class="nn">NO</span></td>
+                <td class="math">7(x+3)</td>
+              </tr>
+              <tr class="fragment">
+                <td class="math">x² − 64</td>
+                <td><span class="nn">NO</span></td>
+                <td><span class="yy">YES</span></td>
+                <td><span class="nn">NO</span></td>
+                <td class="math">(x+8)(x−8)</td>
+              </tr>
+              <tr class="fragment">
+                <td class="math">x² + 9</td>
+                <td><span class="nn">NO</span></td>
+                <td><span class="nn">NO</span></td>
+                <td><span class="nn">NO</span></td>
+                <td class="math">cannot factor</td>
+              </tr>
+              <tr class="fragment">
+                <td class="math">x⁴ − 16</td>
+                <td><span class="nn">NO</span></td>
+                <td><span class="yy">YES</span></td>
+                <td><span class="yy">YES</span></td>
+                <td class="math">(x²+4)(x+2)(x−2)</td>
+              </tr>
+            </table>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2 style="font-size: 0.95em; margin-bottom: 0.1em">
+              🎬 Why a² − b² = (a + b)(a − b)
+            </h2>
+            <svg
+              id="dots"
+              class="stage"
+              viewBox="0 0 800 400"
+              style="width: 1120px; height: 560px"
+            ></svg>
+            <div
+              class="cap"
+              id="dotsc"
+              style="font-size: 0.6em; min-height: 2.2em"
+            ></div>
+            <div data-prevent-swipe>
+              <button class="dctl" id="dprev">◀ Back</button
+              ><button class="dctl" id="dnext">Next ▶</button
+              ><button class="dctl" id="drep">↺ Replay</button
+              ><button class="dctl" id="dauto">▶ Auto-play</button>
+            </div>
+            <div class="ctlrow" data-prevent-swipe>
+              <span
+                >a = <b id="sav">6</b>
+                <input type="range" id="sa" min="3" max="10" value="6" /></span
+              ><span
+                >b = <b id="sbv">2</b>
+                <input type="range" id="sb" min="1" max="5" value="2" /></span
+              ><label
+                ><input
+                  type="checkbox"
+                  id="gridc"
+                  checked
+                  style="transform: scale(1.8); margin: 0 10px"
+                />
+                unit grid</label
+              >
+            </div>
+          </section>
+          <section>
+            <div class="tag">YOUR TURN</div>
+            <h2>Predict, then check with the sliders</h2>
+            <div class="mc" data-a="0">
+              <p class="big math">
+                Set a = 8 and b = 3. The rectangle has sides…
+              </p>
+              <button class="opt">11 by 5</button
+              ><button class="opt">8 by 3</button
+              ><button class="opt">24 by 1</button>
+              <div class="fb"></div>
+              <p class="sm">a + b = 11, a − b = 5, area 55 = 64 − 9 ✓</p>
+            </div>
+          </section>
+        </section>
+        <section>
+          <section data-background-color="#e6f7f5">
+            <div class="tag">REAL WORLD</div>
+            <h2 style="font-size: 1.1em">Where do you see this?</h2>
+            <div class="two sm">
+              <div>
+                <b>Picture-frame mats</b>: a 12-in square board with an 8-in
+                square window cut out. Board left = 12² − 8² = (12+8)(12−8) = 20
+                × 4 = <b>80 in²</b>.<br /><br /><b>Mental math:</b> 47 × 53 =
+                (50 − 3)(50 + 3) = 50² − 3² = <b>2491</b>.
+              </div>
+              <div>
+                <b>Metal sheets, tiles, game maps</b>: any time a square is cut
+                out of a bigger square (a Minecraft pit, a pool in a square
+                yard).
+              </div>
+            </div>
+            <p class="sm">↓ then a problem</p>
+          </section>
+          <section data-background-color="#e6f7f5">
+            <div class="tag">REAL-WORLD PROBLEM</div>
+            <p class="sm" style="margin: 0">
+              A square metal plate has side x cm. A square hole of side 3 cm is
+              cut out. The area left is x² − 9.
+            </p>
+            <div class="flowwrap" style="align-items: flex-start; gap: 30px">
+              <div data-prevent-swipe>
+                <svg
+                  id="plate"
+                  viewBox="0 0 720 300"
+                  style="
+                    width: 860px;
+                    height: 358px;
+                    background: #0e1b33;
+                    border-radius: 20px;
+                  "
+                ></svg>
+                <div class="ctlrow">
+                  <span
+                    >x = <b id="pxv">8</b> cm
+                    <input type="range" id="px" min="4" max="10" value="8"
+                  /></span>
+                </div>
+              </div>
+              <div>
+                <div class="mc" data-a="1">
+                  <p class="big math">Factor x² − 9</p>
+                  <button class="opt">(x − 3)²</button
+                  ><button class="opt">(x + 3)(x − 3)</button
+                  ><button class="opt">(x − 9)(x + 1)</button>
+                  <div class="fb"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+        <section>
+          <section data-background-color="#eaf8ef">
+            <div class="tag">GAME</div>
+            <h2>Pick the Method</h2>
+            <div class="mc" data-a="1">
+              <p class="big math">3x² − 27</p>
+              <button class="opt">CMF only</button
+              ><button class="opt">CMF + DOTS</button
+              ><button class="opt">DOTS only</button>
+              <div class="fb"></div>
+            </div>
+            <p class="sm">↓ 3 rounds</p>
+          </section>
+          <section data-background-color="#eaf8ef">
+            <div class="tag">GAME</div>
+            <h2>Pick the Method</h2>
+            <div class="mc" data-a="2">
+              <p class="big math">x² − 64</p>
+              <button class="opt">CMF only</button
+              ><button class="opt">CMF + DOTS</button
+              ><button class="opt">DOTS only</button>
+              <div class="fb"></div>
+            </div>
+          </section>
+          <section data-background-color="#eaf8ef">
+            <div class="tag">GAME</div>
+            <h2>Pick the Method</h2>
+            <div class="mc" data-a="0">
+              <p class="big math">7x + 21</p>
+              <button class="opt">CMF only</button
+              ><button class="opt">CMF + DOTS</button
+              ><button class="opt">DOTS only</button>
+              <div class="fb"></div>
+            </div>
+          </section>
+        </section>
+        <section>
+          <section data-background-color="#eaf8ef">
+            <div class="tag">GAME</div>
+            <h2>Factor completely</h2>
+            <div class="mc" data-a="1">
+              <p class="big math">18m² − 50n²</p>
+              <button class="opt">(3m + 5n)(3m − 5n)</button
+              ><button class="opt">2(3m + 5n)(3m − 5n)</button
+              ><button class="opt">2(9m² − 25n²)</button>
+              <div class="fb"></div>
+            </div>
+            <p class="sm">
+              “Complete” = nothing can be factored further. ↓ more
+            </p>
+          </section>
+          <section data-background-color="#eaf8ef">
+            <div class="tag">GAME</div>
+            <h2>Factor completely</h2>
+            <div class="mc" data-a="2">
+              <p class="big math">12x² − 27</p>
+              <button class="opt">(6x + 9)(2x − 3)</button
+              ><button class="opt">3(4x² − 9)</button
+              ><button class="opt">3(2x + 3)(2x − 3)</button>
+              <div class="fb"></div>
+            </div>
+            <p class="sm">
+              (6x + 9)(2x − 3) multiplies back correctly, but is it complete?
+            </p>
+          </section>
+          <section data-background-color="#eaf8ef">
+            <div class="tag">GAME</div>
+            <h2>Can DOTS factor it?</h2>
+            <div class="mc" data-a="2">
+              <p class="big math">x² + 9</p>
+              <button class="opt">(x + 3)(x + 3)</button
+              ><button class="opt">(x + 3)(x − 3)</button
+              ><button class="opt">Not by DOTS (it is a sum)</button>
+              <div class="fb"></div>
+            </div>
+          </section>
+        </section>
+        <section>
+          <section data-background-color="#f1ecfd">
+            <div class="tag">HOTS</div>
+            <h2 style="font-size: 1.1em">Think deeper</h2>
+            <p>
+              Create a polynomial that needs BOTH the common-factor step AND
+              DOTS. Explain the order.
+            </p>
+            <p class="sm">Discuss with your seatmate, then ↓</p>
+          </section>
+          <section data-background-color="#f1ecfd">
+            <div class="tag">HOTS</div>
+            <h2 style="font-size: 1.1em">Expected reasoning</h2>
+            <p class="box sm">
+              Example: 8x² − 32 → 8(x² − 4) → 8(x + 2)(x − 2). CMF must come
+              first because 8 and 32 are not both perfect squares; only after
+              removing 8 does a valid difference of two squares appear.
+            </p>
+          </section>
+        </section>
+        <section>
+          <section data-background-color="#eaf1ff">
+            <div class="tag">EXIT TICKET</div>
+            <h2>Factor completely on paper</h2>
+            <p class="math">
+              1) 4x² − 16 &nbsp; 2) 6x + 18 &nbsp; 3) x² − 49 &nbsp; 4) 50a² −
+              2b²
+            </p>
+            <p class="fragment ok sm">
+              Answers: 4(x+2)(x−2) · 6(x+3) · (x+7)(x−7) · 2(5a+b)(5a−b)
+            </p>
+            <p class="fragment big">
+              🏆 <span id="final">0</span> stars earned!
+            </p>
+          </section>
+          <section data-background-color="#fff4de">
+            <div class="tag">VALUE · CLOSING</div>
+            <h2>Wisdom check</h2>
+            <p class="big">
+              Where will you pause and assess before acting <b>this week</b>?
+            </p>
+            <p class="fragment sm">
+              Share one example: in math, at school, or at home.
+            </p>
+          </section>
+        </section>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+    <script>
+      const CFG = null;
+
+      Reveal.initialize({
+        width: 1600,
+        height: 900,
+        margin: 0.04,
+        hash: true,
+        touch: true,
+        controls: true,
+        progress: true,
+        center: true,
+        transition: "slide",
+        slideNumber: "c/t",
+        keyboard: { 80: null, 78: null, 72: null, 76: null },
+        showSlideNumber: "all",
+      });
+      let stars = 0;
+      const sc = document.getElementById("score");
+      function pop(e, n) {
+        const r = e.getBoundingClientRect(),
+          d = document.createElement("div");
+        d.className = "pop";
+        d.textContent = "+" + n + " ⭐";
+        d.style.left = r.left + r.width / 2 - 40 + "px";
+        d.style.top = r.top - 10 + "px";
+        document.body.appendChild(d);
+        setTimeout(() => d.remove(), 1100);
+      }
+      function shake(e) {
+        e.classList.remove("shk");
+        void e.offsetWidth;
+        e.classList.add("shk");
+      }
+      function add(n) {
+        stars += n;
+        sc.textContent = "⭐ " + stars;
+        const f = document.getElementById("final");
+        if (f) f.textContent = stars;
+      }
+      document.querySelectorAll(".mc").forEach((mc) => {
+        const a = +mc.dataset.a,
+          fb = mc.querySelector(".fb");
+        let done = false,
+          tries = 0;
+        mc.querySelectorAll(".opt").forEach(
+          (b, i) =>
+            (b.onclick = () => {
+              if (done) return;
+              if (i === a) {
+                b.classList.add("right");
+                fb.innerHTML = '<span class="ok">✓ Correct!</span>';
+                done = true;
+                pop(b, tries ? 1 : 2);
+                add(tries ? 1 : 2);
+              } else {
+                b.classList.add("wrong");
+                shake(b);
+                fb.innerHTML = '<span class="bad">Not quite — try again</span>';
+                tries++;
+              }
+            }),
+        );
+      });
+      document.querySelectorAll(".hunt").forEach((h) => {
+        const t = +h.dataset.t,
+          s = +h.dataset.s,
+          fb = h.querySelector(".fb");
+        let pick = [];
+        h.querySelectorAll(".pair").forEach(
+          (b) =>
+            (b.onclick = () => {
+              const v = +b.textContent.replace("−", "-");
+              if (b.classList.contains("right")) return;
+              b.classList.add("right");
+              pick.push(v);
+              if (pick.length === 2) {
+                const ok = pick[0] * pick[1] === t && pick[0] + pick[1] === s;
+                if (ok) {
+                  fb.innerHTML =
+                    '<span class="ok">✓ ' +
+                    pick[0] +
+                    " × " +
+                    pick[1] +
+                    " = " +
+                    t +
+                    " and " +
+                    pick[0] +
+                    " + " +
+                    pick[1] +
+                    " = " +
+                    s +
+                    "</span>";
+                  pop(h, 2);
+                  add(2);
+                } else {
+                  fb.innerHTML =
+                    '<span class="bad">' +
+                    pick[0] +
+                    " × " +
+                    pick[1] +
+                    " = " +
+                    pick[0] * pick[1] +
+                    ", sum " +
+                    (pick[0] + pick[1]) +
+                    " — reset, try again</span>";
+                  h.querySelectorAll(".pair").forEach((x) =>
+                    x.classList.remove("right"),
+                  );
+                  pick = [];
+                }
+              }
+            }),
+        );
+      });
+      document.querySelectorAll(".up").forEach(
+        (i) =>
+          (i.onchange = () => {
+            const f = i.files[0];
+            if (!f) return;
+            const r = new FileReader();
+            r.onload = () => {
+              i.parentElement.querySelector(".ph").innerHTML =
+                '<img src="' + r.result + '">';
+            };
+            r.readAsDataURL(f);
+          }),
+      );
+      const AN = {},
+        NS = "http://www.w3.org/2000/svg";
+      function pick(arr, s, d) {
+        let v = d;
+        (arr || []).forEach(([k, x]) => {
+          if (k <= s) v = x;
+        });
+        return v;
+      }
+      function mk(id, cfg) {
+        const svg = document.getElementById(id);
+        const els = cfg.tiles.map((t) => {
+          const g = document.createElementNS(NS, "g");
+          g.style.transition =
+            "transform 1.1s cubic-bezier(.4,0,.2,1),opacity .9s";
+          g.style.transformBox = "fill-box";
+          g.style.transformOrigin = "center";
+          const r = document.createElementNS(NS, "rect");
+          [
+            ["x", t.x],
+            ["y", t.y],
+            ["width", t.w],
+            ["height", t.h],
+            ["rx", 5],
+            ["fill", t.c],
+            ["stroke", "#fff"],
+            ["stroke-width", 3],
+          ].forEach(([k, v]) => r.setAttribute(k, v));
+          g.appendChild(r);
+          if (t.txt) {
+            const x = document.createElementNS(NS, "text");
+            x.textContent = t.txt;
+            [
+              ["x", t.x + t.w / 2],
+              ["y", t.y + t.h / 2],
+              ["text-anchor", "middle"],
+              ["dominant-baseline", "central"],
+              ["fill", "#fff"],
+              ["font-size", (t.fs || 26) * 1.2],
+              ["font-family", "Cambria,serif"],
+              ["font-style", "italic"],
+            ].forEach(([k, v]) => x.setAttribute(k, v));
+            g.appendChild(x);
+          }
+          svg.appendChild(g);
+          return g;
+        });
+        const labs = (cfg.labels || []).map((l) => {
+          const x = document.createElementNS(NS, "text");
+          x.textContent = l.t;
+          [
+            ["x", l.x],
+            ["y", l.y],
+            ["text-anchor", l.a || "middle"],
+            ["fill", l.c || "#ffd166"],
+            ["font-size", (l.fs || 34) * 1.15],
+            ["font-family", "Cambria,serif"],
+            ["font-style", "italic"],
+          ].forEach(([k, v]) => x.setAttribute(k, v));
+          x.style.transition = "opacity .8s";
+          svg.appendChild(x);
+          return x;
+        });
+        AN[id] = {
+          cfg,
+          els,
+          labs,
+          s: 0,
+          cap: document.getElementById(id + "c"),
+        };
+        go(id, 0);
+      }
+      function go(id, s) {
+        const A = AN[id],
+          n = A.cfg.cap.length - 1;
+        s = Math.max(0, Math.min(n, s));
+        A.s = s;
+        A.cfg.tiles.forEach((t, i) => {
+          A.els[i].style.transform = pick(t.t, s, "none");
+          A.els[i].style.opacity = pick(t.o, s, 1);
+        });
+        (A.cfg.labels || []).forEach((l, i) => {
+          A.labs[i].style.opacity =
+            s >= l.from && s <= (l.to === undefined ? 99 : l.to) ? 1 : 0;
+        });
+        A.cap.textContent = s + 1 + "/" + (n + 1) + " · " + A.cfg.cap[s];
+      }
+      document.querySelectorAll(".ctl").forEach(
+        (b) =>
+          (b.onclick = () => {
+            const id = b.dataset.an,
+              d = +b.dataset.d;
+            go(id, d === 0 ? 0 : AN[id].s + d);
+          }),
+      );
+      if (typeof CFG !== "undefined" && CFG && CFG.tiles) mk("an", CFG);
+      const TC = {
+        GAME: "#b45309",
+        HOTS: "#6d28d9",
+        REAL: "#0f766e",
+        MEME: "#be185d",
+        DISCOVER: "#15803d",
+        DECISION: "#a16207",
+        VALUE: "#be185d",
+        WARM: "#b45309",
+        MOTIVATION: "#a16207",
+        EXIT: "#1d4ed8",
+        YOUR: "#1d4ed8",
+        REFERENCES: "#475569",
+      };
+      document.querySelectorAll(".tag").forEach((t) => {
+        const k = t.textContent.trim().split(/[ ·]/)[0];
+        if (TC[k]) t.style.background = TC[k];
+      });
+      let tmI = null,
+        pi = 0;
+      const tm = document.getElementById("tm"),
+        tmx = document.getElementById("tmx");
+      function beep() {
+        try {
+          const c = new AudioContext(),
+            o = c.createOscillator();
+          o.connect(c.destination);
+          o.frequency.value = 880;
+          o.start();
+          setTimeout(() => {
+            o.stop();
+            c.close();
+          }, 500);
+        } catch (e) {}
+      }
+      function showT(t) {
+        tm.textContent =
+          "⏱ " + Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0");
+      }
+      tm.onclick = () => {
+        clearInterval(tmI);
+        tm.style.background = "";
+        let t = [60, 120, 300][pi++ % 3];
+        showT(t);
+        tmI = setInterval(() => {
+          t--;
+          showT(t);
+          if (t <= 0) {
+            clearInterval(tmI);
+            tm.textContent = "⏰ Time!";
+            tm.style.background = "#d64545";
+            beep();
+          }
+        }, 1000);
+      };
+      tmx.onclick = () => {
+        clearInterval(tmI);
+        tm.textContent = "⏱ Timer";
+        tm.style.background = "";
+      };
+    </script>
+    <script>
+      (function () {
+        const BL = "#3b7dff",
+          TE = "#1fb5a6",
+          YE = "#f2b705",
+          RE = "#e5484d";
+        const svg = document.getElementById("dots"),
+          cap = document.getElementById("dotsc");
+        let a = 6,
+          b = 2,
+          step = 0,
+          auto = null,
+          items = [],
+          pcs = [];
+        function el(n, at, p) {
+          const e = document.createElementNS(NS, n);
+          for (const k in at) e.setAttribute(k, at[k]);
+          (p || svg).appendChild(e);
+          return e;
+        }
+        const css = (t) =>
+          "translate(" + t[0] + "px," + t[1] + "px) rotate(" + t[2] + "deg)";
+        function L(t, x, y, anc, from, to, col, sz) {
+          const e = el("text", {
+            x: x,
+            y: y,
+            "text-anchor": anc || "middle",
+            fill: col || "#ffd166",
+            "font-size": sz || 24,
+            "font-family": "Cambria,serif",
+            "font-style": "italic",
+          });
+          e.textContent = t;
+          e.style.transition = "opacity .6s";
+          items.push({ e: e, from: from, to: to });
+        }
+        function B(x1, y1, x2, y2, from, to) {
+          const h = y1 === y2;
+          const d = h
+            ? "M " +
+              x1 +
+              " " +
+              (y1 - 7) +
+              " V " +
+              (y1 + 7) +
+              " M " +
+              x2 +
+              " " +
+              (y2 - 7) +
+              " V " +
+              (y2 + 7) +
+              " M " +
+              x1 +
+              " " +
+              y1 +
+              " H " +
+              x2
+            : "M " +
+              (x1 - 7) +
+              " " +
+              y1 +
+              " H " +
+              (x1 + 7) +
+              " M " +
+              (x2 - 7) +
+              " " +
+              y2 +
+              " H " +
+              (x2 + 7) +
+              " M " +
+              x1 +
+              " " +
+              y1 +
+              " V " +
+              y2;
+          const e = el("path", {
+            d: d,
+            stroke: "#9fb3de",
+            "stroke-width": 2.5,
+            fill: "none",
+          });
+          e.style.transition = "opacity .6s";
+          items.push({ e: e, from: from, to: to });
+        }
+        function build() {
+          svg.innerHTML = "";
+          const defs = el("defs", {});
+          items = [];
+          pcs = [];
+          const u = Math.min(30, 270 / a, 640 / (a + b)),
+            sx = 400 - (a * u) / 2,
+            y0 = 70,
+            c = (a - b) * u,
+            bu = b * u,
+            gx = -bu / 2,
+            gy = bu / 2,
+            off = 14,
+            fs = Math.max(13, u * 0.55);
+          const P = [
+            {
+              x: sx,
+              y: y0,
+              w: c,
+              h: c,
+              col: BL,
+              txt: a - b + "×" + (a - b),
+              tv: [2, 3],
+              t: [
+                [0, [0, 0, 0]],
+                [3, [gx, gy, 0]],
+              ],
+              o: [[0, 1]],
+            },
+            {
+              x: sx,
+              y: y0 + c,
+              w: c,
+              h: bu,
+              col: TE,
+              txt: a - b + "×" + b,
+              tv: [2, 3],
+              t: [
+                [0, [0, 0, 0]],
+                [2, [0, off, 0]],
+                [3, [gx, gy, 0]],
+                [4, [((a + b) * u) / 2, (-(a - b) * u) / 2, 90]],
+              ],
+              o: [[0, 1]],
+            },
+            {
+              x: sx + c,
+              y: y0 + bu,
+              w: bu,
+              h: c,
+              col: YE,
+              txt: b + "×" + (a - b),
+              tv: [2, 3],
+              t: [
+                [0, [0, 0, 0]],
+                [2, [off, 0, 0]],
+                [3, [gx, gy - bu, 0]],
+              ],
+              o: [[0, 1]],
+            },
+            {
+              x: sx + c,
+              y: y0,
+              w: bu,
+              h: bu,
+              col: RE,
+              txt: "b²=" + b * b,
+              tv: [1, 1],
+              t: [[0, [0, 0, 0]]],
+              o: [
+                [0, 1],
+                [1, 0.3],
+                [2, 0],
+              ],
+            },
+          ];
+          P.forEach((p, i) => {
+            const g = el("g", {});
+            g.style.transition =
+              "transform 1.1s cubic-bezier(.4,0,.2,1),opacity .8s";
+            g.style.transformBox = "fill-box";
+            g.style.transformOrigin = "center";
+            el(
+              "rect",
+              {
+                x: p.x,
+                y: p.y,
+                width: p.w,
+                height: p.h,
+                rx: 3,
+                fill: p.col,
+                stroke: "#fff",
+                "stroke-width": 2.5,
+              },
+              g,
+            );
+            const pt = el(
+              "pattern",
+              {
+                id: "gp" + i,
+                patternUnits: "userSpaceOnUse",
+                x: p.x,
+                y: p.y,
+                width: u,
+                height: u,
+              },
+              defs,
+            );
+            el(
+              "path",
+              {
+                d: "M " + u + " 0 V " + u + " H 0",
+                fill: "none",
+                stroke: "#fff",
+                "stroke-opacity": 0.45,
+                "stroke-width": 1.2,
+              },
+              pt,
+            );
+            el(
+              "rect",
+              {
+                x: p.x,
+                y: p.y,
+                width: p.w,
+                height: p.h,
+                fill: "url(#gp" + i + ")",
+                class: "gridr",
+              },
+              g,
+            );
+            const tx = el(
+              "text",
+              {
+                x: p.x + p.w / 2,
+                y: p.y + p.h / 2,
+                "text-anchor": "middle",
+                "dominant-baseline": "central",
+                fill: "#fff",
+                "font-size": fs,
+                "font-family": "Cambria,serif",
+                "font-style": "italic",
+              },
+              g,
+            );
+            tx.textContent = p.txt;
+            tx.style.transition = "opacity .6s";
+            pcs.push({ g: g, p: p, tx: tx });
+          });
+          B(sx, y0 - 16, sx + a * u, y0 - 16, 0, 2);
+          L("a = " + a, 400, y0 - 26, "middle", 0, 2);
+          B(sx - 16, y0, sx - 16, y0 + a * u, 0, 2);
+          L("a = " + a, sx - 26, y0 + (a * u) / 2 + 8, "end", 0, 2);
+          B(sx + a * u + 16, y0, sx + a * u + 16, y0 + bu, 1, 2);
+          L(
+            "b = " + b,
+            sx + a * u + 26,
+            y0 + bu / 2 + 8,
+            "start",
+            1,
+            2,
+            "#ff8a8a",
+          );
+          const rl = sx + gx,
+            rt = y0 + gy;
+          B(rl, rt - 16, rl + (a + b) * u, rt - 16, 5, 5);
+          L("a + b = " + (a + b), 400, rt - 26, "middle", 5, 5);
+          B(rl - 16, rt, rl - 16, rt + c, 5, 5);
+          L("a − b = " + (a - b), rl - 26, rt + c / 2 + 8, "end", 5, 5);
+          L(
+            String((a - b) * (a - b)),
+            rl + c / 2,
+            rt + c / 2 + fs / 3,
+            "middle",
+            5,
+            5,
+            "#fff",
+            fs,
+          );
+          L(
+            String(b * (a - b)),
+            rl + c + bu / 2,
+            rt + c / 2 + fs / 3,
+            "middle",
+            5,
+            5,
+            "#fff",
+            fs,
+          );
+          L(
+            String(b * (a - b)),
+            rl + c + bu + bu / 2,
+            rt + c / 2 + fs / 3,
+            "middle",
+            5,
+            5,
+            "#fff",
+            fs,
+          );
+          L(
+            "Area of the big square: a² = " + a * a,
+            400,
+            392,
+            "middle",
+            0,
+            0,
+            "#fff",
+            22,
+          );
+          L(
+            "Left over: a² − b² = " +
+              a * a +
+              " − " +
+              b * b +
+              " = " +
+              (a * a - b * b),
+            400,
+            392,
+            "middle",
+            1,
+            4,
+            "#fff",
+            22,
+          );
+          L(
+            "(a + b)(a − b) = " +
+              (a + b) +
+              " × " +
+              (a - b) +
+              " = " +
+              (a + b) * (a - b) +
+              "  ✓ same area",
+            400,
+            392,
+            "middle",
+            5,
+            5,
+            "#9fe3d8",
+            22,
+          );
+        }
+        function caps() {
+          return [
+            "Start with a square whose sides are a = " +
+              a +
+              ". Its area is a² = " +
+              a * a +
+              ".",
+            "Cut a b × b corner (b = " +
+              b +
+              ") out. What is left? a² − b² = " +
+              a * a +
+              " − " +
+              b * b +
+              " = " +
+              (a * a - b * b) +
+              ".",
+            "Slice the leftover L-shape into 3 rectangles: " +
+              (a - b) +
+              "×" +
+              (a - b) +
+              ", " +
+              (a - b) +
+              "×" +
+              b +
+              ", and " +
+              b +
+              "×" +
+              (a - b) +
+              ".",
+            "Slide the right strip (" +
+              b +
+              " wide, " +
+              (a - b) +
+              " tall) up by b = " +
+              b +
+              ". Everything drifts to the middle.",
+            "Rotate the bottom strip 90° so its height " +
+              b +
+              " becomes its width, then slide it to the right edge.",
+            "A rectangle! Width a + b = " +
+              (a + b) +
+              ", height a − b = " +
+              (a - b) +
+              ", area " +
+              (a + b) * (a - b) +
+              " = a² − b². Move the sliders and try new sizes!",
+          ];
+        }
+        function update(s) {
+          s = Math.max(0, Math.min(5, s));
+          step = s;
+          pcs.forEach((q) => {
+            q.g.style.transform = css(pick(q.p.t, s, [0, 0, 0]));
+            q.g.style.opacity = pick(q.p.o, s, 1);
+            q.tx.style.opacity = s >= q.p.tv[0] && s <= q.p.tv[1] ? 1 : 0;
+          });
+          items.forEach(
+            (it) => (it.e.style.opacity = s >= it.from && s <= it.to ? 1 : 0),
+          );
+          cap.textContent = s + 1 + "/6 · " + caps()[s];
+        }
+        function rebuild() {
+          build();
+          update(step);
+        }
+        const $ = (id) => document.getElementById(id),
+          sa = $("sa"),
+          sb = $("sb");
+        sa.oninput = () => {
+          a = +sa.value;
+          sb.max = a - 1;
+          if (b > a - 1) {
+            b = a - 1;
+            sb.value = b;
+          }
+          $("sav").textContent = a;
+          $("sbv").textContent = b;
+          rebuild();
+        };
+        sb.oninput = () => {
+          b = +sb.value;
+          $("sbv").textContent = b;
+          rebuild();
+        };
+        $("dprev").onclick = () => update(step - 1);
+        $("dnext").onclick = () => update(step + 1);
+        $("drep").onclick = () => update(0);
+        $("dauto").onclick = () => {
+          if (auto) {
+            clearInterval(auto);
+            auto = null;
+            $("dauto").textContent = "▶ Auto-play";
+          } else {
+            $("dauto").textContent = "⏸ Pause";
+            update(0);
+            auto = setInterval(() => update(step >= 5 ? 0 : step + 1), 2800);
+          }
+        };
+        $("gridc").onchange = (e) =>
+          svg.classList.toggle("nogrid", !e.target.checked);
+        build();
+        update(0);
+        let sv = 0;
+        (window.HO_HOOKS = window.HO_HOOKS || []).push({
+          b: () => {
+            sv = step;
+            update(5);
+          },
+          a: () => update(sv),
+        });
+      })();
+
+      (function () {
+        const svg = document.getElementById("plate"),
+          sl = document.getElementById("px");
+        if (!svg) return;
+        function el(n, a) {
+          const e = document.createElementNS(NS, n);
+          for (const k in a) e.setAttribute(k, a[k]);
+          svg.appendChild(e);
+          return e;
+        }
+        function tx(t, x, y, anc, col, sz) {
+          const e = el("text", {
+            x: x,
+            y: y,
+            "text-anchor": anc || "middle",
+            fill: col || "#ffd166",
+            "font-size": sz || 22,
+            "font-family": "Cambria,serif",
+            "font-style": "italic",
+          });
+          e.textContent = t;
+        }
+        function draw() {
+          svg.innerHTML = "";
+          const x = +sl.value,
+            u = 20,
+            S = x * u,
+            ox = 28,
+            oy = 300 - S - 40 + 10;
+          el("rect", {
+            x: ox,
+            y: oy,
+            width: S,
+            height: S,
+            rx: 3,
+            fill: "#5b7bb8",
+            stroke: "#fff",
+            "stroke-width": 2.5,
+          });
+          el("rect", {
+            x: ox + S - 3 * u,
+            y: oy,
+            width: 3 * u,
+            height: 3 * u,
+            fill: "#0e1b33",
+            stroke: "#ff8a8a",
+            "stroke-width": 3,
+            "stroke-dasharray": "8 5",
+          });
+          tx("x", ox + (S - 3 * u) / 2, oy - 10, "middle", "#ffd166", 34);
+          tx("x", ox - 12, oy + S / 2 + 10, "end", "#ffd166", 34);
+          tx("3", ox + S - 1.5 * u, oy - 10, "middle", "#ff8a8a", 34);
+          tx("3", ox + S + 12, oy + 1.5 * u + 10, "start", "#ff8a8a", 34);
+          tx(
+            "3×3",
+            ox + S - 1.5 * u,
+            oy + 1.5 * u + 8,
+            "middle",
+            "#ff8a8a",
+            22,
+          );
+          tx(
+            "x² − 9",
+            ox + S / 2 - 0.5 * u,
+            oy + S / 2 + 16,
+            "middle",
+            "#fff",
+            38,
+          );
+          tx("=", ox + S + 72, oy + S / 2 + 14, "middle", "#fff", 50);
+          const rx = ox + S + 215,
+            w = (x + 3) * u,
+            h = (x - 3) * u,
+            ry = oy + S / 2 - h / 2;
+          el("rect", {
+            x: rx,
+            y: ry,
+            width: w,
+            height: h,
+            rx: 3,
+            fill: "#1fb5a6",
+            stroke: "#fff",
+            "stroke-width": 2.5,
+          });
+          tx("x + 3", rx + w / 2, ry - 10, "middle", "#ffd166", 34);
+          tx("x − 3", rx - 12, ry + h / 2 + 10, "end", "#ffd166", 34);
+          tx(
+            "(x+3)(x−3)",
+            rx + w / 2,
+            ry + h / 2 + 12,
+            "middle",
+            "#fff",
+            Math.min(34, w / 7),
+          );
+          tx(
+            "x = " +
+              x +
+              ":  " +
+              x * x +
+              " − 9 = " +
+              (x * x - 9) +
+              "  =  " +
+              (x + 3) +
+              " × " +
+              (x - 3) +
+              " ✓",
+            360,
+            288,
+            "middle",
+            "#9fe3d8",
+            28,
+          );
+        }
+        sl.oninput = () => {
+          document.getElementById("pxv").textContent = sl.value;
+          draw();
+        };
+        draw();
+      })();
+
+      (function () {
+        const root = document.getElementById("walksvg");
+        if (!root) return;
+        const $ = (id) => document.getElementById(id);
+        const MAP = {
+          "1y": ["e1y", "b1", "e1j", "e1nb"],
+          "1n": ["e1na", "e1nb"],
+          "2y": ["e2y", "b2", "e2j", "e2nb"],
+          "2n": ["e2na", "e2nb"],
+          "3y": ["e3y"],
+          "3n": ["e3n", "done"],
+        };
+        const QT = {
+          1: "① Is there a common factor in ALL terms?",
+          2: "② Do two perfect squares remain, with a minus between?",
+          3: "③ Can any factor be factored again?",
+        };
+        const F = (t) => '<span class="foc">' + t + "</span>";
+        const CASES = [
+          {
+            e: "3x² − 27",
+            fin: "3(x + 3)(x − 3)",
+            res: "3(x + 3)(x − 3)",
+            chk: "3(x + 3)(x − 3) = 3(x² − 9) = 3x² − 27 ✓",
+            steps: [
+              {
+                q: 1,
+                a: 1,
+                s: F("3x² − 27"),
+                w: "3x² − 27 = 3(x² − 9)",
+                h: "Do 3 and 27 share a factor bigger than 1?",
+              },
+              {
+                q: 2,
+                a: 1,
+                s: "3(" + F("x² − 9") + ")",
+                w: "x² − 9 = (x + 3)(x − 3)",
+                h: "x² and 9 are both squares, and there is a minus.",
+              },
+              {
+                q: 3,
+                a: 0,
+                s: F("3(x + 3)(x − 3)"),
+                h: "3, (x + 3) and (x − 3) cannot be broken down more.",
+              },
+            ],
+          },
+          {
+            e: "7x + 21",
+            fin: "7(x + 3)",
+            res: "7(x + 3)",
+            chk: "7(x + 3) = 7x + 21 ✓",
+            steps: [
+              {
+                q: 1,
+                a: 1,
+                s: F("7x + 21"),
+                w: "7x + 21 = 7(x + 3)",
+                h: "7 goes into both 7x and 21.",
+              },
+              {
+                q: 2,
+                a: 0,
+                s: "7(" + F("x + 3") + ")",
+                h: "(x + 3) has a PLUS and 3 is not a square. DOTS needs a minus between squares.",
+              },
+              {
+                q: 3,
+                a: 0,
+                s: F("7(x + 3)"),
+                h: "7 and (x + 3) are finished.",
+              },
+            ],
+          },
+          {
+            e: "x² − 64",
+            fin: "(x + 8)(x − 8)",
+            res: "(x + 8)(x − 8)",
+            chk: "(x + 8)(x − 8) = x² − 64 ✓",
+            steps: [
+              {
+                q: 1,
+                a: 0,
+                s: F("x² − 64"),
+                h: "x² and 64 have no common factor besides 1.",
+              },
+              {
+                q: 2,
+                a: 1,
+                s: F("x² − 64"),
+                w: "x² − 64 = (x + 8)(x − 8)",
+                h: "x² = (x)² and 64 = 8², with a minus.",
+              },
+              {
+                q: 3,
+                a: 0,
+                s: F("(x + 8)(x − 8)"),
+                h: "(x + 8) and (x − 8) are finished.",
+              },
+            ],
+          },
+          {
+            e: "x² + 9",
+            fin: "x² + 9",
+            res: "cannot be factored (prime)",
+            chk: "No two binomials multiply back to x² + 9, so it stays as it is.",
+            steps: [
+              {
+                q: 1,
+                a: 0,
+                s: F("x² + 9"),
+                h: "x² and 9 share nothing but 1.",
+              },
+              {
+                q: 2,
+                a: 0,
+                s: F("x² + 9"),
+                h: "It is a SUM of squares. There is no minus, so DOTS does not apply.",
+              },
+              { q: 3, a: 0, s: F("x² + 9"), h: "Nothing to factor further." },
+            ],
+          },
+          {
+            e: "12x² − 27",
+            fin: "3(2x + 3)(2x − 3)",
+            res: "3(2x + 3)(2x − 3)",
+            chk: "3(2x + 3)(2x − 3) = 3(4x² − 9) = 12x² − 27 ✓",
+            steps: [
+              {
+                q: 1,
+                a: 1,
+                s: F("12x² − 27"),
+                w: "12x² − 27 = 3(4x² − 9)",
+                h: "3 goes into 12 and 27.",
+              },
+              {
+                q: 2,
+                a: 1,
+                s: "3(" + F("4x² − 9") + ")",
+                w: "4x² − 9 = (2x + 3)(2x − 3)",
+                h: "4x² = (2x)² and 9 = 3², with a minus.",
+              },
+              {
+                q: 3,
+                a: 0,
+                s: F("3(2x + 3)(2x − 3)"),
+                h: "Every factor is finished.",
+              },
+            ],
+          },
+          {
+            e: "18m² − 50n²",
+            fin: "2(3m + 5n)(3m − 5n)",
+            res: "2(3m + 5n)(3m − 5n)",
+            chk: "2(3m + 5n)(3m − 5n) = 2(9m² − 25n²) = 18m² − 50n² ✓",
+            steps: [
+              {
+                q: 1,
+                a: 1,
+                s: F("18m² − 50n²"),
+                w: "18m² − 50n² = 2(9m² − 25n²)",
+                h: "2 goes into 18 and 50.",
+              },
+              {
+                q: 2,
+                a: 1,
+                s: "2(" + F("9m² − 25n²") + ")",
+                w: "9m² − 25n² = (3m + 5n)(3m − 5n)",
+                h: "9m² = (3m)² and 25n² = (5n)², with a minus.",
+              },
+              {
+                q: 3,
+                a: 0,
+                s: F("2(3m + 5n)(3m − 5n)"),
+                h: "Every factor is finished.",
+              },
+            ],
+          },
+          {
+            e: "x⁴ − 16",
+            fin: "(x² + 4)(x + 2)(x − 2)",
+            res: "(x² + 4)(x + 2)(x − 2)",
+            chk: "(x² + 4)(x + 2)(x − 2) = (x² + 4)(x² − 4) = x⁴ − 16 ✓",
+            steps: [
+              {
+                q: 1,
+                a: 0,
+                s: F("x⁴ − 16"),
+                h: "x⁴ and 16 share nothing but 1.",
+              },
+              {
+                q: 2,
+                a: 1,
+                s: F("x⁴ − 16"),
+                w: "x⁴ − 16 = (x² + 4)(x² − 4)",
+                h: "x⁴ = (x²)² and 16 = 4², with a minus.",
+              },
+              {
+                q: 3,
+                a: 1,
+                loop: 1,
+                s: F("(x² + 4)(x² − 4)"),
+                h: "(x² − 4) is itself a difference of two squares!",
+              },
+              {
+                q: 1,
+                a: 0,
+                np: 1,
+                s: "(x² + 4)" + F("(x² − 4)"),
+                h: "x² and 4 share nothing but 1.",
+              },
+              {
+                q: 2,
+                a: 1,
+                s: "(x² + 4)" + F("(x² − 4)"),
+                w: "x² − 4 = (x + 2)(x − 2)",
+                h: "x² = (x)² and 4 = 2², with a minus.",
+              },
+              {
+                q: 3,
+                a: 0,
+                s: F("(x² + 4)(x + 2)(x − 2)"),
+                h: "(x² + 4) is a sum, so it stays. The rest are finished.",
+              },
+            ],
+          },
+        ];
+
+        let ci = -1,
+          si = 0,
+          tries = 0,
+          path = [],
+          locked = false;
+        const done = new Set();
+        const node = (i) => root.querySelector("#w_" + i);
+        function vis(ids) {
+          ids.forEach((i) => node(i).classList.add("vis"));
+        }
+        function reset() {
+          root
+            .querySelectorAll(".nd")
+            .forEach((n) => n.classList.remove("vis", "cur"));
+          vis(["start", "e0"]);
+        }
+        function chips() {
+          const c = $("wchips");
+          c.innerHTML = "";
+          CASES.forEach((k, i) => {
+            const b = document.createElement("button");
+            b.className =
+              "wchip" + (i === ci ? " on" : "") + (done.has(i) ? " ok" : "");
+            b.textContent = k.e;
+            b.onclick = () => load(i);
+            c.appendChild(b);
+          });
+          const r = document.createElement("button");
+          r.className = "wchip";
+          r.textContent = "🎲 random";
+          r.style.fontStyle = "normal";
+          r.onclick = () => {
+            const left = CASES.map((_, i) => i).filter(
+              (i) => !done.has(i) && i !== ci,
+            );
+            const p = left.length
+              ? left
+              : CASES.map((_, i) => i).filter((i) => i !== ci);
+            load(p[Math.floor(Math.random() * p.length)]);
+          };
+          c.appendChild(r);
+        }
+        function load(i) {
+          ci = i;
+          si = 0;
+          tries = 0;
+          path = [];
+          locked = false;
+          root.classList.add("run");
+          reset();
+          $("wwork").innerHTML = "";
+          $("wres").textContent = "";
+          $("wfb").textContent = "";
+          $("wact").style.display = "none";
+          $("wchk").dataset.shown = "";
+          chips();
+          ask();
+        }
+        function ask() {
+          const c = CASES[ci],
+            st = c.steps[si];
+          if (st.np) reset();
+          root
+            .querySelectorAll(".cur")
+            .forEach((n) => n.classList.remove("cur"));
+          node("d" + st.q).classList.add("cur");
+          $("wexpr").innerHTML = st.s;
+          $("wq").textContent = QT[st.q];
+          $("wbtns").style.display = "block";
+          $("wfb").textContent = "";
+          tries = 0;
+          locked = false;
+        }
+        function answer(v) {
+          if (ci < 0 || locked) return;
+          const c = CASES[ci],
+            st = c.steps[si];
+          if (v === !!st.a) {
+            if (!tries) add(1);
+            path.push(v ? "YES" : "NO");
+            root
+              .querySelectorAll(".cur")
+              .forEach((n) => n.classList.remove("cur"));
+            vis(["d" + st.q].concat(MAP[st.q + (v ? "y" : "n")]));
+            $("wfb").innerHTML =
+              '<span class="ok">✓ ' + (v ? "YES" : "NO") + "</span>";
+            if (st.w) {
+              const d = document.createElement("div");
+              d.textContent = "→ " + st.w;
+              $("wwork").appendChild(d);
+            }
+            si++;
+            if (si >= c.steps.length) finish();
+            else {
+              locked = true;
+              setTimeout(ask, st.loop ? 1500 : 700);
+            }
+          } else {
+            tries++;
+            shake($(v ? "wy" : "wn"));
+            $("wfb").innerHTML = "Not quite — " + st.h;
+          }
+        }
+        function finish() {
+          const c = CASES[ci];
+          done.add(ci);
+          add(1);
+          $("wbtns").style.display = "none";
+          $("wfb").textContent = "";
+          $("wexpr").innerHTML = F(c.fin);
+          $("wq").textContent = "Done!";
+          $("wres").innerHTML =
+            "✔ " +
+            c.res +
+            '<div style="font-size:.6em;color:#4a5a73;font-weight:600">Your path: ' +
+            path.join(" → ") +
+            "</div>";
+          $("wact").style.display = "block";
+          chips();
+        }
+        $("wy").onclick = () => answer(true);
+        $("wn").onclick = () => answer(false);
+        $("wchk").onclick = () => {
+          $("wfb").innerHTML = '<span class="ok">' + CASES[ci].chk + "</span>";
+        };
+        $("wnext").onclick = () => load((ci + 1) % CASES.length);
+        $("wbtns").style.display = "none";
+        $("wact").style.display = "none";
+        chips();
+        window.WALK = { CASES: CASES, load: load };
+      })();
+
+      (function () {
+        const $ = (id) => document.getElementById(id),
+          ink = $("ink"),
+          ctx = ink.getContext("2d");
+        let tool = "nav",
+          color = "#e5484d",
+          size = 5,
+          drawing = null,
+          erasing = null,
+          undo = [],
+          store = {},
+          board = false;
+        const ICON = {
+          nav: "🖱️",
+          pen: "✏️",
+          hl: "🖍️",
+          eraser: "🧽",
+          laser: "🔴",
+          spot: "🔦",
+        };
+        const MSG = {
+          nav: "🖱️ Navigate — click answers, use the sliders",
+          pen: "✏️ Pen — press N to go back to the slides",
+          hl: "🖍️ Highlighter — press N to go back",
+          eraser: "🧽 Eraser — touch a line to remove it",
+          laser: "🔴 Pointer — slides still clickable",
+          spot: "🔦 Spotlight — slides still clickable",
+        };
+        function key() {
+          if (board) return "board";
+          const i = Reveal.getIndices();
+          return i.h + "." + i.v;
+        }
+        function list() {
+          const k = key();
+          return store[k] || (store[k] = []);
+        }
+        function resize() {
+          const d = window.devicePixelRatio || 1;
+          ink.width = innerWidth * d;
+          ink.height = innerHeight * d;
+          ctx.setTransform(d, 0, 0, d, 0, 0);
+          redraw();
+        }
+        function paint(s) {
+          const p = s.pts,
+            W = innerWidth,
+            H = innerHeight;
+          if (!p.length) return;
+          ctx.save();
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+          ctx.strokeStyle = s.color;
+          ctx.lineWidth = s.w;
+          if (s.tool === "hl") {
+            ctx.globalAlpha = 0.35;
+            ctx.lineCap = "butt";
+          }
+          ctx.beginPath();
+          ctx.moveTo(p[0][0] * W, p[0][1] * H);
+          if (p.length === 1) ctx.lineTo(p[0][0] * W + 0.1, p[0][1] * H);
+          for (let i = 1; i < p.length - 1; i++)
+            ctx.quadraticCurveTo(
+              p[i][0] * W,
+              p[i][1] * H,
+              ((p[i][0] + p[i + 1][0]) / 2) * W,
+              ((p[i][1] + p[i + 1][1]) / 2) * H,
+            );
+          if (p.length > 1)
+            ctx.lineTo(p[p.length - 1][0] * W, p[p.length - 1][1] * H);
+          ctx.stroke();
+          ctx.restore();
+        }
+        function redraw() {
+          ctx.clearRect(0, 0, innerWidth, innerHeight);
+          list().forEach(paint);
+          if (drawing) paint(drawing);
+        }
+        let tt = null;
+        function toast(m) {
+          const t = $("toast");
+          t.textContent = m;
+          t.style.opacity = 1;
+          clearTimeout(tt);
+          tt = setTimeout(() => (t.style.opacity = 0), 1800);
+        }
+        function setTool(t, quiet) {
+          tool = t;
+          document
+            .querySelectorAll("#tools button")
+            .forEach((b) => b.classList.toggle("on", b.dataset.tool === t));
+          const act = t === "pen" || t === "hl" || t === "eraser";
+          ink.style.pointerEvents = act ? "auto" : "none";
+          ink.style.cursor = t === "eraser" ? "cell" : "crosshair";
+          $("laser").style.display = t === "laser" ? "block" : "none";
+          $("spot").style.display = t === "spot" ? "block" : "none";
+          const b = $("dockbtn");
+          b.textContent = ICON[t];
+          b.classList.toggle("act", t !== "nav");
+          b.style.setProperty("--ring", color);
+          if (t === "nav") dimLater();
+          else b.classList.remove("dim");
+          if (!quiet) toast(MSG[t]);
+        }
+        function isUI(t) {
+          return (
+            t.closest &&
+            t.closest(
+              "#dock,#dockbtn,#tmpill,.score,.controls,.slide-number,.progress",
+            )
+          );
+        }
+        function wantDraw(e) {
+          if (isUI(e.target)) return false;
+          if (tool === "pen" || tool === "hl" || tool === "eraser") return true;
+          return (
+            tool === "nav" &&
+            e.pointerType === "pen" &&
+            !(e.target.closest && e.target.closest("button,input,label,a"))
+          );
+        }
+        const pt = (e) => [e.clientX / innerWidth, e.clientY / innerHeight];
+        function eraseAt(e) {
+          const L = list(),
+            x = e.clientX,
+            y = e.clientY,
+            W = innerWidth,
+            H = innerHeight;
+          let hit = false;
+          for (let i = L.length - 1; i >= 0; i--) {
+            if (
+              L[i].pts.some((p) => Math.hypot(p[0] * W - x, p[1] * H - y) < 28)
+            ) {
+              erasing.push(L[i]);
+              L.splice(i, 1);
+              hit = true;
+            }
+          }
+          if (hit) redraw();
+        }
+        addEventListener(
+          "pointerdown",
+          (e) => {
+            if (!wantDraw(e)) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const t = tool === "nav" ? "pen" : tool;
+            if (t === "eraser") {
+              erasing = [];
+              eraseAt(e);
+            } else {
+              drawing = {
+                tool: t,
+                color: color,
+                w: t === "hl" ? size * 4 : size,
+                pts: [pt(e)],
+              };
+              redraw();
+            }
+          },
+          true,
+        );
+        addEventListener(
+          "pointermove",
+          (e) => {
+            if (tool === "laser") {
+              const l = $("laser");
+              l.style.left = e.clientX + "px";
+              l.style.top = e.clientY + "px";
+            }
+            if (tool === "spot") {
+              $("spot").style.background =
+                "radial-gradient(circle 190px at " +
+                e.clientX +
+                "px " +
+                e.clientY +
+                "px,rgba(0,0,0,0) 0,rgba(0,0,0,0) 96%,rgba(0,0,0,.78) 100%)";
+            }
+            if (erasing) {
+              eraseAt(e);
+            } else if (drawing) {
+              const ev = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+              (ev.length ? ev : [e]).forEach((x) => drawing.pts.push(pt(x)));
+              redraw();
+            }
+          },
+          true,
+        );
+        function end() {
+          if (drawing) {
+            list().push(drawing);
+            undo.push({ t: "add", k: key(), s: drawing });
+            drawing = null;
+            redraw();
+          }
+          if (erasing) {
+            if (erasing.length) undo.push({ t: "del", k: key(), ss: erasing });
+            erasing = null;
+          }
+        }
+        addEventListener("pointerup", end, true);
+        addEventListener("pointercancel", end, true);
+        addEventListener(
+          "touchstart",
+          (e) => {
+            const t = e.touches[0];
+            if (
+              t &&
+              t.touchType === "stylus" &&
+              tool === "nav" &&
+              !isUI(e.target) &&
+              !(e.target.closest && e.target.closest("button,input,label,a"))
+            ) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          },
+          { capture: true, passive: false },
+        );
+        function doUndo() {
+          const a = undo.pop();
+          if (!a) return toast("Nothing to undo");
+          const L = store[a.k] || (store[a.k] = []);
+          if (a.t === "add") {
+            const i = L.indexOf(a.s);
+            if (i > -1) L.splice(i, 1);
+          } else a.ss.forEach((s) => L.push(s));
+          redraw();
+        }
+        function clearAll() {
+          const L = list();
+          if (!L.length) return toast("Nothing to clear");
+          undo.push({ t: "del", k: key(), ss: L.slice() });
+          L.length = 0;
+          redraw();
+          toast("Cleared this slide — press Z to undo");
+        }
+        function toggleBoard() {
+          board = !board;
+          $("board").style.display = board ? "block" : "none";
+          $("boardbtn").classList.toggle("on", board);
+          redraw();
+          toast(
+            board
+              ? "⬜ Whiteboard — press W to return to the slide"
+              : "Back to the slide",
+          );
+        }
+        let dockOpen = false,
+          pinned = false,
+          side = "left",
+          hidden = false,
+          moved = false,
+          drag = null,
+          dt = null;
+        const lb = $("dockbtn"),
+          dock = $("dock"),
+          edge = $("edge");
+        function dimLater() {
+          clearTimeout(dt);
+          dt = setTimeout(() => {
+            if (!dockOpen && tool === "nav") lb.classList.add("dim");
+          }, 3500);
+        }
+        function snapCss() {
+          lb.style.left = side === "left" ? "18px" : "auto";
+          lb.style.right = side === "right" ? "18px" : "auto";
+          edge.style.left = side === "left" ? "0" : "auto";
+          edge.style.right = side === "right" ? "0" : "auto";
+        }
+        function placeDock() {
+          const r = lb.getBoundingClientRect();
+          dock.style.maxWidth =
+            Math.max(
+              320,
+              side === "left" ? innerWidth - r.right - 250 : r.left - 30,
+            ) + "px";
+          if (side === "left") {
+            dock.style.left = r.right + 12 + "px";
+            dock.style.right = "auto";
+          } else {
+            dock.style.right = innerWidth - r.left + 12 + "px";
+            dock.style.left = "auto";
+          }
+          dock.style.bottom = "auto";
+          dock.style.top = "0px";
+          const h = dock.offsetHeight;
+          dock.style.top =
+            Math.min(Math.max(r.bottom - h, 8), innerHeight - h - 8) + "px";
+        }
+        function showLauncher() {
+          hidden = false;
+          lb.style.display = "";
+          edge.style.display = "none";
+        }
+        function toggleDock(f) {
+          if (hidden) {
+            if (f === false) return;
+            showLauncher();
+            f = true;
+          }
+          dockOpen = f === undefined ? !dockOpen : f;
+          dock.classList.toggle("open", dockOpen);
+          if (dockOpen) {
+            placeDock();
+            lb.classList.remove("dim");
+          } else dimLater();
+        }
+        function hideLauncher() {
+          toggleDock(false);
+          hidden = true;
+          lb.style.display = "none";
+          edge.style.display = "block";
+          toast("Toolbar hidden — tap the edge tab or press T");
+        }
+        try {
+          const sv = JSON.parse(localStorage.getItem("dockpos") || "null");
+          if (sv) {
+            side = sv.side;
+            lb.style.top = Math.min(Math.max(sv.y, 8), innerHeight - 90) + "px";
+            lb.style.bottom = "auto";
+          }
+        } catch (e) {}
+        snapCss();
+        window.toggleDock = toggleDock;
+        lb.addEventListener("pointerdown", (e) => {
+          drag = { x: e.clientX, y: e.clientY };
+          moved = false;
+          lb.classList.remove("dim");
+          if (lb.setPointerCapture) lb.setPointerCapture(e.pointerId);
+        });
+        lb.addEventListener("pointermove", (e) => {
+          if (!drag) return;
+          if (
+            !moved &&
+            Math.hypot(e.clientX - drag.x, e.clientY - drag.y) > 10
+          ) {
+            moved = true;
+            toggleDock(false);
+          }
+          if (moved) {
+            lb.style.left = e.clientX - 36 + "px";
+            lb.style.right = "auto";
+            lb.style.top = e.clientY - 36 + "px";
+            lb.style.bottom = "auto";
+          }
+        });
+        lb.addEventListener("pointerup", (e) => {
+          if (!drag) return;
+          drag = null;
+          if (moved) {
+            side = e.clientX < innerWidth / 2 ? "left" : "right";
+            const y = Math.min(Math.max(e.clientY - 36, 8), innerHeight - 90);
+            lb.style.top = y + "px";
+            lb.style.bottom = "auto";
+            snapCss();
+            toast(
+              side === "left"
+                ? "Moved to the left edge"
+                : "Moved to the right edge",
+            );
+            try {
+              localStorage.setItem(
+                "dockpos",
+                JSON.stringify({ side: side, y: y }),
+              );
+            } catch (x) {}
+          } else toggleDock();
+          dimLater();
+        });
+        addEventListener(
+          "pointerdown",
+          (e) => {
+            if (
+              dockOpen &&
+              !pinned &&
+              !(e.target.closest && e.target.closest("#dock,#dockbtn,#edge"))
+            )
+              toggleDock(false);
+          },
+          true,
+        );
+        edge.onclick = () => toggleDock(true);
+        document
+          .querySelectorAll("#tools button")
+          .forEach((b) => (b.onclick = () => setTool(b.dataset.tool)));
+        function pick2() {
+          if (
+            tool === "nav" ||
+            tool === "eraser" ||
+            tool === "laser" ||
+            tool === "spot"
+          )
+            setTool("pen", true);
+        }
+        const RESOLVE = () => document.documentElement.dataset.theme === "dark";
+        document.querySelectorAll(".sw").forEach(
+          (b) =>
+            (b.onclick = () => {
+              color =
+                b.dataset.c === "ink"
+                  ? RESOLVE()
+                    ? "#ffffff"
+                    : "#111111"
+                  : b.dataset.c;
+              $("cust").value = color;
+              document
+                .querySelectorAll(".sw")
+                .forEach((x) => x.classList.toggle("on", x === b));
+              pick2();
+              setTool(tool, true);
+            }),
+        );
+        $("cust").oninput = (e) => {
+          color = e.target.value;
+          document
+            .querySelectorAll(".sw")
+            .forEach((x) => x.classList.remove("on"));
+          pick2();
+          setTool(tool, true);
+        };
+        document.querySelectorAll("#sizes button").forEach(
+          (b) =>
+            (b.onclick = () => {
+              size = +b.dataset.sz;
+              document
+                .querySelectorAll("#sizes button")
+                .forEach((x) => x.classList.toggle("on", x === b));
+              pick2();
+              setTool(tool, true);
+            }),
+        );
+        document.querySelector(".sw").classList.add("on");
+        document.querySelector("#sizes button").classList.add("on");
+        $("undo").onclick = doUndo;
+        $("clear").onclick = clearAll;
+        $("boardbtn").onclick = toggleBoard;
+        $("fsbtn").onclick = () => {
+          const d = document;
+          if (d.fullscreenElement) d.exitFullscreen();
+          else if (d.documentElement.requestFullscreen)
+            d.documentElement.requestFullscreen();
+        };
+        $("blank").onclick = () => Reveal.togglePause();
+        $("ovw").onclick = () => Reveal.toggleOverview();
+        $("dockx").onclick = () => toggleDock(false);
+        $("hidebtn").onclick = hideLauncher;
+        $("pin").onclick = () => {
+          pinned = !pinned;
+          $("pin").classList.toggle("on", pinned);
+          toast(
+            pinned
+              ? "📌 Toolbar stays open"
+              : "Toolbar closes when you use the slides",
+          );
+        };
+        let tI = null;
+        function showT(s) {
+          $("tmpill").textContent =
+            "⏱ " + Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+        }
+        document.querySelectorAll(".tgrp button").forEach(
+          (b) =>
+            (b.onclick = () => {
+              let s = +b.dataset.t;
+              const p = $("tmpill");
+              clearInterval(tI);
+              p.style.display = "block";
+              p.classList.remove("done");
+              showT(s);
+              tI = setInterval(() => {
+                s--;
+                showT(s);
+                if (s <= 0) {
+                  clearInterval(tI);
+                  p.textContent = "⏰ Time!";
+                  p.classList.add("done");
+                  beep();
+                }
+              }, 1000);
+            }),
+        );
+        $("tmpill").onclick = () => {
+          clearInterval(tI);
+          $("tmpill").style.display = "none";
+        };
+        let TM = "system";
+        try {
+          TM = localStorage.getItem("deckTheme") || "light";
+        } catch (e) {}
+        const mq = window.matchMedia
+          ? matchMedia("(prefers-color-scheme: dark)")
+          : null;
+        function applyTheme() {
+          const dark = TM === "dark" || (TM === "system" && mq && mq.matches);
+          document.documentElement.setAttribute(
+            "data-theme",
+            dark ? "dark" : "light",
+          );
+          document
+            .querySelectorAll("#themes button")
+            .forEach((b) => b.classList.toggle("on", b.dataset.th === TM));
+        }
+        function setTheme(m, quiet) {
+          TM = m;
+          try {
+            localStorage.setItem("deckTheme", m);
+          } catch (e) {}
+          applyTheme();
+          if (!quiet)
+            toast(
+              "Theme: " +
+                (m === "system"
+                  ? "System (" + document.documentElement.dataset.theme + ")"
+                  : m),
+            );
+        }
+        document
+          .querySelectorAll("#themes button")
+          .forEach((b) => (b.onclick = () => setTheme(b.dataset.th)));
+        if (mq && mq.addEventListener)
+          mq.addEventListener("change", () => {
+            if (TM === "system") applyTheme();
+          });
+        applyTheme();
+        addEventListener(
+          "keydown",
+          (e) => {
+            if (e.ctrlKey || e.metaKey || e.altKey) return;
+            const t = e.target;
+            if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA"))
+              return;
+            const k = e.key.toLowerCase(),
+              m = {
+                p: "pen",
+                h: "hl",
+                e: "eraser",
+                l: "laser",
+                s: "spot",
+                n: "nav",
+              };
+            if (m[k]) {
+              setTool(m[k]);
+              e.preventDefault();
+            } else if (k === "z") doUndo();
+            else if (k === "c") clearAll();
+            else if (k === "w") toggleBoard();
+            else if (k === "t") toggleDock();
+            else if (k === "d")
+              setTheme({ light: "dark", dark: "system", system: "light" }[TM]);
+          },
+          true,
+        );
+        addEventListener("resize", () => {
+          resize();
+          if (dockOpen) placeDock();
+        });
+        const closeD = () => {
+          if (!pinned) toggleDock(false);
+        };
+        Reveal.on("slidechanged", () => {
+          redraw();
+          closeD();
+        });
+        Reveal.on("fragmentshown", closeD);
+        Reveal.on("fragmenthidden", closeD);
+        if (Reveal.isReady && Reveal.isReady()) resize();
+        else Reveal.on("ready", resize);
+        setTool("nav", true);
+      })();
+
+      (function () {
+        const $ = (id) => document.getElementById(id),
+          bt = $("hobtn");
+        if (!bt) return;
+        const PAPER = { short: [8.5, 11], long: [8.5, 13], a4: [8.27, 11.69] },
+          LAY = {
+            9: { c: 3, r: 3, n: 1 },
+            6: { c: 2, r: 3, n: 1 },
+            4: { c: 2, r: 2, n: 1 },
+            18: { c: 3, r: 0, n: 0 },
+          };
+        let opt = {
+          paper: "short",
+          lay: "9",
+          all: true,
+          light: true,
+          teach: false,
+          head: document.title,
+          foot: "",
+        };
+        try {
+          Object.assign(
+            opt,
+            JSON.parse(localStorage.getItem("deckHandout") || "{}"),
+          );
+        } catch (e) {}
+        const esc = (t) =>
+          String(t).replace(
+            /[&<>"]/g,
+            (c) =>
+              ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+          );
+        function leaves() {
+          const root = document.querySelector("body > .reveal .slides");
+          return [...root.querySelectorAll("section")].filter(
+            (s) =>
+              !s.querySelector("section") &&
+              s.dataset.handout !== "skip" &&
+              !s.querySelector(".memory,.wpanel"),
+          );
+        }
+        function bgOf(s) {
+          const g = s.getAttribute("data-background-gradient"),
+            c = s.getAttribute("data-background-color");
+          return g || c || "#ffffff";
+        }
+        function clone(s, k) {
+          const c = s.cloneNode(true);
+          c.removeAttribute("style");
+          c.className = "";
+          c.removeAttribute("data-background-color");
+          c.removeAttribute("data-background-gradient");
+          const map = {};
+          c.querySelectorAll("[id]").forEach((e) => {
+            const n = "h" + k + "_" + e.id;
+            map[e.id] = n;
+            e.id = n;
+          });
+          if (Object.keys(map).length)
+            c.querySelectorAll("*").forEach((e) => {
+              [
+                "marker-end",
+                "marker-start",
+                "fill",
+                "stroke",
+                "style",
+                "clip-path",
+              ].forEach((a) => {
+                const v = e.getAttribute(a);
+                if (v && v.indexOf("url(#") > -1)
+                  e.setAttribute(
+                    a,
+                    v.replace(
+                      /url\(#([^)]+)\)/g,
+                      (m, id) => "url(#" + (map[id] || id) + ")",
+                    ),
+                  );
+              });
+            });
+          c.querySelectorAll("script").forEach((x) => x.remove());
+          if (opt.all)
+            c.querySelectorAll(".fragment").forEach((f) =>
+              f.classList.add("visible"),
+            );
+          return c.outerHTML;
+        }
+        function render() {
+          const hooks = window.HO_HOOKS || [];
+          hooks.forEach((h) => h.b && h.b());
+          const P = PAPER[opt.paper],
+            L = LAY[opt.lay],
+            W = Math.round(P[0] * 96),
+            H = Math.round(P[1] * 96),
+            m = 12,
+            hh = 34,
+            fh = 22,
+            gap = 10,
+            cw = W - 2 * m,
+            ch = H - 2 * m - hh - fh - 8;
+          const cellW = (cw - (L.c - 1) * gap) / L.c,
+            thH = (cellW * 9) / 16,
+            cap = 16;
+          let rows =
+            L.r || Math.max(1, Math.floor((ch + gap) / (thH + cap + gap)));
+          const cellH = (ch - (rows - 1) * gap) / rows,
+            per = L.c * rows,
+            sl = leaves(),
+            pages = Math.ceil(sl.length / per),
+            dark =
+              !opt.light && document.documentElement.dataset.theme === "dark",
+            k = cellW / 1600;
+          let out = "";
+          for (let p = 0; p < pages; p++) {
+            out +=
+              '<div class="hopage" style="width:' +
+              W +
+              "px;height:" +
+              H +
+              'px"><div class="hohead" style="left:' +
+              m +
+              "px;top:" +
+              m +
+              "px;width:" +
+              cw +
+              "px;height:" +
+              hh +
+              'px"><b style="font-size:13px">' +
+              esc(opt.head) +
+              "</b><span>Name: ____________________ &nbsp; Date: __________ &nbsp; Section: ________</span></div>";
+            for (let i = 0; i < per; i++) {
+              const idx = p * per + i;
+              if (idx >= sl.length) break;
+              const s = sl[idx],
+                col = i % L.c,
+                row = Math.floor(i / L.c),
+                x = m + col * (cellW + gap),
+                y = m + hh + 6 + row * (cellH + gap);
+              const notes = s.dataset.notes;
+              let area = "";
+              if (L.n) {
+                const nh = Math.max(0, cellH - thH - cap);
+                area =
+                  opt.teach && notes
+                    ? '<div class="honotes" style="height:' +
+                      nh +
+                      'px">' +
+                      esc(notes) +
+                      "</div>"
+                    : '<div class="holines" style="height:' + nh + 'px"></div>';
+              }
+              out +=
+                '<div class="hocell" style="left:' +
+                x +
+                "px;top:" +
+                y +
+                "px;width:" +
+                cellW +
+                'px"><div class="hothumb" style="width:' +
+                cellW +
+                "px;height:" +
+                thH +
+                'px"><div class="hobg" style="zoom:' +
+                k +
+                ";background:" +
+                bgOf(s) +
+                (dark ? ";filter:invert(.9) hue-rotate(180deg)" : "") +
+                '"></div><div class="hoframe" style="zoom:' +
+                k +
+                '"><div class="reveal ho-s' +
+                (opt.light ? " hoL" : "") +
+                '"><div class="slides">' +
+                clone(s, idx) +
+                '</div></div></div></div><div class="hocap">Slide ' +
+                (idx + 1) +
+                "</div>" +
+                area +
+                "</div>";
+            }
+            out +=
+              '<div class="hofoot" style="left:' +
+              m +
+              "px;top:" +
+              (H - m - fh) +
+              "px;width:" +
+              cw +
+              "px;height:" +
+              fh +
+              'px"><span>' +
+              esc(opt.foot) +
+              "</span><span>Page " +
+              (p + 1) +
+              " of " +
+              pages +
+              "</span></div></div>";
+          }
+          $("hoPages").innerHTML = out;
+          hooks.forEach((h) => h.a && h.a());
+          $("hoPageStyle").textContent =
+            "@page{size:" + P[0] + "in " + P[1] + "in;margin:0}";
+          fit();
+        }
+        function fit() {
+          const W = Math.round(PAPER[opt.paper][0] * 96);
+          $("hoPages").style.zoom = Math.min(1, (innerWidth - 24) / W);
+        }
+        function sync() {
+          $("hoPaper").value = opt.paper;
+          $("hoLay").value = opt.lay;
+          $("hoAll").checked = opt.all;
+          $("hoLight").checked = opt.light;
+          $("hoTeach").checked = opt.teach;
+          $("hoHead").value = opt.head;
+          $("hoFoot").value = opt.foot;
+        }
+        function save() {
+          try {
+            localStorage.setItem("deckHandout", JSON.stringify(opt));
+          } catch (e) {}
+        }
+        const RT = document.documentElement;
+        function open() {
+          sync();
+          RT.classList.add("print-pdf");
+          $("hoView").classList.add("open");
+          render();
+        }
+        function closeHo() {
+          $("hoView").classList.remove("open");
+          RT.classList.remove("print-pdf");
+        }
+        bt.onclick = () => {
+          if (window.toggleDock) toggleDock(false);
+          open();
+        };
+        $("hoClose").onclick = closeHo;
+        $("hoPrint").onclick = () => window.print();
+        [
+          ["hoPaper", "paper", "value"],
+          ["hoLay", "lay", "value"],
+          ["hoAll", "all", "checked"],
+          ["hoLight", "light", "checked"],
+          ["hoTeach", "teach", "checked"],
+          ["hoHead", "head", "value"],
+          ["hoFoot", "foot", "value"],
+        ].forEach(([id, key, prop]) => {
+          const ev = id === "hoHead" || id === "hoFoot" ? "input" : "change";
+          $(id).addEventListener(ev, () => {
+            opt[key] = $(id)[prop];
+            save();
+            render();
+          });
+        });
+        addEventListener("resize", () => {
+          if ($("hoView").classList.contains("open")) fit();
+        });
+        addEventListener(
+          "keydown",
+          (e) => {
+            if (e.key === "Escape" && $("hoView").classList.contains("open")) {
+              closeHo();
+              e.stopPropagation();
+            }
+          },
+          true,
+        );
+      })();
+    </script>
+  </body>
+</html>
+

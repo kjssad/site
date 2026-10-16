@@ -1,0 +1,340 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>PST Interactive Lesson</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#faf9f5;--fg:#1f1e1d;--mut:#6b6a66;--card:#fff;--line:#e3e0d8;--acc:#c6613f;--ok:#2e7d4f;--bad:#c0392b;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1f1e1d;--fg:#f0eee6;--mut:#a3a199;--card:#2b2a28;--line:#3d3b37;--acc:#e08a69;--ok:#6cc08a;--bad:#ef8a7c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1f1e1d;--fg:#f0eee6;--mut:#a3a199;--card:#2b2a28;--line:#3d3b37;--acc:#e08a69;--ok:#6cc08a;--bad:#ef8a7c;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:680px;margin:0 auto;padding:14px}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc);transition:width .3s}
+.top{display:flex;justify-content:space-between;color:var(--mut);font-size:14px;margin:6px 0 10px}
+h2{margin:6px 0 10px;font-size:24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0}
+.poly{font:600 28px/1.3 Georgia,"Times New Roman",serif;overflow-x:auto;padding:4px 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+button{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:10px;padding:8px 14px;cursor:pointer}
+button.pri,button.on{background:var(--acc);border-color:var(--acc);color:#fff}button:disabled{opacity:.4}
+input,textarea{font:inherit;flex:1;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg)}
+textarea{width:100%;box-sizing:border-box;min-height:100px}
+.tools{display:flex;gap:6px;flex-wrap:wrap}.tools button{padding:4px 12px}
+.fb{min-height:24px;margin-top:6px}.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad)}.mut{color:var(--mut);font-size:15px}
+.chart{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin:8px 0}.chart i{color:var(--mut);font-style:normal}
+.chip{border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:15px;color:var(--mut);background:var(--card)}
+.chip.hit{background:var(--ok);border-color:var(--ok);color:#fff}.chip.miss{text-decoration:line-through}.chip.cur{outline:2px solid var(--acc);outline-offset:2px}
+.step{padding:8px 0;border-bottom:1px solid var(--line)}.step:last-child{border:0}
+.nav{position:sticky;bottom:0;display:flex;justify-content:space-between;gap:8px;padding:10px 0;background:var(--bg)}
+#pad{margin:10px 0;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:8px 12px}#pad summary{cursor:pointer;font-weight:600}
+#cv{width:100%;height:260px;display:block;margin-top:8px;border:1px dashed var(--line);border-radius:8px;touch-action:none;background:repeating-linear-gradient(transparent,transparent 35px,var(--line) 36px)}
+.pt{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.pt button{display:flex;align-items:center;gap:6px;padding:6px 12px}.pt svg{width:20px;height:20px}
+
+</style></head><body><main>
+<div class="bar"><i id="pb"></i></div><div class="top"><span id="ttl"></span><span id="cnt"></span></div>
+<div id="view"></div>
+<details id="pad"><summary>✏️ Scratchpad (Apple Pencil or finger)</summary>
+<div class="pt"><button data-tool="pen" class="on" title="Pen"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>Pen</button>
+<button data-tool="erase" title="Eraser"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M15.5 3.5l5 5-9.5 9.5H6l-3-3z"/><path d="M9 20h12M7 12.5l5 5"/></svg>Eraser</button>
+<button id="clr" title="Clear all">Clear</button></div><canvas id="cv"></canvas></details>
+
+<div class="nav"><button id="back">◀ Back</button><button id="next" class="pri">Next ▶</button></div>
+</main>
+<script>/** polygen.js v2 — multivariable parse / classify / factor / generate for the
+ *  flowchart CMF -> DOTS -> PST -> Quadratic Trinomial -> Prime.
+ *  PG.generate('DOTS',{vars:['x','y']})  PG.generate('TRINOMIAL',{vars:['x','y'],level:'hard',withCMF:true})
+ *  PG.generateSet(5,{type:'MIXED',vars:['x','y'],seed:1})  PG.solve('6x^2y - 9xy^2')  PG.equal('(x+2y)(x-y)','x^2+xy-2y^2')
+ *  solve()/generate() return {expanded, factored, path, labels, steps:[{method,hit,target,detail}]} for steppers. */
+(function () {
+'use strict';
+const SUP='⁰¹²³⁴⁵⁶⁷⁸⁹',MI='−';
+const LABELS={CMF:'Common Monomial Factor',DOTS:'Difference of Two Squares',PST:'Perfect Square Trinomial',TRINOMIAL:'Quadratic Trinomial',PRIME:'Prime'};
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b];}return a;};
+const sq=n=>{if(n<0)return null;const r=Math.round(Math.sqrt(n));return r*r===n?r:null;};
+const sup=n=>String(n).split('').map(d=>SUP[d]).join('');
+// polynomial = array of terms {c, e:{var:exp}}
+const clean=e=>{const r={};for(const k in e)if(e[k])r[k]=e[k];return r;};
+const key=e=>Object.keys(e).filter(k=>e[k]).sort().map(k=>k+e[k]).join('');
+const T=(c,e)=>({c,e:clean(e)});
+const norm=t=>{const m=new Map();t.forEach(x=>{const e=clean(x.e),k=key(e);m.has(k)?m.get(k).c+=x.c:m.set(k,{c:x.c,e});});return [...m.values()].filter(x=>x.c);};
+const vars=p=>[...new Set(p.flatMap(t=>Object.keys(t.e)))].sort();
+const sorted=p=>{const vs=vars(p);return p.slice().sort((a,b)=>{for(const v of vs){const d=(b.e[v]||0)-(a.e[v]||0);if(d)return d;}return 0;});};
+const addE=(a,b)=>{const r={...a};for(const k in b)r[k]=(r[k]||0)+b[k];return r;};
+const scaleE=(e,n)=>{const r={};for(const k in e)r[k]=e[k]*n;return r;};
+const half=e=>{const r={};for(const k in e){if(e[k]%2)return null;r[k]=e[k]/2;}return r;};
+const pmul=(p,q)=>norm(p.flatMap(a=>q.map(b=>({c:a.c*b.c,e:addE(a.e,b.e)}))));
+const ppow=(p,n)=>{let r=[{c:1,e:{}}];while(n-->0)r=pmul(r,p);return r;};
+const negP=p=>p.map(t=>({c:-t.c,e:t.e}));
+const pkey=p=>sorted(norm(p)).map(t=>t.c+':'+key(t.e)).join('|');
+
+// ---- formatting ----
+const mono=(t,uni=true)=>Object.keys(t.e).sort().map(k=>k+(t.e[k]>1?(uni?sup(t.e[k]):'^'+t.e[k]):'')).join('');
+function fmt(p,o={}){const u=o.unicode!==false,mi=u?MI:'-';p=sorted(p);if(!p.length)return '0';
+  return p.map((t,i)=>{const m=mono(t,u),a=Math.abs(t.c),b=(a!==1||!m?a:'')+m;return i?` ${t.c<0?mi:'+'} ${b}`:(t.c<0?mi:'')+b;}).join('');}
+function fmtF(r,o={}){const u=o.unicode!==false,mi=u?MI:'-',ex=n=>n>1?(u?sup(n):'^'+n):'';
+  if(r.k===1&&r.facs.length===1&&r.facs[0].n===1)return fmt(r.facs[0].p,o);
+  let s=r.k===1&&r.facs.length?'':r.k===-1&&r.facs.length?mi:String(r.k).replace('-',mi);
+  const isM=f=>f.p.length===1&&f.p[0].c===1;
+  r.facs.filter(isM).forEach(f=>{s+=Object.keys(f.p[0].e)[0]+ex(f.n);});
+  r.facs.filter(f=>!isM(f)).forEach(f=>{s+='('+fmt(f.p,o)+')'+ex(f.n);});return s;}
+
+// ---- parser: sums and products, e.g. 3x^2y - 6xy^2, 2x(x+3y)^2, x²−4y² ----
+const pnorm=s=>String(s).replace(/[−–—]/g,'-').replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g,m=>'^'+[...m].map(c=>SUP.indexOf(c)).join(''))
+  .replace(/\*\*/g,'^').replace(/[×·*\s]/g,'').replace(/([+-])\(/g,'$11(').replace(/^\(/,'1(');
+function parseSum(s){const ts=s.match(/[+-]?[^+-]+/g);if(!ts)throw Error('Cannot parse "'+s+'"');
+  return norm(ts.map(t=>{const m=t.match(/^([+-]?)(\d*)((?:[a-zA-Z](?:\^\d+)?)*)$/);
+    if(!m||(!m[2]&&!m[3]))throw Error('Bad term "'+t+'"');
+    const e={};for(const x of m[3].matchAll(/([a-zA-Z])(?:\^(\d+))?/g))e[x[1]]=(e[x[1]]||0)+(x[2]?+x[2]:1);
+    return {c:(m[1]==='-'?-1:1)*(m[2]===''?1:+m[2]),e};}));}
+function parse(str){const s=pnorm(str);if(!s.includes('('))return parseSum(s);
+  const re=/\(([^()]*)\)(?:\^(\d+))?|([+-]?\d*(?:[a-zA-Z](?:\^\d+)?)+|[+-]?\d+)/g;let r=[{c:1,e:{}}],m;
+  while((m=re.exec(s)))r=pmul(r,m[1]!==undefined?(m[2]?ppow(parseSum(m[1]),+m[2]):parseSum(m[1])):parseSum(m[3]));
+  return r;}
+
+// ---- solver ----
+const monoFacs=e=>Object.keys(e).sort().filter(v=>e[v]).map(v=>({p:[{c:1,e:{[v]:1}}],n:e[v]}));
+function fin(k,facs){const out=[];facs.forEach(f=>{const h=out.find(g=>pkey(g.p)===pkey(f.p));if(h)h.n+=f.n;else out.push({p:f.p,n:f.n});});return {k,facs:out};}
+function mid3(p){if(p.length!==3)return null;
+  for(let i=0;i<3;i++){const m=p[i],[a,c]=p.filter((_,j)=>j!==i),U=half(a.e),W=half(c.e);
+    if(U&&W&&key(m.e)===key(addE(U,W)))return {m,a,c,U,W};}return null;}
+function core(p,ctx){
+  const o=ctx.o,steps=ctx.steps;p=sorted(norm(p));
+  if(p.length<2)return {k:p[0]?p[0].c:0,facs:p[0]?monoFacs(p[0].e):[]};
+  const top=!ctx.started;ctx.started=true;const traced=top||Math.max(...p.map(t=>Object.values(t.e).reduce((a,b)=>a+b,0)))>1;
+  let tg=fmt(p,o);
+  const tr=(m,hit,d)=>{if(traced)steps.push({method:m,hit,detail:d,target:tg});if(hit&&m!=='PRIME')ctx.path.push(m);};
+  let k=1;const facs=[];
+  // 1) CMF
+  let g=p.map(t=>t.c).reduce(gcd,0);if(p[0].c<0)g=-g;
+  const mn={};vars(p).forEach(v=>{mn[v]=Math.min(...p.map(t=>t.e[v]||0));});
+  if(Math.abs(g)>1||g<0||Object.values(mn).some(x=>x>0)){
+    const gs=(Math.abs(g)>1?(g<0?MI:'')+Math.abs(g):g<0?MI:'')+mono({e:clean(mn)},o.unicode!==false);
+    tr('CMF',true,'GCF = '+(gs||'1'));k*=g;facs.push(...monoFacs(mn));
+    p=sorted(p.map(t=>{const e={...t.e};for(const v in mn)e[v]=(e[v]||0)-mn[v];return {c:t.c/g,e:clean(e)};}));tg=fmt(p,o);
+  }else tr('CMF',false,'The only common factor is 1.');
+  // 2) DOTS
+  if(p.length===2){
+    const pos=p.find(t=>t.c>0),neg=p.find(t=>t.c<0);
+    const A=pos&&sq(pos.c),B=neg&&sq(-neg.c),U=pos&&half(pos.e),W=neg&&half(neg.e);
+    if(A&&B&&U&&W){
+      tr('DOTS',true,`a = ${fmt([T(A,U)],o)}, b = ${fmt([T(B,W)],o)};  a² − b² = (a + b)(a − b)`);
+      for(const f of [[T(A,U),T(B,W)],[T(A,U),T(-B,W)]]){const s=core(f,ctx);k*=s.k;facs.push(...s.facs);}
+      return fin(k,facs);
+    }
+    tr('DOTS',false,'The two terms are not both perfect squares with opposite signs.');
+  }else tr('DOTS',false,'A difference of squares has exactly 2 terms.');
+  // 3) PST   4) Trinomial
+  const x=mid3(p);
+  if(x){
+    const A=sq(x.a.c),C=sq(x.c.c);
+    if(A&&C&&Math.abs(x.m.c)===2*A*C){const s=Math.sign(x.m.c);
+      tr('PST',true,`a = ${fmt([T(A,x.U)],o)}, b = ${fmt([T(C,x.W)],o)};  middle = 2ab  →  (a ${s<0?'−':'+'} b)²`);
+      facs.push({p:[T(A,x.U),T(s*C,x.W)],n:2});return fin(k,facs);}
+  }
+  tr('PST',false,p.length!==3?'A perfect square trinomial has exactly 3 terms.':'First and last terms are not both squares, or the middle term is not 2ab.');
+  if(x){
+    const a=x.a.c,b=x.m.c,c=x.c.c,ac=a*c;let mm=null;
+    for(let t=-Math.abs(ac);t<=Math.abs(ac);t++)if(t&&ac%t===0&&t+ac/t===b){mm=t;break;}
+    if(mm!==null){
+      const s=sq(b*b-4*a*c),mk=num=>{const q=gcd(num,2*a);return [T(2*a/q,x.U),T(-num/q,x.W)];};
+      const fs=[mk(-b+s),mk(-b-s)];
+      tr('TRINOMIAL',true,`ac = ${ac};  find m, n with m + n = ${b} and m·n = ${ac}  →  m = ${mm}, n = ${ac/mm}`);
+      fs.forEach((f,i)=>{if(sorted(f)[0].c<0){fs[i]=negP(f);k*=-1;}});
+            const prod=pmul(fs[0],fs[1]);const ratio=prod.find(t=>key(t.e)===key(x.a.e)).c;k*=a/ratio;
+      facs.push({p:fs[0],n:1},{p:fs[1],n:1});return fin(k,facs);
+    }
+    tr('TRINOMIAL',false,'No integers m, n with product ac and sum b.');
+  }else tr('TRINOMIAL',false,'Not a trinomial of the form au² + buw + cw².');
+  // 5) prime
+  tr('PRIME',true,'No more methods apply — this polynomial is prime.');
+  facs.push({p,n:1});return fin(k,facs);
+}
+function solve(input,o={}){
+  const p=typeof input==='string'?parse(input):norm(input);const ctx={steps:[],path:[],o};
+  const r=core(p,ctx);const path=ctx.path.filter((x,i,a)=>x!==a[i-1]);if(!path.length)path.push('PRIME');
+  return {poly:p,expanded:fmt(p,o),factored:path[0]==='PRIME'?'Prime':fmtF(r,o),path,labels:path.map(x=>LABELS[x]),steps:ctx.steps};
+}
+const equal=(a,b)=>pkey(parse(a))===pkey(parse(b));
+
+// ---- generator ----
+function rngFrom(seed){if(seed==null)return Math.random;let a=seed>>>0;
+  return ()=>{a=(a+0x6D2B79F5)|0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return ((t^(t>>>14))>>>0)/4294967296;};}
+function generate(type='MIXED',opts={}){
+  const R=opts.rng||rngFrom(opts.seed),vs=opts.vars&&opts.vars.length?opts.vars:['x'],hard=opts.level==='hard';
+  const ri=(a,b)=>a+Math.floor(R()*(b-a+1)),pick=a=>a[Math.floor(R()*a.length)],sg=()=>R()<.5?-1:1;
+  if(type==='MIXED')type=pick(opts.types||['CMF','DOTS','PST','TRINOMIAL']);
+  const pool=[];(function rec(i,e,d){if(i===vs.length){pool.push(e);return;}for(let n=0;n<=2&&d+n<=(hard?3:2);n++)rec(i+1,{...e,[vs[i]]:n},d+n);})(0,{},0);
+  const rndMono=mx=>{const e={};vs.forEach(v=>{e[v]=ri(0,mx);});return clean(e);};
+  for(let tries=0;tries<3000;tries++){
+    const i=ri(0,vs.length-1),j=vs.length>1?(i+1+ri(0,vs.length-2))%vs.length:i;
+    const h=type==='DOTS'&&hard&&vs.length===1?pick([1,2]):1;
+    const U={[vs[i]]:h},W=vs.length>1?{[vs[j]]:1}:{};
+    const P=(a,b)=>[T(a,U),T(b,W)];
+    let c,expect;
+    if(type==='CMF'){
+      const mons=[];while(mons.length<Math.min(pick([2,3]),pool.length)){const m=pick(pool);if(!mons.includes(m))mons.push(m);}
+      let inner=norm(mons.map(m=>T(ri(1,9)*sg(),m)));if(!inner.length)continue;if(sorted(inner)[0].c<0)inner=negP(inner);
+      const kd=opts.gcf||'any',mo=kd==='num'?{}:rndMono(hard?3:2);if((kd==='var'||kd==='both')&&!Object.keys(mo).length)continue;
+      c=pmul(inner,[T(kd==='var'?1:ri(2,9),mo)]);expect=['CMF'];
+    }else if(type==='DOTS'){const A=ri(1,10),B=ri(1,12);c=[T(A*A,scaleE(U,2)),T(-B*B,scaleE(W,2))];expect=['DOTS'];}
+    else if(type==='PST'){const A=ri(1,hard?6:3),C=ri(1,9);c=[T(A*A,scaleE(U,2)),T(2*sg()*A*C,addE(U,W)),T(C*C,scaleE(W,2))];expect=['PST'];}
+    else if(type==='TRINOMIAL'){const p=hard?ri(1,4):1,r=hard?ri(1,4):1;if(hard&&p*r===1)continue;
+      c=pmul(P(p,ri(1,9)*sg()),P(r,ri(1,9)*sg()));expect=['TRINOMIAL'];}
+    else if(type==='PRIME'){c=[T(ri(1,hard?4:1),scaleE(U,2)),T(ri(1,9)*sg(),addE(U,W)),T(ri(1,9)*sg(),scaleE(W,2))];expect=['PRIME'];}
+    else throw Error('Unknown type '+type);
+    c=norm(c);if(!c.length)continue;if(sorted(c)[0].c<0)c=negP(c);
+    if(opts.withCMF&&type!=='CMF'&&type!=='PRIME'){c=pmul(c,[T(ri(2,6),rndMono(2))]);expect=['CMF',...expect];}
+    const s=solve(c,opts);if(s.path.join()!==expect.join())continue;
+    return {type,vars:vs,level:hard?'hard':'easy',...s};
+  }
+  throw Error('Could not generate '+type);
+}
+function generateSet(n,opts={}){const rng=opts.rng||rngFrom(opts.seed),seen=new Set(),out=[];
+  for(let g=0;out.length<n&&g<n*60;g++){const p=generate(opts.type||'MIXED',{...opts,rng,seed:undefined});if(!seen.has(p.expanded)){seen.add(p.expanded);out.push(p);}}return out;}
+
+const API={parse,solve,equal,generate,generateSet,fmt,LABELS};
+if(typeof module!=='undefined'&&module.exports)module.exports=API;else globalThis.PolyGen=API;
+})();
+</script>
+<script>
+const PG=PolyGen,$=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a),D=s=>PG.fmt(PG.parse(s));
+const sh=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+const NAMES=['Warm-up','Review','How to spot PST','Identify PST','Flowchart','Level 1','Level 2','Level 3','Think','Exit check','Summary'];
+const LV=[{vars:['x'],level:'easy'},{vars:['x','y'],level:'easy'},{vars:['x','y'],level:'hard',withCMF:true}];
+const RATIO={pst:2,both:2,not:2},TAG={pst:'PST only',both:'CMF + PST',not:'not a PST'};
+let S,P;
+function init(){S={i:0,pr:[0,0,0],lv:[],rev:null,id:null,fc:null,ex:null,exr:[false,false,false],hots:'',reveal:false,reveal2:false};P={};}
+const prim=p=>p.map(t=>Math.abs(t.c)).reduce(gcd,0)<=1&&![...new Set(p.flatMap(t=>Object.keys(t.e)))].some(v=>Math.min(...p.map(t=>t.e[v]||0))>0);
+const kf=e=>Object.keys(e).filter(k=>e[k]).sort().map(k=>k+e[k]).join('');
+const hf=e=>{const h={};for(const k in e)h[k]=e[k]/2;return h;};
+const isSq=t=>{const r=Math.round(Math.sqrt(Math.abs(t.c)));return t.c>0&&r*r===t.c&&Object.values(t.e).every(x=>x%2===0);};
+const srt=p=>{const vs=[...new Set(p.flatMap(t=>Object.keys(t.e)))].sort();return p.slice().sort((a,b)=>{for(const v of vs){const d=(b.e[v]||0)-(a.e[v]||0);if(d)return d;}return 0;});};
+function aP(p){const s=srt(p),n=s.length;if(n!==3)return{n,yes:false};const[f,m,l]=s,sf=isSq(f),sl=isSq(l);let mid=false,A,C;
+  if(sf&&sl){A=Math.round(Math.sqrt(f.c));C=Math.round(Math.sqrt(l.c));const e={},U=hf(f.e),W=hf(l.e);for(const k in U)e[k]=(e[k]||0)+U[k];for(const k in W)e[k]=(e[k]||0)+W[k];mid=Math.abs(m.c)===2*A*C&&kf(e)===kf(m.e);}
+  return{n,f,m,l,sf,sl,mid,A,C,yes:sf&&sl&&mid};}
+function pwhy(p){const a=aP(p);if(a.n!==3)return `${a.n} term${a.n>1?'s':''} ✗ (a PST has exactly 3). So it is NOT a perfect square trinomial.`;
+  const sq=(t,nm)=>{const r=Math.round(Math.sqrt(Math.abs(t.c))),s=PG.fmt([t]),bad=Object.entries(t.e).find(([v,e])=>e%2);
+    if(t.c<0)return `${nm} term ${s}: negative, so not a perfect square ✗`;if(r*r!==t.c)return `${nm} term ${s}: ${t.c} is not a perfect square ✗`;
+    if(bad)return `${nm} term ${s}: the exponent of ${bad[0]} is ${bad[1]} (odd) ✗`;return `${nm} term ${s} = (${PG.fmt([{c:r,e:hf(t.e)}])})² ✓`;};
+  const parts=['3 terms ✓',sq(a.f,'first'),sq(a.l,'last')];let end=' So it is NOT a PST.';
+  if(a.sf&&a.sl){const x=PG.fmt([{c:a.A,e:hf(a.f.e)}]),y=PG.fmt([{c:a.C,e:hf(a.l.e)}]),two=PG.fmt(PG.parse(`2(${x})(${y})`));
+    parts.push(`2ab = 2·${x}·${y} = ${two}; the middle term is ${PG.fmt([a.m])} ${a.mid?'✓ matches':'✗ does not match'}`);
+    if(a.yes)end=` So it IS a PST: (${x} ${a.m.c<0?'−':'+'} ${y})².`;}
+  return parts.join(' · ')+'.'+end;}
+const pHelp=(p,a)=>a<2?'Not quite. Check three things: ① exactly 3 terms? ② first and last terms perfect squares (and positive)? ③ is the middle term 2 × (square root of first) × (square root of last)?':pwhy(p);
+function checkPST(v,p){v=v.trim().replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g,m=>'^'+[...m].map(c=>'⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(c)).join('')).replace(/[−–—]/g,'-');if(!v)return{ok:false,msg:'Type your answer first.'};
+  try{if(!PG.equal(v,p.expanded))return{ok:false,msg:'Not quite. Multiply your answer out. Do you get '+p.expanded+'? Remember (a ± b)² = a² ± 2ab + b².'};}
+  catch(e){return{ok:false,msg:'I could not read that. Use ^ for powers, e.g. (x + 3)^2.'};}
+  const gs=v.match(/\([^()]*\)(?:\^\d+)?/g)||[],sq=gs.filter(g=>/\^2$/.test(g)),pl=gs.filter(g=>!/\^/.test(g)),bin=g=>PG.parse(g.replace(/\^\d+$/,'').slice(1,-1));
+  if(!(sq.length===1||(pl.length===2&&PG.fmt(bin(pl[0]))===PG.fmt(bin(pl[1])))))return{ok:false,msg:'Right value! Now write it as a squared binomial: (a ± b)².'};
+  if(!prim(bin(sq[0]||pl[0])))return{ok:false,msg:'Almost! The binomial still has a common factor. Take it out front.'};
+  return{ok:true,msg:'Correct! Fully factored.'};}
+const box=(id,ph)=>`<div class="row"><input id="in-${id}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${ph}"><button class="pri" data-act="chk" data-id="${id}">Check</button></div>
+<div class="tools">${['x','y','^','(',')','+','−'].map(c=>`<button data-act="ins" data-id="${id}" data-c="${c}">${c}</button>`).join('')}</div><div class="fb" id="fb-${id}"></div>`;
+
+function intro(){return `<h2>Perfect Square Trinomial</h2><div class="card"><p>A square has side <b>x + 3</b>. Split its area into four pieces. What is the total area?</p>
+<svg viewBox="0 0 160 120" width="100%" style="max-width:260px" role="img" aria-label="Square of side x+3 split into four parts"><rect x="10" y="10" width="100" height="100" fill="var(--acc)" opacity=".25" stroke="var(--acc)" stroke-width="2"/><path d="M70 10v100M10 70h100" stroke="var(--acc)" stroke-width="2"/>
+<g font-size="14" fill="currentColor" text-anchor="middle"><text x="40" y="45">x²</text><text x="90" y="45">3x</text><text x="40" y="95">3x</text><text x="90" y="95">9</text></g></svg>
+<div><button data-act="reveal">Add the pieces</button></div><p id="rv" class="poly" style="color:var(--acc)">${S.reveal?'(x + 3)² = x² + 6x + 9':''}</p></div>
+<div class="card"><b>Goal:</b> recognize a perfect square trinomial and factor it as <b>(a + b)²</b> or <b>(a − b)²</b>.</div>`;}
+
+function newRev(){const a=ri(2,9),b=ri(2,9),m=ri(1,3),n=ri(3,12);
+  return [{q:`√${n*n}`,ans:String(n)},{q:`√(${D(`${a*a}x^${2*m}`)})`,ans:`${a}x^${m}`},{q:`2 · ${a}x · ${b}`,ans:`${2*a*b}x`}];}
+function review(){S.rev=S.rev||newRev();
+  return `<h2>Quick review</h2><div class="mut">Square roots, and "twice the product" (the 2ab part).</div>`+S.rev.map((r,k)=>{P['r'+k]={check:v=>{let ok=false;try{ok=PG.equal(v,r.ans);}catch(e){}return ok?{ok,msg:'Yes!'}:{ok,msg:'Try again.'};}};
+    return `<div class="card"><b>${k+1}.</b> ${esc(r.q)}${box('r'+k,'your answer')}</div>`;}).join('');}
+
+function howto(){const ex=[['✓','x² + 6x + 9','a = x, b = 3, 2ab = 6x ✓ → (x + 3)²'],['✓','4x² − 20x + 25','a = 2x, b = 5, 2ab = 20x ✓; the middle is − → (2x − 5)²'],['✓','x² + 2xy + y²','a = x, b = y, 2ab = 2xy ✓ → (x + y)²'],['✗','x² + 5x + 9','2ab would be 6x, but the middle is 5x.'],['✗','x² − 4x − 4','The last term is negative, so it is not a perfect square.'],['✗','x² + 9','Only 2 terms.']];
+  return `<h2>How to spot a PST</h2><div class="card"><p>A <b>perfect square trinomial</b> must pass all 3 checks:</p><ol><li><b>Three terms.</b></li><li>The <b>first and last</b> terms are perfect squares (positive).</li><li>The <b>middle</b> term is <b>2ab</b>: twice the product of the square roots. Its sign tells you <b>(a + b)²</b> or <b>(a − b)²</b>.</li></ol></div>
+<div class="card"><b>Try the checks on these</b>${ex.map(e=>`<div class="step"><b class="${e[0]==='✓'?'ok':'bad'}">${e[0]}</b> <span class="poly" style="font-size:22px">${e[1]}</span><div class="mut">${e[2]}</div></div>`).join('')}</div>
+<div class="card">Then: <b>a² ± 2ab + b² = (a ± b)²</b>. <div class="mut">Tip: look for a GCF first. 2x² + 12x + 18 becomes 2(x² + 6x + 9) = 2(x + 3)².</div></div>`;}
+
+function newId(){const A=ri(1,5),B=ri(2,9),k=[5,6,7,8,10,11,12][ri(0,6)],a=ri(2,4),b=ri(5,8),s=Math.random()<.5?'+':'-';
+  const yes=sh([`${A*A}x^2${s}${2*A*B}x+${B*B}`,`x^2${s}${2*B}x+${B*B}`,`${A*A}x^2+${2*A*B}xy+${B*B}y^2`]).slice(0,2),
+  no=sh([`${A*A}x^2+${2*A*B+ri(1,3)}x+${B*B}`,`x^2+${2*B}x+${k}`,`x^2-${2*B}x-${B*B}`,`x^2+${a+b}x+${a*b}`,`${A*A}x^2+${B*B}`]).slice(0,3);
+  return sh([...yes,...no]).map(s=>({p:PG.parse(s),att:0,done:false,msg:''}));}
+function ident(){S.id=S.id||newId();const n=S.id.filter(x=>x.done).length;
+  return `<h2>Identify the PST</h2><div class="mut">Is each one a perfect square trinomial? Answer all 5 correctly to continue. Solved: <b>${n}/5</b></div>`+S.id.map((it,k)=>`<div class="card"><span class="poly">${esc(PG.fmt(it.p))}</span><div class="row">${it.done?'<span class="ok">✓ Done</span>':`<button class="pri" data-act="idyn" data-k="${k}" data-v="y">PST</button><button data-act="idyn" data-k="${k}" data-v="n">Not PST</button>`}</div><div class="fb">${it.msg}</div></div>`).join('');}
+
+function mkProb(type){const p=type==='pst'?PG.generate('PST',{level:'easy'}):type==='both'?PG.generate('PST',{level:'easy',withCMF:true}):PG.generate(Math.random()<.5?'TRINOMIAL':'PRIME',{level:'easy'});
+  const s0=p.steps[0],cm=s0.hit,gcf=cm?s0.detail.replace('GCF = ',''):'1';let inner=p.poly;
+  if(cm){const g=PG.parse(gcf)[0];inner=p.poly.map(t=>{const e={...t.e};for(const v in g.e)e[v]=(e[v]||0)-g.e[v];return{c:t.c/g.c,e:Object.fromEntries(Object.entries(e).filter(x=>x[1]))};});}
+  return{type,p,cm,gcf,inner,innerStr:PG.fmt(inner),pst:aP(inner).yes};}
+const newFC=()=>({q:sh([...Array(RATIO.pst).fill('pst'),...Array(RATIO.both).fill('both'),...Array(RATIO.not).fill('not')]).map(mkProb),idx:0,stage:'cmf',att:0,hist:[],done:0,msg:''});
+const csOf=Q=>Q.p.poly.map(t=>Math.abs(t.c));
+const cmfHelp=(Q,a)=>a<2?'Not quite. Find the GCF of the coefficients ('+csOf(Q).join(', ')+') and the smallest power of each variable that is in every term. Is it anything other than 1?':'Work it out: the coefficients '+csOf(Q).join(', ')+' have GCF '+csOf(Q).reduce(gcd)+'. '+Q.p.steps[0].detail+' So the answer is '+(Q.cm?'Yes':'No')+'.';
+const gcfHelp=(Q,a)=>a<2?'Not quite. The GCF has a number part (the biggest number dividing every coefficient) and a variable part (each variable in every term, with its smallest power).':'Work it out: the coefficients '+csOf(Q).join(', ')+' have GCF '+csOf(Q).reduce(gcd)+'. '+Q.p.steps[0].detail+'. Type it in.';
+const dotsHelp=a=>a<2?'Not quite. A difference of two squares has exactly 2 terms. How many terms does this have?':'This has 3 terms, but a DOTS has exactly 2. So the answer is No.';
+const facHelp=(Q,a)=>a<2?'Take the square root of the first and last terms to get a and b. The middle term’s sign gives (a + b)² or (a − b)².':'Here are a and b: '+PG.solve(Q.innerStr).steps.find(s=>s.method==='PST').detail+'. Now type the squared binomial.';
+function flow(){const F=S.fc=S.fc||newFC(),Q=F.q[F.idx],p=Q.p,N=F.q.length,st=F.stage,c=(t,k)=>`<span class="chip ${k}">${t}</span>`,after=(...a)=>a.includes(st);
+  const chart=[c('GCF?',st==='cmf'?'cur':'hit'),c('Factor out GCF',st==='cmf'?'':(Q.cm?(st==='gcf'?'hit cur':'hit'):'miss')),c('DOTS?',st==='dots'?'cur':(after('pst','fac','done')?'hit':'')),c('PST?',st==='pst'?'cur':(after('fac','done')?'hit':'')),c('(a ± b)²',st==='fac'?'cur':(st==='done'?(Q.pst?'hit':'miss'):''))].join('<i>→</i>');
+  const yn=`<div class="row"><button class="pri" data-act="fcyn" data-v="y">Yes</button><button data-act="fcyn" data-v="n">No</button></div>`,of=Q.cm?esc(Q.innerStr)+' (what is left)':'the polynomial';
+  let cur='';
+  if(st==='cmf')cur=`<b>Is there a common monomial factor (a GCF other than 1)?</b>`+yn;
+  else if(st==='gcf')cur=`<b>What is the GCF? Type it.</b>`+box('fc','e.g. 2x');
+  else if(st==='dots')cur=`<b>Is ${of} a difference of two squares?</b>`+yn;
+  else if(st==='pst')cur=`<b>Is ${of} a perfect square trinomial?</b>`+yn;
+  else if(st==='fac')cur=`<b>Write ${esc(Q.innerStr)} as (a ± b)².</b>`+box('fc','e.g. (x + 3)^2');
+  else cur=Q.pst?`<b>Final answer</b><div class="poly">${esc(p.factored)}</div><div class="mut">Check: multiplying gives ${esc(PG.fmt(PG.parse(p.factored)))} ✓. This one was <b>${TAG[Q.type]}</b>.</div>`:`<b>Not a PST.</b><div class="mut">It needs another method (trinomials, next lesson). This one was <b>${TAG[Q.type]}</b>.</div>`;
+  if(st==='done')cur+=`<div class="row">${F.idx<N-1?'<button class="pri" data-act="fcnext">Next problem ▶</button>':'<b class="ok">All done! Tap Next ▶ below.</b>'}</div>`;
+  if(st==='gcf')P.fc={check:v=>{let ok=false;try{ok=PG.equal(v,Q.gcf);}catch(e){}if(ok)return{ok,msg:'Yes!'};F.att++;return{ok,msg:gcfHelp(Q,F.att)};},onok:()=>{F.hist.push(`✓ GCF = ${Q.gcf}. Divide every term by it: ${Q.innerStr}`);F.stage='dots';F.att=0;render(true);}};
+  if(st==='fac')P.fc={check:v=>{const r=checkPST(v,{expanded:Q.innerStr});if(r.ok)return r;F.att++;return{ok:false,msg:r.msg+' '+facHelp(Q,F.att)};},onok:()=>{F.hist.push(`✓ ${Q.innerStr} = ${PG.solve(Q.innerStr).factored}`);F.att=0;F.msg='';F.done++;F.stage='done';render(true);}};
+  return `<h2>Walk the flowchart</h2><div class="mut">Problem ${F.idx+1} of ${N}. Mix: ${RATIO.pst} PST only · ${RATIO.both} CMF + PST · ${RATIO.not} not a PST. You must answer correctly to move on.</div>
+<div class="card"><div class="poly">${esc(p.expanded)}</div><div class="chart">${c('Start','')}<i>→</i>${chart}</div>${F.hist.map(h=>`<div class="step ok" style="font-weight:400">${esc(h)}</div>`).join('')}
+<div class="step">${cur}<div class="fb bad">${esc(F.msg)}</div></div></div>`;}
+const canNext=()=>S.i===3?!!S.id&&S.id.every(x=>x.done):S.i===4?!!S.fc&&S.fc.done>=S.fc.q.length:true;
+
+function level(k){const L=S.lv[k]=S.lv[k]||{p:PG.generate('PST',LV[k]),hint:0,done:false};P['L'+k]={check:v=>checkPST(v,L.p),onok:()=>{if(!L.done){L.done=true;S.pr[k]++;$('sc').textContent=S.pr[k];}}};
+  return `<h2>Level ${k+1}</h2><div class="mut">${['One variable','Two variables','Harder: look for a common factor first'][k]}. Factor completely.</div>
+<div class="card"><div class="poly">${esc(L.p.expanded)}</div>${box('L'+k,'e.g. (x + 3)^2')}<div class="row"><button data-act="hint" data-k="${k}">Hint</button><button data-act="show" data-k="${k}">Show answer</button><button data-act="again" data-k="${k}">Try another ↻</button><span class="mut">Correct: <b id="sc">${S.pr[k]}</b></span></div><div class="mut" id="hint"></div></div>`;}
+function hots(){return `<h2>Think about it</h2><div class="card"><p>Lee says <b>x² + 10x + 16</b> is a perfect square trinomial because 16 = 4². Is Lee right? Check the middle term and explain.</p>
+<textarea id="hots" placeholder="Write your explanation...">${esc(S.hots)}</textarea><div class="row"><button data-act="sample" id="sb" ${S.hots.length<15?'disabled':''}>See a sample answer</button></div>
+<div id="sa" class="card" ${S.reveal2?'':'hidden'}>No. Here a = x and b = 4, so 2ab = <b>8x</b>, but the middle term is <b>10x</b>. A PST needs the middle term to equal 2ab. (It factors as (x + 2)(x + 8), which is the next lesson.)</div></div>`;}
+function exit(){S.ex=S.ex||LV.map(o=>PG.generate('PST',o));
+  return `<h2>Exit check</h2><div class="mut">3 problems. Factor completely.</div>`+S.ex.map((p,k)=>{P['e'+k]={check:v=>checkPST(v,p),onok:()=>{S.exr[k]=true;}};
+    return `<div class="card"><b>${k+1}.</b> <span class="poly">${esc(p.expanded)}</span>${box('e'+k,'your answer')}</div>`;}).join('');}
+function summary(){const pr=S.pr.reduce((a,b)=>a+b,0),ex=S.exr.filter(Boolean).length;
+  return `<h2>Summary</h2><div class="card"><div class="poly">Exit check: ${ex}/3</div><p>Practice problems solved: <b>${pr}</b></p>
+<p><b>Remember:</b></p><ol><li>Look for a GCF first.</li><li>Three terms, first and last perfect squares, middle = 2ab? Then it is a PST.</li><li>a² ± 2ab + b² = (a ± b)². The middle term’s sign is the sign inside.</li><li>Check by squaring the binomial.</li></ol><button data-act="restart">Start over ↻</button></div>`;}
+
+const SC=[intro,review,howto,ident,flow,()=>level(0),()=>level(1),()=>level(2),hots,exit,summary];
+function render(keep){P={};$('view').innerHTML=SC[S.i]();$('pb').style.width=((S.i+1)/SC.length*100)+'%';$('ttl').textContent=NAMES[S.i];$('cnt').textContent=(S.i+1)+' / '+SC.length;
+  $('back').disabled=S.i==0;$('next').style.visibility=S.i==SC.length-1?'hidden':'visible';if(!keep)scrollTo(0,0);$('next').disabled=!canNext();}
+const A={
+ reveal(){S.reveal=true;$('rv').textContent='(x + 3)² = x² + 6x + 9';},
+ ins(d){const el=$('in-'+d.id);el.setRangeText(d.c,el.selectionStart,el.selectionEnd,'end');el.focus();},
+ chk(d){const o=P[d.id],r=o.check($('in-'+d.id).value);$('fb-'+d.id).innerHTML=`<span class="${r.ok?'ok':'bad'}">${r.ok?'✓ ':''}${esc(r.msg)}</span>`;if(r.ok&&o.onok)o.onok();},
+ idyn(d){const it=S.id[d.k];if(it.done)return;if((d.v==='y')===aP(it.p).yes){it.done=true;it.msg='<span class="ok">✓ Correct.</span> '+esc(pwhy(it.p));}else{it.att++;it.msg='<span class="bad">'+esc(pHelp(it.p,it.att))+'</span>';}render(true);},
+ fcyn(d){const F=S.fc,Q=F.q[F.idx],yes=d.v==='y',ok=(w)=>{F.att=0;F.msg='';};
+  if(F.stage==='cmf'){if(yes===Q.cm){F.hist.push('✓ GCF check: '+(Q.cm?'Yes. '+Q.p.steps[0].detail:'No. The only common factor is 1.'));ok();F.stage=Q.cm?'gcf':'dots';}else{F.att++;F.msg=cmfHelp(Q,F.att);}}
+  else if(F.stage==='dots'){if(!yes){F.hist.push('✓ DOTS check: No. It has 3 terms, not 2.');ok();F.stage='pst';}else{F.att++;F.msg=dotsHelp(F.att);}}
+  else if(F.stage==='pst'){if(yes===Q.pst){F.hist.push('✓ PST check: '+(Q.pst?'Yes. ':'No. ')+pwhy(Q.inner));ok();if(Q.pst)F.stage='fac';else{F.stage='done';F.done++;}}else{F.att++;F.msg=pHelp(Q.inner,F.att);}}
+  render(true);},
+ fcnext(){const F=S.fc;F.idx++;F.stage='cmf';F.att=0;F.hist=[];F.msg='';render();},
+ hint(d){const L=S.lv[d.k];L.hint++;const s=L.p.steps.find(s=>s.method==='PST');$('hint').textContent=L.hint<2?'Take the square root of the first and last terms for a and b. Check that the middle term is 2ab. Look for a GCF first.':'Hint: '+s.detail;},
+ show(d){$('hint').innerHTML='Answer: <b>'+esc(S.lv[d.k].p.factored)+'</b>';},
+ again(d){S.lv[d.k]=null;render();},
+ sample(){S.reveal2=true;$('sa').hidden=false;},
+ restart(){init();render();}
+};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b&&A[b.dataset.act])A[b.dataset.act](b.dataset);});
+document.addEventListener('input',e=>{if(e.target.id==='hots'){S.hots=e.target.value;$('sb').disabled=S.hots.length<15;}});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id&&e.target.id.startsWith('in-'))A.chk({id:e.target.id.slice(3)});});
+$('back').onclick=()=>{S.i--;render();};$('next').onclick=()=>{S.i++;render();};
+init();render();
+(function(){const cv=$('cv'),cx=cv.getContext('2d');let mode='pen',penSeen=false,down=false,last=null;
+function fit(){const r=cv.getBoundingClientRect();if(!r.width)return;const d=devicePixelRatio||1,w=Math.round(r.width*d),h=Math.round(r.height*d);if(cv.width===w&&cv.height===h)return;
+ const t=document.createElement('canvas');t.width=cv.width;t.height=cv.height;t.getContext('2d').drawImage(cv,0,0);cv.width=w;cv.height=h;cx.drawImage(t,0,0);}
+const pos=e=>{const r=cv.getBoundingClientRect(),d=cv.width/r.width;return[(e.clientX-r.left)*d,(e.clientY-r.top)*d,d];};
+function seg(a,b,e){const er=mode==='erase'||(e.pointerType==='pen'&&(e.buttons&32)),d=b[2];cx.lineCap=cx.lineJoin='round';
+ cx.globalCompositeOperation=er?'destination-out':'source-over';cx.strokeStyle='#3b82f6';
+ cx.lineWidth=er?26*d:(1.5+(e.pressure||.5)*2.5)*d;cx.beginPath();cx.moveTo(a[0],a[1]);cx.lineTo(b[0],b[1]);cx.stroke();}
+cv.addEventListener('pointerdown',e=>{if(e.pointerType==='pen')penSeen=true;if(e.pointerType==='touch'&&penSeen)return;
+ e.preventDefault();cv.setPointerCapture(e.pointerId);down=true;last=pos(e);seg(last,last,e);});
+cv.addEventListener('pointermove',e=>{if(!down)return;const p=pos(e);seg(last,p,e);last=p;});
+['pointerup','pointercancel'].forEach(t=>cv.addEventListener(t,()=>{down=false;}));
+document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{mode=b.dataset.tool;document.querySelectorAll('[data-tool]').forEach(x=>x.classList.toggle('on',x===b));});
+$('clr').onclick=()=>cx.clearRect(0,0,cv.width,cv.height);
+$('pad').addEventListener('toggle',fit);addEventListener('resize',fit);})();
+
+</script></body></html>

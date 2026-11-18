@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Science 7 – Lesson 4-2 Review</title>
+<style>
+:root{--bg:#eef4f3;--ink:#10262b;--mute:#56696c;--teal:#0e7c86;--accent:#0a5a62;--onteal:#fff;--amber:#f2a900;--red:#c2321f;--good:#1b7f4b;--bad:#b3261e;--card:#fff;--line:#c9d9d7}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1a1c;--ink:#e6f1f0;--mute:#9db3b5;--teal:#34b3bf;--accent:#6fd3dc;--onteal:#062327;--amber:#f2b632;--red:#ff7a66;--good:#5fd391;--bad:#ff8a7a;--card:#172629;--line:#2c4448}}
+:root[data-theme=dark]{--bg:#0f1a1c;--ink:#e6f1f0;--mute:#9db3b5;--teal:#34b3bf;--accent:#6fd3dc;--onteal:#062327;--amber:#f2b632;--red:#ff7a66;--good:#5fd391;--bad:#ff8a7a;--card:#172629;--line:#2c4448}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;overflow:hidden}
+#bar{position:fixed;left:0;top:0;height:1.2vh;min-height:8px;width:100%;background:var(--amber);transform-origin:left;transition:transform 1s linear,background .3s;z-index:5}
+#bar.low{background:var(--red)}
+#num{position:fixed;right:3vw;top:2vh;font-size:clamp(26px,5.5vmin,80px);font-weight:700;font-variant-numeric:tabular-nums;color:var(--accent);z-index:5}
+#num.low{color:var(--red)}
+#qn{position:fixed;left:3vw;top:2.4vh;font-size:clamp(18px,3vmin,40px);font-weight:700;color:var(--accent);z-index:5}
+main{height:100%;padding:max(9vh,64px) 3vw max(9vh,72px);display:flex;flex-direction:column;gap:2.5vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+h1,h2{font-family:Georgia,"Iowan Old Style",serif;font-weight:700;line-height:1.15}
+h1{font-size:clamp(34px,8vmin,110px)}
+h2{font-size:clamp(22px,5.8vmin,92px);flex:none}
+p,li{font-size:clamp(18px,3.6vmin,54px);line-height:1.35}
+ul{padding-left:1.2em}
+.pts{display:grid;gap:1.6vh;list-style:none;padding:0}
+.pts li{background:var(--card);border-left:10px solid var(--teal);border-radius:12px;padding:1.2vh 1.6vw;font-size:clamp(18px,4vmin,58px)}
+.talk{margin-top:auto;background:var(--teal);color:var(--onteal);border-radius:16px;padding:1.8vh 2vw;font-size:clamp(18px,3.8vmin,54px);line-height:1.3}
+.center{flex:1;display:flex;flex-direction:column;justify-content:center;gap:2.6vh;max-width:1200px}
+.opts{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:2vh 2vw;min-height:0}
+.opt,.chip{font:inherit;color:var(--ink);background:var(--card);border:3px solid var(--line);border-radius:18px;cursor:pointer;text-align:left}
+.opt{padding:1vh 1.6vw;display:flex;gap:1.4vw;align-items:center;font-size:clamp(18px,4.6vmin,68px);line-height:1.2}
+.opt i{flex:none;width:1.9em;height:1.9em;border-radius:50%;background:var(--teal);color:var(--onteal);font-style:normal;font-weight:700;display:grid;place-items:center;font-size:.8em}
+.opt:hover,.chip:hover{border-color:var(--teal)}
+.opt.sel,.chip.sel{background:var(--teal);border-color:var(--teal);color:var(--onteal)}
+.opt.sel i{background:var(--onteal);color:var(--teal)}
+.opt:focus-visible,.chip:focus-visible,button:focus-visible{outline:4px solid var(--amber);outline-offset:2px}
+.rows{flex:1;display:grid;grid-auto-rows:1fr;gap:1.8vh}
+.row{display:flex;align-items:center;gap:2vw;flex-wrap:wrap;background:var(--card);border:3px solid var(--line);border-radius:18px;padding:1.2vh 1.6vw}
+.row .lab{font-weight:700;font-size:clamp(20px,5vmin,70px)}
+.seg{display:flex;gap:1.2vw;margin-left:auto;flex-wrap:wrap}
+.chip{padding:.5em 1.1em;font-size:clamp(16px,3.6vmin,52px);text-align:center}
+textarea,input[type=text]{font:inherit;color:var(--ink);background:var(--card);border:3px solid var(--line);border-radius:14px;padding:1.2vh 1.4vw;width:100%}
+textarea{flex:1;min-height:28vh;font-size:clamp(18px,3.4vmin,44px);resize:none}
+input[type=text]{font-size:clamp(18px,3.2vmin,36px);max-width:560px}
+textarea:focus,input[type=text]:focus{outline:none;border-color:var(--teal)}
+button{font:inherit;font-size:clamp(15px,2.3vmin,26px);padding:.5em 1.2em;border-radius:12px;border:2px solid var(--teal);background:var(--card);color:var(--accent);cursor:pointer}
+button:hover{background:var(--teal);color:var(--onteal)}
+button.go{background:var(--teal);color:var(--onteal);font-size:clamp(22px,4.4vmin,56px);padding:.4em 1.6em}
+.btns{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.chk{display:flex;gap:12px;align-items:center;font-size:clamp(16px,2.8vmin,30px);cursor:pointer}
+.chk input{width:1.3em;height:1.3em;accent-color:var(--teal)}
+#ctl{position:fixed;left:50%;bottom:1.5vh;transform:translateX(-50%);display:flex;gap:8px;padding:8px 10px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .25s;z-index:8;flex-wrap:wrap;justify-content:center;max-width:96vw}
+#ctl.show{opacity:1;pointer-events:auto}
+#menu,#nx{position:fixed;bottom:1.5vh;z-index:7;opacity:.85}
+#menu{left:3vw}#nx{right:3vw;background:var(--teal);color:var(--onteal)}
+/* review */
+.sum{background:var(--card);border:3px solid var(--line);border-radius:18px;padding:2vh 2vw;display:grid;gap:1.4vh}
+.sum .score{font-size:clamp(24px,5vmin,64px);font-weight:700;color:var(--accent)}
+.rv{display:grid;gap:2vh;max-width:1100px}
+.card{background:var(--card);border:3px solid var(--line);border-left:12px solid var(--mute);border-radius:14px;padding:1.6vh 1.6vw;display:grid;gap:1vh}
+.card.right{border-left-color:var(--good)}.card.wrong{border-left-color:var(--bad)}.card.blank{border-left-color:var(--amber)}
+.card h3{font-family:Georgia,serif;font-size:clamp(18px,3vmin,34px);line-height:1.25}
+.card p,.card li,.card td,.card summary{font-size:clamp(15px,2.4vmin,28px);line-height:1.4}
+.st{font-weight:700;font-size:clamp(14px,2.2vmin,24px)}
+.right .st{color:var(--good)}.wrong .st{color:var(--bad)}.blank .st{color:var(--accent)}.self .st{color:var(--accent)}
+.why{color:var(--mute)}
+.card table{border-collapse:collapse;width:100%}
+.card td,.card th{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left}
+.card details{margin-top:4px}.card summary{cursor:pointer;color:var(--accent)}
+@media (max-width:760px){
+  .opts{grid-template-columns:1fr;grid-auto-rows:auto;flex:none}
+  .opt{padding:14px}.row{padding:12px}.seg{margin-left:0;width:100%}.chip{flex:1}
+  main{padding-left:14px;padding-right:14px}
+}
+@media (prefers-reduced-motion:reduce){#bar{transition:none}}
+@media print{
+  body{overflow:visible;background:#fff;color:#000;height:auto}main{overflow:visible;height:auto;padding:0}
+  #ctl,#menu,#nx,#bar,#num,#qn,.noprint{display:none!important}
+  .card{break-inside:avoid;border-color:#999}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div><div id="qn"></div><div id="num"></div>
+<main id="body"></main>
+<button id="menu">Menu</button><button id="nx">Next</button>
+<div id="ctl">
+  <button id="prev">Back</button><button id="pause">Pause</button><button id="next">Next</button><button id="theme">Theme: Auto</button><button id="full">Full screen</button>
+</div>
+
+<script>
+// ---------- CONTENT ----------
+const L='ABCD';
+const Q=[
+{type:'mc',t:40,q:'Which clue tells us whether an organism is unicellular or multicellular?',o:['Its size','Where it lives','The number of cells it has','Its color'],c:2,
+ ex:['Size does not decide it. Some tiny organisms are multicellular, and some large organisms are single cells.','Where an organism lives does not tell us how many cells it has.','Correct. Unicellular means one cell. Multicellular means many cells.','Color has nothing to do with the number of cells.']},
+{type:'mc',t:40,q:'Which of these is a unicellular organism?',o:['Mushroom','Plant','<em>Paramecium</em>','Animal'],c:2,
+ ex:['A mushroom is a fungus made of many cells.','Plants are made of many cells.','Correct. <em>Paramecium</em> is a single cell that does all of its life activities.','Animals are made of many cells.']},
+{type:'mc',t:50,q:'What does the single cell of a unicellular organism do?',o:['It only reproduces','It does everything: gets energy, moves materials, removes waste, reproduces','It depends on other cells to survive','It only protects the organism'],c:1,
+ ex:['Reproducing is only one job. The single cell also gets energy, moves materials and removes waste.','Correct. With only one cell, that cell must do every job.','A unicellular organism is one cell living on its own. It does not depend on other cells.','Protection is only one of many jobs the cell must do.']},
+{type:'mc',t:40,q:'Which statement about multicellular organisms is true?',o:['All the cells are identical','Cells have different functions and work together','Only one cell is needed','Cells cannot specialize'],c:1,
+ ex:['The cells are not identical. They specialize for different jobs.','Correct. Specialized cells have different functions and cooperate.','That describes a unicellular organism, not a multicellular one.','They can. Specialization is what makes multicellular organisms efficient.']},
+{type:'mc',t:40,q:'Which specialized cell has dendrites and axons to send signals?',o:['Muscle cell','Nerve cell','Skin cell','Red blood cell'],c:1,
+ ex:['Muscle cells are long and slender and help the body move.','Correct. Nerve cells (neurons) have dendrites and axons to send signals.','Skin cells stack together to form a protective barrier.','Red blood cells carry oxygen through the body.']},
+{type:'mc',t:40,q:'Which cells are stacked together to form a protective barrier?',o:['White blood cells','Skin (epithelial) cells','Nerve cells','Muscle cells'],c:1,
+ ex:['White blood cells protect the body by engulfing harmful bodies.','Correct. Skin (epithelial) cells stack together as a barrier.','Nerve cells send signals.','Muscle cells help the body move.']},
+{type:'mc',t:40,q:'Which cell protects the body by engulfing harmful bodies?',o:['Red blood cell','White blood cell','Muscle cell','Skin cell'],c:1,
+ ex:['Red blood cells carry oxygen through the body.','Correct. White blood cells engulf harmful bodies.','Muscle cells help the body move.','Skin cells form a barrier. They do not engulf harmful bodies.']},
+{type:'mc',t:40,q:'Which structure do ALL cells have?',o:['Nucleus','Cell wall','Cell membrane','Flagellum'],c:2,
+ ex:['Only eukaryotic cells have a nucleus.','Only some cells, such as plant cells, have a cell wall.','Correct. Every cell has a cell membrane, and every cell carries DNA.','Only some cells have a flagellum.']},
+{type:'mc',t:50,q:'Where is the DNA of a prokaryotic cell found?',o:['In a nucleus','In a nucleoid region','In the mitochondria','In the cell wall'],c:1,
+ ex:['Prokaryotic cells have no nucleus.','Correct. The DNA sits in the nucleoid region, with no membrane around it.','Mitochondria are organelles found in eukaryotic cells.','The cell wall surrounds the cell. The DNA is inside.']},
+{type:'mc',t:40,q:'Which cell type has membrane-bound organelles such as mitochondria?',o:['Prokaryotic cell','Bacteria','Eukaryotic cell','Archaeans'],c:2,
+ ex:['Prokaryotic cells have no membrane-bound organelles.','Bacteria are prokaryotes, so they have none.','Correct. Eukaryotic cells have a nucleus and other membrane-bound organelles.','Archaeans are prokaryotes, so they have none.']},
+{type:'multi',t:45,q:'Is each cell prokaryotic or eukaryotic?',rows:[{l:'Bacteria',c:0},{l:'Plant cell',c:1},{l:'Archaeans',c:0},{l:'Yeast',c:1}],o:['Prokaryotic','Eukaryotic'],
+ exg:'Bacteria and archaeans are prokaryotes (no nucleus). Plant cells and yeast are eukaryotes (nucleus and membrane-bound organelles).'},
+{type:'multi',t:45,q:'Is each organism unicellular or multicellular?',rows:[{l:'Yeast',c:0},{l:'Mushroom',c:1},{l:'<em>Chlamydomonas</em>',c:0},{l:'Human',c:1}],o:['Unicellular','Multicellular'],
+ exg:'Yeast and <em>Chlamydomonas</em> are single cells. Mushrooms and humans are made of many cells.'},
+{type:'mc',tf:1,t:45,q:'True or false? “All unicellular organisms are prokaryotes.”',o:['True','False'],c:1,
+ ex:['Not quite. Yeast and <em>Paramecium</em> are unicellular, but they are eukaryotes.','Correct, it is false. Some unicellular organisms (yeast, <em>Paramecium</em>) are eukaryotes. A true version: “Many unicellular organisms are prokaryotes, but some are eukaryotes.”']},
+{type:'mc',tf:1,t:45,q:'True or false? “If an organism is small, it must be unicellular.”',o:['True','False'],c:1,
+ ex:['Not quite. Size does not decide it.','Correct, it is false. The number of cells decides it. A true version: “An organism is unicellular if it is made of one cell.”']},
+{type:'multi',t:45,q:'Describe yeast. Choose one answer in each row.',rows:[{l:'Number of cells',c:0,o:['Unicellular','Multicellular']},{l:'Cell type',c:1,o:['Prokaryote','Eukaryote']}],
+ exg:'Yeast is a single cell, so it is unicellular. It has a nucleus, so it is a eukaryote.'},
+{type:'mc',t:50,q:'An organism has one cell and no nucleus. What is it?',o:['Unicellular prokaryote, such as bacteria','Unicellular eukaryote, such as yeast','Multicellular prokaryote','Multicellular eukaryote, such as a human'],c:0,
+ ex:['Correct. One cell means unicellular. No nucleus means prokaryote.','Eukaryotes have a nucleus, so this does not fit.','It has only one cell, so it is not multicellular.','It has one cell and no nucleus, so it is neither multicellular nor eukaryotic.']},
+{type:'text',t:120,q:'Mini Venn diagram. Write 2 differences between a prokaryotic cell and a eukaryotic cell, and 1 similarity.',
+ a:'<b>Prokaryotic:</b> no nucleus; DNA in a nucleoid region; no membrane-bound organelles; very small. <b>Eukaryotic:</b> has a nucleus; has membrane-bound organelles; larger and more complex. <b>Both:</b> cell membrane; carry DNA; basic unit of life.'},
+{type:'text',t:120,q:'A unicellular organism is like one person running a one-room store alone. A multicellular organism is like a big mall. Use this analogy to explain why multicellular organisms need specialized cells.',
+ a:'In a mall, workers have different jobs and cooperate, so more gets done. Likewise, specialized cells each do one job and work together, so the organism can do more complex things.'},
+{type:'text',t:100,q:'Give one advantage and one disadvantage of being unicellular.',
+ a:'<b>Advantage (any):</b> simple needs; reproduces quickly; lives on its own. <b>Disadvantage (any):</b> one cell must do every job; limited to simple tasks; usually microscopic.'},
+{type:'text',t:150,q:'A bacterium can live, grow and reproduce on its own. Why can’t a single nerve cell or red blood cell do the same? What does this tell us about the advantage of specialized cells?',
+ a:'A bacterium does all life activities in one cell. A nerve or red blood cell is specialized for one job and needs other cells. Specialized cells working together make the organism more efficient and able to do complex tasks.'},
+{type:'text',t:75,q:'Finish the sentence: “One way I can show curiosity and respect for living things is ______.”',
+ a:'Answers vary. Examples: look closely and ask questions about small organisms; care for plants and animals; avoid harming living things; keep learning how they work.'}
+];
+const D=[
+{at:0,t:60,title:'Discuss: Unicellular and multicellular organisms',
+ pts:['The <b>number of cells</b> decides it, not the size.','<b>Unicellular:</b> one cell does every life activity (gets energy, moves materials, removes waste, reproduces). Examples: bacteria, <em>Amoeba</em>, <em>Paramecium</em>, <em>Chlamydomonas</em>, yeast.','<b>Multicellular:</b> many cells that specialize and work together. Examples: plants, animals, mushrooms.'],
+ talk:'Turn to a partner: why can’t we tell by size alone?'},
+{at:4,t:60,title:'Discuss: Specialized cells in the body',
+ pts:['<b>Nerve cells:</b> dendrites and axons send signals.','<b>Skin (epithelial) cells:</b> stack together as a protective barrier.','<b>White blood cells:</b> engulf harmful bodies. <b>Red blood cells:</b> carry oxygen.','<b>Muscle cells:</b> long and slender; help the body move.'],
+ talk:'Turn to a partner: how does each cell’s shape help it do its job?'},
+{at:7,t:75,title:'Discuss: What all cells share, and two cell types',
+ pts:['<b>All cells</b> have a cell membrane and carry DNA.','<b>Prokaryotic:</b> no nucleus (DNA in a nucleoid region) and no membrane-bound organelles. Bacteria and archaeans.','<b>Eukaryotic:</b> a nucleus and membrane-bound organelles such as mitochondria. Plants, animals, fungi and protists.'],
+ talk:'Turn to a partner: what is the biggest difference between the two cell types?'},
+{at:10,t:60,title:'Discuss: Two ways to sort living things',
+ pts:['Sort by <b>number of cells</b>: unicellular or multicellular.','Sort by <b>cell type</b>: prokaryote or eukaryote.','These are two separate questions. Example: yeast is one cell (unicellular) and has a nucleus (eukaryote).'],
+ talk:'Turn to a partner: can an organism be unicellular and eukaryotic? Name one.'},
+{at:16,t:60,title:'Discuss: Explaining the big idea',
+ pts:['<b>One-room store</b> = unicellular: one worker does every job.','<b>Mall</b> = multicellular: workers have different jobs and cooperate.','Specialized cells working together help an organism do more complex things.'],
+ talk:'Turn to a partner: give one example of cells teaming up in your body.'}
+];
+const AUTO=Q.filter(x=>x.type!=='text').length;
+
+// ---------- STATE & STORAGE ----------
+const KEY='sci7-4-2-review',THK='sci7-4-2-theme';
+let st={ans:{},name:'',muddy:'',untimed:false};
+try{const r=localStorage.getItem(KEY);if(r)st=Object.assign(st,JSON.parse(r));}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const strip=s=>String(s).replace(/<[^>]+>/g,'');
+const hasAns=()=>Object.keys(st.ans).length>0;
+
+const slides=[{k:'title'}];
+Q.forEach((x,n)=>{D.filter(d=>d.at===n).forEach(d=>slides.push({k:'d',d}));slides.push({k:'q',n});});
+slides.push({k:'done'},{k:'review'});
+let i=0,left=0,total=0,paused=false,hideT,pinned=false;
+
+// ---------- RENDER ----------
+function render(){
+  const s=slides[i];let h='',qn='',showNx=false;
+  total=0;
+  if(s.k==='title'){
+    h=`<div class="center"><h1>Lesson 4-2 Review</h1>
+    <ul><li>Tap or click your answer. You can change it until time runs out.</li><li>Short discussion slides come before each topic. The next slide comes up by itself.</li><li>Your answers are saved. Explanations come at the end.</li></ul>
+    <input type="text" id="nm" placeholder="Your name" value="${esc(st.name)}" aria-label="Your name">
+    <label class="chk"><input type="checkbox" id="untimed" ${st.untimed?'checked':''}> No timer (go at my own pace)</label>
+    <div class="btns"><button class="go" id="start">Start</button>${hasAns()?'<button id="resume">See my last results</button>':''}</div></div>`;
+  }else if(s.k==='d'){
+    total=st.untimed?0:s.d.t;qn='Discuss';showNx=true;
+    h=`<h2>${s.d.title}</h2><ul class="pts">${s.d.pts.map(p=>`<li>${p}</li>`).join('')}</ul><div class="talk">${s.d.talk}</div>`;
+  }else if(s.k==='q'){
+    const x=Q[s.n];total=st.untimed?0:x.t;qn=`${s.n+1} / ${Q.length}`;showNx=true;
+    h=`<h2>${x.q}</h2>`;
+    if(x.type==='mc'){
+      h+=`<div class="opts">${x.o.map((t,k)=>`<button class="opt${st.ans[s.n]===k?' sel':''}" data-k="${k}" aria-pressed="${st.ans[s.n]===k}">${x.tf?'':`<i>${L[k]}</i>`}<span>${t}</span></button>`).join('')}</div>`;
+    }else if(x.type==='multi'){
+      const a=st.ans[s.n]||[];
+      h+=`<div class="rows">${x.rows.map((r,ri)=>`<div class="row"><span class="lab">${r.l}</span><div class="seg">${(r.o||x.o).map((t,k)=>`<button class="chip${a[ri]===k?' sel':''}" data-r="${ri}" data-k="${k}" aria-pressed="${a[ri]===k}">${t}</button>`).join('')}</div></div>`).join('')}</div>`;
+    }else{
+      h+=`<textarea id="ta" placeholder="Type your answer here" aria-label="Your answer">${esc(st.ans[s.n]||'')}</textarea>`;
+    }
+  }else if(s.k==='done'){
+    h=`<div class="center"><h1>Time’s up!</h1><p>Your answers are saved. Check them and read why each answer is right or wrong.</p><div class="btns"><button class="go" id="seeres">See my results</button></div></div>`;
+  }else{
+    h=reviewHTML();
+  }
+  $('body').innerHTML=h;$('body').scrollTop=0;
+  $('qn').textContent=qn;
+  $('nx').style.display=showNx?'':'none';
+  $('bar').style.visibility=$('num').style.visibility=total?'visible':'hidden';
+  left=total;paused=false;$('pause').textContent='Pause';
+  bind(s);paint(true);
+}
+function bind(s){
+  if(s.k==='title'){
+    $('nm').oninput=e=>{st.name=e.target.value;save();};
+    $('untimed').onchange=e=>{st.untimed=e.target.checked;save();};
+    $('start').onclick=()=>{st.ans={};st.muddy='';save();go(1);};
+    if($('resume'))$('resume').onclick=()=>go(slides.length-1);
+  }else if(s.k==='q'){
+    const x=Q[s.n];
+    if(x.type==='mc')document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(s.n,+b.dataset.k));
+    else if(x.type==='multi')document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{
+      const a=st.ans[s.n]||(st.ans[s.n]=[]);a[+b.dataset.r]=+b.dataset.k;save();
+      document.querySelectorAll(`.chip[data-r="${b.dataset.r}"]`).forEach(c=>{const on=c===b;c.classList.toggle('sel',on);c.setAttribute('aria-pressed',on);});
+    });
+    else $('ta').oninput=e=>{st.ans[s.n]=e.target.value;save();};
+  }else if(s.k==='done'){$('seeres').onclick=()=>go(i+1);$('seeres').focus();}
+  else{
+    $('muddy').oninput=e=>{st.muddy=e.target.value;save();};
+    $('dl').onclick=download;$('pr').onclick=()=>window.print();
+    $('again').onclick=()=>{if(confirm('Clear saved answers and start over?')){st.ans={};st.muddy='';save();go(0);}};
+  }
+}
+function pick(n,k){
+  st.ans[n]=k;save();
+  document.querySelectorAll('.opt').forEach(b=>{const on=+b.dataset.k===k;b.classList.toggle('sel',on);b.setAttribute('aria-pressed',on);});
+}
+function paint(instant){
+  if(!total)return;
+  const b=$('bar');
+  if(instant)b.style.transition='none';
+  b.style.transform=`scaleX(${Math.max(0,(left-1)/total)})`;
+  if(instant){b.getBoundingClientRect();b.style.transition='';}
+  $('num').textContent=left;
+  $('num').classList.toggle('low',left<=10);b.classList.toggle('low',left<=10);
+}
+
+// ---------- RESULTS ----------
+function judge(n){
+  const x=Q[n],a=st.ans[n];
+  if(x.type==='text')return a&&a.trim()?'self':'blank';
+  if(x.type==='mc')return a===undefined?'blank':a===x.c?'right':'wrong';
+  const got=x.rows.map((r,ri)=>a&&a[ri]);
+  if(got.every(v=>v===undefined||v===null))return 'blank';
+  return x.rows.every((r,ri)=>got[ri]===r.c)?'right':'wrong';
+}
+const LABEL={right:'Correct',wrong:'Not quite',blank:'No answer',self:'Compare with the model answer'};
+function reviewHTML(){
+  let right=0;
+  const cards=Q.map((x,n)=>{
+    const j=judge(n);if(j==='right')right++;
+    const a=st.ans[n];let b='';
+    if(x.type==='mc'){
+      const lab=k=>`${x.tf?'':L[k]+'. '}${x.o[k]}`;
+      b+=a===undefined?'<p>You did not choose an answer.</p>':`<p>Your answer: <b>${lab(a)}</b></p><p class="why">${x.ex[a]}</p>`;
+      if(j!=='right')b+=`<p>Correct answer: <b>${lab(x.c)}</b></p><p class="why">${x.ex[x.c]}</p>`;
+      b+=`<details><summary>Why each choice is right or wrong</summary><ul>${x.o.map((t,k)=>`<li><b>${lab(k)}</b>: ${x.ex[k]}</li>`).join('')}</ul></details>`;
+    }else if(x.type==='multi'){
+      b+=`<table><tr><th>Item</th><th>Your answer</th><th>Correct</th></tr>${x.rows.map((r,ri)=>{const o=r.o||x.o,g=a&&a[ri];return `<tr><td>${r.l}</td><td>${g===undefined||g===null?'(none)':o[g]+(g===r.c?' ✓':' ✗')}</td><td>${o[r.c]}</td></tr>`}).join('')}</table><p class="why">${x.exg}</p>`;
+    }else{
+      b+=`<p>Your answer: ${a&&a.trim()?esc(a).replace(/\n/g,'<br>'):'<i>(none)</i>'}</p><p>Model answer: <span class="why">${x.a}</span></p>`;
+    }
+    return `<section class="card ${j}"><h3>${n+1}. ${x.q}</h3><span class="st">${LABEL[j]}</span>${b}</section>`;
+  }).join('');
+  return `<div class="rv"><div class="sum"><div class="score">${right} / ${AUTO} correct</div>
+  <p>${st.name?esc(st.name)+'. ':''}Questions with choices are checked for you. For the written questions, compare your answer with the model answer.</p>
+  <div class="btns noprint"><button id="dl">Download my answers</button><button id="pr">Print or save as PDF</button><button id="again">Start over</button></div></div>
+  ${cards}
+  <div class="card"><h3>Muddiest point</h3><p>Something I am still confused about is…</p><textarea id="muddy" style="min-height:14vh">${esc(st.muddy)}</textarea></div></div>`;
+}
+function download(){
+  const lines=[`Science 7 – Lesson 4-2 Review`,st.name?`Name: ${st.name}`:'',''];
+  let right=0;
+  Q.forEach((x,n)=>{
+    const j=judge(n),a=st.ans[n];if(j==='right')right++;
+    let yours='(none)',corr='';
+    if(x.type==='mc'){yours=a===undefined?'(none)':strip(x.o[a]);corr=strip(x.o[x.c]);}
+    else if(x.type==='multi'){yours=x.rows.map((r,ri)=>`${strip(r.l)}: ${a&&a[ri]!==undefined&&a[ri]!==null?(r.o||x.o)[a[ri]]:'(none)'}`).join('; ');corr=x.rows.map(r=>`${strip(r.l)}: ${(r.o||x.o)[r.c]}`).join('; ');}
+    else{yours=a&&a.trim()?a:'(none)';corr=strip(x.a);}
+    lines.push(`${n+1}. ${strip(x.q)}`,`   Your answer: ${yours}`,`   ${x.type==='text'?'Model answer':'Correct answer'}: ${corr}`,x.type==='text'?'':`   Result: ${LABEL[j]}`,'');
+  });
+  lines.push(`Score: ${right} / ${AUTO} (choice questions)`,'',`Muddiest point: ${st.muddy||'(none)'}`);
+  const blob=new Blob([lines.join('\n')],{type:'text/plain'});
+  const u=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=u;a.download='Science7_Lesson4-2_My_Answers.txt';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);
+}
+
+// ---------- ENGINE ----------
+function go(n){i=Math.max(0,Math.min(slides.length-1,n));render();}
+setInterval(()=>{
+  if(!total||paused)return;
+  left--;
+  if(left<=0)go(i+1);else paint(false);
+},1000);
+function togglePause(){if(!total)return;paused=!paused;$('pause').textContent=paused?'Resume':'Pause';}
+function toggleFull(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}
+$('next').onclick=()=>go(i+1);$('nx').onclick=()=>go(i+1);
+$('prev').onclick=()=>go(i-1);
+$('pause').onclick=togglePause;$('full').onclick=toggleFull;
+
+// theme: auto / light / dark
+let theme='auto';try{theme=localStorage.getItem(THK)||'auto';}catch(e){}
+function applyTheme(){
+  if(theme==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',theme);
+  $('theme').textContent='Theme: '+theme[0].toUpperCase()+theme.slice(1);
+}
+$('theme').onclick=()=>{theme={auto:'light',light:'dark',dark:'auto'}[theme];try{localStorage.setItem(THK,theme);}catch(e){}applyTheme();};
+applyTheme();
+
+// controls: show on mouse move or Menu button
+const ctl=$('ctl');
+function flash(){ctl.classList.add('show');clearTimeout(hideT);if(!pinned)hideT=setTimeout(()=>ctl.classList.remove('show'),2500);}
+document.addEventListener('mousemove',flash);
+$('menu').onclick=()=>{pinned=!pinned;if(pinned){ctl.classList.add('show');clearTimeout(hideT);}else ctl.classList.remove('show');};
+
+document.addEventListener('keydown',e=>{
+  const tag=(e.target.tagName||'');
+  if(tag==='TEXTAREA'||tag==='INPUT')return;
+  const s=slides[i];
+  if(e.key==='ArrowRight'||e.key==='PageDown')go(i+1);
+  else if(e.key==='ArrowLeft'||e.key==='PageUp')go(i-1);
+  else if(e.key===' '&&tag!=='BUTTON'){e.preventDefault();togglePause();}
+  else if(e.key==='f'||e.key==='F')toggleFull();
+  else if(s.k==='q'&&Q[s.n].type==='mc'){const k=L.indexOf(e.key.toUpperCase());if(k>-1&&k<Q[s.n].o.length&&e.key.length===1)pick(s.n,k);}
+});
+render();
+</script>
+</body>
+</html>

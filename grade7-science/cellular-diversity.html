@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 4-2: Exploring Cellular Diversity</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/white.min.css">
+<style>
+:root{--g:#1f7a4d;--b:#1d4e89;--o:#d9731a;--bg:#f4faf6}
+.reveal{font-size:30px}
+.reveal h1,.reveal h2,.reveal h3{color:var(--b);text-transform:none;margin-bottom:.4em}
+.reveal h2{font-size:1.6em}.reveal h3{font-size:1.1em}
+.reveal section{text-align:left}
+.reveal .c{text-align:center}
+.tag{display:inline-block;background:var(--g);color:#fff;border-radius:6px;padding:2px 12px;font-size:.55em;margin-bottom:8px}
+.tag.o{background:var(--o)}.tag.b{background:var(--b)}
+.box{background:var(--bg);border-left:6px solid var(--g);padding:10px 18px;margin:10px 0;border-radius:6px}
+.reveal ul,.reveal ol{display:block;margin-left:1em}
+.reveal li{margin:.25em 0}
+.sm,.sm li,.sm td,.sm th{font-size:.75em}
+.reveal table{font-size:.7em;margin:0 auto}
+.reveal th{background:var(--b);color:#fff;padding:6px 10px}.reveal td{padding:6px 10px}
+.cards{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.card{background:#fff;border:2px solid var(--g);border-radius:12px;padding:8px 14px;text-align:center;font-size:.7em;min-width:130px}
+.card span{font-size:2em;display:block}
+.t{background:var(--o);color:#fff;border:0;border-radius:20px;padding:4px 16px;font-size:.6em;cursor:pointer}
+.big{font-size:1.3em;color:var(--g);font-weight:bold}
+.cols{display:flex;gap:24px}.cols>div{flex:1}
+svg{max-width:100%}
+.line{display:inline-block;border-bottom:2px solid #333;min-width:90px}
+
+.reveal img{border:0;box-shadow:none;margin:0;background:none}
+.th{border:3px solid #ccc;border-radius:8px;background:#fff;cursor:pointer;padding:2px;width:128px;font-size:.5em;font-family:inherit}
+.th img{width:100%;height:78px;object-fit:cover;border-radius:5px;display:block}.th.on{border-color:var(--o)}
+.gt{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.gm{display:flex;gap:22px;align-items:center;margin-top:10px}
+.gi{max-height:320px;max-width:52%;border-radius:10px}.gx{flex:1;font-size:.7em}
+img.x{background:#eee;min-height:80px;min-width:120px;font-size:.5em}
+.ob{background:#fff;border:3px solid var(--b);color:var(--b);border-radius:12px;padding:8px 22px;font-size:.75em;margin:6px;cursor:pointer}
+.ob.ok{background:#2e9e5b;color:#fff;border-color:#2e9e5b}.ob.no{background:#c0392b;color:#fff;border-color:#c0392b}
+.quiz,.sortg,.wordle,.pad{text-align:center}.qimg{max-height:240px;border-radius:10px}.ql{font-size:1.1em;margin:8px 0;color:var(--b);font-weight:bold}.qn{font-size:.55em;color:#777}.qf{min-height:1.6em;font-size:.8em}
+.sortg .card{cursor:pointer;border-width:4px;border-color:#ccc;width:170px}.sortg .card img{width:100%;height:110px;object-fit:cover;border-radius:6px}
+.sortg .s1{border-color:var(--g);background:#e8f5ee}.sortg .s2{border-color:var(--o);background:#fdf1e3}
+.wg{display:grid;grid-template-columns:repeat(5,54px);gap:6px;justify-content:center;margin:6px 0}
+.wc{width:54px;height:54px;border:3px solid #bbb;font-size:30px;font-weight:bold;line-height:48px;text-align:center;text-transform:uppercase}
+.wc.g,.wkey.g{background:#2e9e5b;color:#fff;border-color:#2e9e5b}.wc.y,.wkey.y{background:#d9b01a;color:#fff;border-color:#d9b01a}.wc.x,.wkey.x{background:#777;color:#fff;border-color:#777}
+.wkey{min-width:40px;height:40px;margin:2px;border:2px solid #bbb;border-radius:6px;background:#eee;font-size:.6em;cursor:pointer}
+.wh{font-size:.65em;color:var(--b)}.wm{min-height:1.4em;font-size:.65em;font-weight:bold;color:var(--o)}
+.pad canvas{border:3px solid var(--b);border-radius:8px;width:92%;touch-action:none;cursor:crosshair;background:#fff}
+.pb button{border:2px solid #999;border-radius:6px;margin:2px;padding:2px 10px;font-size:.55em;cursor:pointer;background:#fff}
+.hs{cursor:pointer}.hs:hover{opacity:.7}
+
+.reveal .slides>section.c{display:flex!important;flex-direction:column;justify-content:center;height:100%}
+.reveal h2{font-size:1.35em;margin:.1em 0 .2em}
+.th{width:112px;font-size:.45em}.th img{height:56px}.th.tab{width:auto;padding:4px 14px;font-size:.6em;margin:2px}
+.gm{display:flex;gap:18px;align-items:flex-start;margin-top:8px}
+.gb{flex:0 0 330px;height:250px;display:flex;align-items:center;justify-content:center;background:#f1f1f1;border-radius:10px;overflow:hidden}
+.gi{max-width:100%;max-height:100%;object-fit:contain;border-radius:0}
+.gx{flex:1;font-size:.6em;line-height:1.35}.gx p{margin:.3em 0}.gn{font-size:1.2em;font-weight:bold;color:var(--b)}
+.qimg{max-height:190px;max-width:380px}
+.wc{width:44px;height:44px;line-height:38px;font-size:24px}.wg{grid-template-columns:repeat(5,44px)}.wkey{min-width:34px;height:34px;font-size:.55em}
+.dr{display:flex;gap:14px;align-items:flex-start;margin-top:6px}
+.sb{flex:0 0 auto}.sb svg{height:300px;width:auto;max-width:100%;background:#fff;border:2px solid #e3e3e3;border-radius:10px}
+.dp{flex:1;font-size:.58em;line-height:1.35;min-width:230px}.dp p{margin:.3em 0}.dp ul{margin-left:1em}.dp li{margin:.1em 0}
+.pn{font-size:1.25em;font-weight:bold;color:var(--o)}
+.chip{border:2px solid var(--g);background:#fff;color:var(--g);border-radius:14px;padding:1px 9px;margin:2px;font-size:.85em;cursor:pointer;font-family:inherit}
+.chip.on{background:var(--g);color:#fff}
+[data-p]{cursor:pointer}svg text[data-p]{font-family:sans-serif}
+.sel{filter:drop-shadow(0 0 5px #ff9800)}svg text.sel{font-weight:bold;fill:#d9731a}
+.tp{position:absolute;bottom:2px;right:4px;max-width:52%;font-size:.45em;background:#fffbe6;border:1px solid #e0c050;border-radius:8px;padding:3px 8px;text-align:left;z-index:5;line-height:1.35}
+.tp summary{cursor:pointer;color:#a08000;opacity:.8}
+.cl{display:none;background:var(--bg);border-left:5px solid var(--o);padding:4px 10px;margin:2px 0 8px;font-size:.9em}
+.lnk a{color:var(--b);font-weight:bold}.lnk li{margin:.35em 0}
+</style></head>
+<body><div class="reveal"><div class="slides">
+
+<!-- 1 TITLE -->
+<section class="c"><span class="tag">Science 7 · Chapter 4 · Learning Plan 2</span>
+<h1>Exploring Cellular Diversity</h1>
+<p>Lesson 4-2: Unicellular vs. Multicellular · Prokaryotes vs. Eukaryotes</p>
+<p class="sm">Press <b>S</b> for speaker notes (answer keys) · <b>Esc</b> for overview · Click ⏱ buttons to start timers</p>
+</section>
+
+<!-- 2 OBJECTIVES -->
+<section><h2>Competency and Objectives</h2>
+<div class="box sm"><b>Competency (LC3):</b> Recognize that some organisms consist of a single cell (unicellular), such as bacteria, and some of many cells (multicellular), such as humans.</div>
+<ul class="sm"><li><b>LO6</b> Classify organisms as unicellular or multicellular by number of cells.</li>
+<li><b>LO7</b> Enumerate examples of unicellular and multicellular organisms.</li>
+<li><b>LO8</b> Distinguish prokaryotic from eukaryotic cells by their characteristics.</li></ul>
+<div class="box sm"><b>Essential Question:</b> How does the number of cells that make up an organism affect its structure, function, and how it lives and survives?</div></section>
+
+<!-- ELICIT -->
+<section class="c"><span class="tag">ELICIT · 10 min</span><h2>Values and Prior Knowledge</h2>
+<p class="sm">Strategies: values reflection · Think-Pair-Share · questioning · picture sorting</p></section>
+
+<section><span class="tag">Value Statement</span><h2>Curiosity and Respect for Life</h2>
+<div class="box"><p>“Every living thing, from the tiniest cell we can only see under a microscope to the human body made of trillions of cells, has a role in the web of life. When we stay <b>curious</b> about the living world and <b>respect</b> the diversity of life, we learn more about it and learn to care for it.”</p></div>
+<p class="sm">Values: Curiosity (Critical Mind) · Respect / Openness (Caring Heart) · Cooperation (Serving Hands)</p></section>
+
+<section><span class="tag o">Values Question · Think-Pair-Share</span>
+<h2>Why is it important to stay curious about organisms we cannot even see with our eyes?</h2>
+<h3>How can we show respect for the diversity of life around us?</h3>
+<p class="sm">1 min think silently → 2 min pair share → 2–3 volunteers share</p>
+<button class="t" onclick="tm(this,180)">⏱ 3:00</button></section>
+
+<section><span class="tag">Prior knowledge · Think-Pair-Share</span><h2>What do you know about living things?</h2>
+<ul><li>What are living things made of?</li><li>Do all living things look alike?</li>
+<li>What differences do you see between a bacterium, a mushroom, and a human?</li></ul>
+<p class="sm">Talk to your partner for 1 minute, then we list answers.</p>
+<button class="t" onclick="tm(this,60)">⏱ 1:00</button></section>
+
+<section><span class="tag">Quick sorting · 2 min · click a card to move it</span><h2>Sort these into groups that make sense</h2>
+<div class="sortg" data-items="Escherichia coli|Bacteria;Human|Human;Mushroom|Mushroom;Amoeba|Amoeba"></div>
+<p class="sm">Click a card once for Group A, twice for Group B, three times to clear. What are the similarities and differences you see? What would you name your groups?</p>
+</section>
+
+<!-- ENGAGE -->
+<section class="c"><span class="tag">ENGAGE · 10 min</span><h2>Wordle: Guess the Word!</h2>
+<p class="sm">Strategies: game-based learning · inquiry · active participation</p></section>
+
+<section><span class="tag o">Wordle · play as a class or take turns by group</span>
+<p class="sm" style="margin:0">6 tries · <b style="color:#2e9e5b">green</b> = right letter, right spot · <b style="color:#d9b01a">yellow</b> = right letter, wrong spot · <b style="color:#777">gray</b> = not in the word. Type on your keyboard or click the keys.</p>
+<div class="wordle" data-words="CELLS|Hint: the basic unit of life. Today is all about how many of these an organism has!|Yes! CELLS. Today we ask: how many cells does an organism have?;YEAST|Hint: a tiny organism that makes bread rise. Is it made of one cell or many?|Yes! YEAST is a single cell. It is unicellular."></div>
+</section>
+
+<section><span class="tag o">Call it out! · click an answer</span><h2>Unicellular or multicellular?</h2>
+<div class="quiz" data-opts="Unicellular|Multicellular" data-items="Mushroom|Mushroom|Multicellular;Human|Human|Multicellular;Paramecium|Paramecium|Unicellular;Saccharomyces cerevisiae|Yeast|Unicellular;Philippine eagle|Philippine eagle|Multicellular"></div></section>
+
+<!-- EXPLORE -->
+<section class="c"><span class="tag">EXPLORE · 15 min</span><h2>Gallery Walk and Source Reading</h2>
+<p class="sm">Strategies: cooperative learning · gallery walk · guided reading · note-taking<br>Research skills: <b>observing</b> · <b>gathering information from sources</b> · <b>note-taking and paraphrasing</b></p></section>
+
+<section><h2>Set-up: groups of 4–5</h2>
+<div class="cols sm"><div><h3>Roles</h3><ul><li><b>Reader</b></li><li><b>Recorder</b></li><li><b>Reporter</b></li><li><b>Timekeeper</b></li></ul></div>
+<div><h3>Task (7 min)</h3><p>Visit the next 3 “gallery” slides (or move to posters if available). For each, record the <b>distinguishing features</b> you observe.</p>
+<p class="box">Record on paper: <i>How many cells? How big? What is each part doing?</i></p></div></div>
+<button class="t" onclick="tm(this,420)">⏱ 7:00</button></section>
+
+<section><span class="tag b">Gallery 1 · click each picture · observe first</span><h2>Unicellular organisms (Fig. 4-8)</h2>
+<div class="gallery" data-g="uni" data-hide="1"></div>
+<p class="sm" style="margin:2px">Record on paper: How many cells? What is it doing?</p>
+</section>
+
+<section><span class="tag b">Gallery 2 · click each picture · observe first</span><h2>Multicellular organisms (Fig. 4-9)</h2>
+<div class="gallery" data-g="multi" data-hide="1"></div>
+<p class="sm" style="margin:2px">Record on paper: Do you see different parts? What might each part do?</p>
+</section>
+
+<section><span class="tag b">Gallery 3 · click each cell · observe first</span><h2>Specialized cells in humans (Fig. 4-10)</h2>
+<div class="gallery" data-g="spec" data-hide="1"></div>
+<p class="sm" style="margin:2px">Record on paper: Each cell has a different shape. What might that shape help it do?</p>
+</section>
+
+<section><span class="tag o">Research task · 8 min</span><h2>Source reading: Unicellular vs. Multicellular</h2>
+<div class="box sm"><b>Source: Science 7 textbook, pp. 78–79</b> (or the article your teacher gives).
+<ul><li>Unicellular organisms (bacteria, archaeans, protists, yeasts) do everything they need inside <b>one cell</b>.</li>
+<li>Multicellular organisms (humans, plants, animals, fungi) are made of <b>more than one cell</b>. Cells have <b>different functions</b> and work together.</li>
+<li>Groups of cells <b>specialize</b> in specific tasks.</li></ul></div>
+<p class="sm"><b>Your job:</b> Write <b>3 facts in your own words</b> (no copying!) and the <b>title of your source</b>.</p>
+<button class="t" onclick="tm(this,480)">⏱ 8:00</button></section>
+
+
+<!-- EXPLAIN -->
+<section class="c"><span class="tag">EXPLAIN · 20 min</span><h2>Guided Discussion</h2>
+<p class="sm">Strategies: direct instruction with visuals · analogy · graphic organizer · questioning · misconception check · Think-Pair-Share (HOTS)<br>Research skill: <b>comparing and classifying</b></p></section>
+
+<section><h2>Unicellular vs. Multicellular</h2>
+<table><tr><th></th><th>Unicellular</th><th>Multicellular</th></tr>
+<tr><td><b>Number of cells</b></td><td>One</td><td>Many</td></tr>
+<tr><td><b>Examples</b></td><td><i>Amoeba</i>, <i>Paramecium</i>, <i>Chlamydomonas</i>, bacteria, yeast</td><td>Plants, animals, humans, fungi</td></tr>
+<tr><td><b>How they live</b></td><td>One cell does <b>everything</b></td><td>Cells have <b>different jobs</b> and work together</td></tr></table>
+<p class="sm">Copy this table in your notes. Close your notebook after, then say it to your partner.</p></section>
+
+<section><span class="tag o">Analogy</span><h2>One-room store vs. a mall</h2>
+<div class="cols"><div class="box"><h3>🏪 Unicellular</h3><p>One person runs the whole store alone: selling, cleaning, stocking, and cashiering.</p></div>
+<div class="box"><h3>🏬 Multicellular</h3><p>A big mall: different workers have different jobs, and they work together.</p></div></div></section>
+<section><span class="tag o">Cell Detective · click each clue</span><h2>Is an amoeba one cell or many?</h2>
+<div class="cols" style="align-items:flex-start">
+<div class="c" style="flex:0 0 250px"><div class="gb" style="flex:none;width:250px;height:190px"><img data-w="Amoeba" class="gi"></div><b class="sm">Amoeba</b>
+<div class="gb" style="flex:none;width:250px;height:190px;margin-top:8px"><img data-w="Onion epidermal cell" class="gi"></div><b class="sm">Onion skin (many cells)</b></div>
+<div style="flex:1;font-size:.62em">
+<button class="chip" onclick="this.nextElementSibling.style.display='block'">🔍 Clue 1: Are there walls or lines dividing the inside?</button><div class="cl">Onion: yes, many box shapes separated by walls, and each box is one cell. Amoeba: no lines inside. It is one continuous body.</div>
+<button class="chip" onclick="this.nextElementSibling.style.display='block'">🔍 Clue 2: How many nuclei?</button><div class="cl">Onion: each box has its own nucleus. Amoeba: one nucleus for the whole body (a typical <i>Amoeba proteus</i>).</div>
+<button class="chip" onclick="this.nextElementSibling.style.display='block'">🔍 Clue 3: What are the “arms”?</button><div class="cl">Pseudopods (“false feet”) are bulges of the SAME cell. They stretch out and pull back. They are not separate cells.</div>
+<button class="chip" onclick="this.nextElementSibling.style.display='block'">🔍 Clue 4: Is there one membrane around everything?</button><div class="cl">Yes, one membrane wraps the whole amoeba. <b>Verdict: one cell, so it is unicellular.</b></div>
+<p class="box" style="margin-top:10px">Detective rule: <b>boxes with walls = many cells. One continuous body inside one outline = one cell.</b></p></div></div>
+</section>
+
+<section><span class="tag o">Click the parts</span><h2>Meet the amoeba: photo + labeled sketch</h2>
+<div class="diagram" data-d="amoeba"></div></section>
+
+
+<section><span class="tag">Click each cell to see its job</span><h2>Specialized cells (Fig. 4-10)</h2>
+<div class="gallery" data-g="spec"></div></section>
+
+<section><span class="tag">Click a part or a label · switch cells with the tabs</span><h2>Prokaryotic vs. Eukaryotic cell (Fig. 4-11)</h2>
+<div class="diagram" data-d="pro,euk"></div></section>
+
+<section><span class="tag">Another view · click to switch</span><h2>More pictures of cell types</h2>
+<div class="gallery" data-g="proimg"></div></section>
+
+<section><h2>Prokaryotic vs. Eukaryotic: Compare</h2>
+<table><tr><th></th><th>Prokaryotic</th><th>Eukaryotic</th></tr>
+<tr><td>Nucleus</td><td><b>No</b> (DNA in nucleoid)</td><td><b>Yes</b></td></tr>
+<tr><td>Organelles</td><td>No membrane-bound organelles</td><td>Has membrane-bound organelles</td></tr>
+<tr><td>Size</td><td>Very small</td><td>Larger, more complex</td></tr>
+<tr><td>Examples</td><td>Bacteria, archaeans</td><td>Plants, animals, fungi, protists</td></tr>
+<tr><td>Extra</td><td>Cell wall; may have flagellum, pilus</td><td>Plant cells: cellulose cell wall</td></tr></table></section>
+
+<section><span class="tag o">Link the ideas + misconception check</span>
+<div class="box">Unicellular organisms are <b>often prokaryotic</b>; multicellular organisms are <b>typically eukaryotic</b>.</div>
+<p><b>Careful!</b></p>
+<ul><li class="fragment">“Small means unicellular.” ✗ A tiny seedling is still multicellular.</li>
+<li class="fragment">“All unicellular organisms are prokaryotes.” ✗ <b>Yeast</b> and <i>Paramecium</i> are unicellular but eukaryotic.</li></ul></section>
+
+<section><span class="tag o">HOTS · Think-Pair-Share</span>
+<h2>A single bacterium can live, grow, and reproduce on its own.</h2>
+<h3>Why can’t a single nerve cell or red blood cell do the same? What does this tell us about the advantage of having specialized cells?</h3>
+<button class="t" onclick="tm(this,180)">⏱ 3:00</button>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="c"><span class="tag">EXPERIENCE · 20 min</span><h2>Apply What You Learned</h2>
+<p class="sm">Strategies: hands-on learning · station rotation · collaborative learning · model-making<br>Research skills: <b>collecting and recording data</b> · <b>presenting findings</b></p></section>
+
+<section><span class="tag b">Option A · Step 1 · Build-a-cell parts: click the cell type</span><h2>Which cell has it?</h2>
+<div class="quiz" data-opts="Prokaryotic|Eukaryotic|Both" data-items="|Has a nucleus|Eukaryotic;|DNA in a nucleoid region|Prokaryotic;|Cell membrane|Both;|Mitochondria|Eukaryotic;|Cell wall (bacteria)|Prokaryotic;|Carries DNA|Both"></div></section>
+
+<section><span class="tag b">Option A · Step 2 · Draw your models (Creativity)</span>
+<p class="sm" style="margin:0">Draw a <b>prokaryotic</b> and a <b>eukaryotic</b> cell. Use <b>Label</b> to add parts (cell membrane, DNA/nucleoid, nucleus, mitochondria, cell wall). Then explain what each part does. If you have clay, pipe cleaners and beads, you can build it instead.</p>
+<div class="pad"></div><button class="t" onclick="tm(this,1000)">⏱ 16:40</button></section>
+
+<section><span class="tag b">Option B · Virtual microscope · 5 min per station</span><h2>Station tabs: observe first, then ask for help</h2>
+<div class="diagram" data-d="bact,onion,para" data-hide="1"></div>
+<p class="sm" style="margin:2px">Record: <b>What do I see? One cell or many? Where is the nucleus (if any)?</b> <button class="t" onclick="tm(this,300)">⏱ 5:00</button></p></section>
+
+<section><span class="tag b">Want to see it move or click it yourself?</span><h2>Simulations, videos and sources</h2>
+<ul class="sm lnk">
+<li><a href="https://www.cellsalive.com" target="_blank">Cells Alive!</a> Interactive animal, plant and bacteria cell models. Click each part to read what it does.</li>
+<li><a href="https://www.biologycorner.com/worksheets/ameba_paramecium_lab_virtual.html" target="_blank">Biology Corner: Virtual Lab (Amoeba and Paramecium)</a> Video links and questions on how each moves and eats.</li>
+<li><a href="https://knowledge.carolina.com/discipline/life-science/protozoans/" target="_blank">Carolina Biological: Protozoans</a> Paramecium illustration (big and small nucleus) and a video playlist.</li>
+<li><a href="https://openlab.citytech.cuny.edu/onlinebio/?p=2" target="_blank">CUNY OpenLab: Microscope stations</a> Stained amoeba and paramecium photos with videos of live ones (college level, but the pictures help).</li></ul>
+<p class="sm">Tip: In a stained slide the nucleus is easiest to see. In live pictures it is often hidden.</p>
+</section>
+
+<!-- EMPATHIZE -->
+<section><span class="tag">EMPATHIZE · 5 min</span><h2>Science Journal</h2>
+<p class="sm">Answer <b>two</b> in your journal:</p>
+<ol class="sm"><li>Why is it important for cells to be diverse?</li><li>How do unicellular and multicellular organisms differ in their needs and abilities?</li>
+<li>What is one advantage and one disadvantage of being unicellular or multicellular?</li><li>How does studying cell diversity help us understand the complexity of living things?</li></ol>
+<div class="box sm"><b>Values link:</b> “One way I can show curiosity and respect for living things is ______.”</div></section>
+
+<!-- GENERALIZATION -->
+<section><span class="tag o">GENERALIZATION · Exit Ticket · 5 min</span><h2>Write on a slip of paper</h2>
+<ol class="sm"><li>“Unicellular organisms are ______, while multicellular organisms are ______.”</li>
+<li>One example of a unicellular and one of a multicellular organism.</li>
+<li>One difference between a prokaryotic and a eukaryotic cell.</li>
+<li><b>Muddiest point:</b> “Something I am still confused about is ______.”</li></ol>
+<p class="sm">Hand it in on your way out.</p><button class="t" onclick="tm(this,300)">⏱ 5:00</button></section>
+
+<section><span class="tag b">Image credits</span><h2>Images from Wikipedia / Wikimedia Commons</h2>
+<p class="sm">Click an article to see each image’s author and license (many are Creative Commons and need credit).</p><div id="cr" class="sm"></div></section>
+
+<section class="c"><h2>Thank you!</h2><p class="big">Stay curious. Respect all life.</p></section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+<script>
+Reveal.initialize({hash:true,slideNumber:'c/t',width:1100,height:700,center:false,margin:0.03,plugins:[RevealNotes]});
+function tm(b,s){if(b._i){clearInterval(b._i);b._i=null;}
+var e=Date.now()+s*1000;b._i=setInterval(function(){var r=Math.max(0,Math.round((e-Date.now())/1000));
+b.textContent='⏱ '+Math.floor(r/60)+':'+String(r%60).padStart(2,'0');if(r<=0){clearInterval(b._i);b.textContent='⏰ Time!';}},250);}
+var IC={};
+function wk(t){return IC[t]||(IC[t]=fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(t.replace(/ /g,'_'))).then(function(r){return r.json()}).then(function(j){return {s:j.thumbnail&&j.thumbnail.source,p:j.content_urls&&j.content_urls.desktop.page,t:j.title||t}}).catch(function(){return {t:t}}));}
+function setImg(img,t,big){wk(t).then(function(d){if(!d.s){img.alt='Image unavailable (needs internet)';img.classList.add('x');return}
+img.onerror=function(){img.onerror=null;img.src=d.s};img.src=big?d.s.replace(/\/\d+px-/,'/500px-'):d.s;});}
+function mk(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html)e.innerHTML=html;return e}
+
+var P={
+membrane:{n:'Cell membrane (plasma membrane)',d:'A thin, flexible layer that wraps around the whole cell like a skin. It holds the cell together and controls what goes in and out, like a gate with a guard. Every cell has one.',f:'Find the outline that separates the inside of the cell from the outside.'},
+cytoplasm:{n:'Cytoplasm',d:'The jelly-like fluid that fills the cell. The cell’s parts float in it and many of the cell’s activities happen here.',f:'The area inside the membrane, around the other parts.'},
+nucleus:{n:'Nucleus',d:'The control center of a eukaryotic cell. It has its own membrane and holds the cell’s DNA (its instructions). Prokaryotic cells do NOT have one.',f:'A big round structure, usually near the middle of the cell.'},
+nucleoid:{n:'Nucleoid region',d:'The area of a prokaryotic cell where the DNA is found. Unlike a nucleus, it has NO membrane around it.',f:'The dashed area in the middle of the cell.'},
+dna:{n:'DNA',d:'The cell’s instruction book (genetic material). It tells the cell how to grow, work and reproduce. All cells carry DNA.',f:'The orange squiggly strand.'},
+wall:{n:'Cell wall',d:'A stiff outer layer that protects the cell and gives it its shape. Bacteria have one. Plant cells have one too (made of cellulose). Animal cells do not.',f:'The thick brown line just outside the cell membrane.'},
+capsule:{n:'Capsule',d:'A sticky outer coat on some bacteria. It protects the cell and helps it stick to surfaces.',f:'The yellow layer on the very outside.'},
+ribosome:{n:'Ribosomes',d:'Tiny parts that build proteins. Both prokaryotic and eukaryotic cells have them.',f:'The small blue dots.'},
+flagellum:{n:'Flagellum',d:'A whip-like tail that spins or waves to push the cell along so it can move.',f:'The long wavy tail.'},
+pili:{n:'Pili (one is a pilus)',d:'Short, hair-like parts on the surface. They help the cell stick to things and pass DNA to another bacterium.',f:'The short hairs sticking out on top.'},
+mito:{n:'Mitochondrion (plural: mitochondria)',d:'The “powerhouse” of the cell. It releases energy from food so the cell can work.',f:'The pink bean-shaped part with a wavy line inside.'},
+er:{n:'Endoplasmic reticulum (ER)',d:'A network of folded membranes. It helps make proteins and moves materials around the cell.',f:'The green wavy folds next to the nucleus.'},
+golgi:{n:'Golgi complex',d:'Processes, sorts and packages proteins, like a post office that wraps parcels and sends them out.',f:'The purple stack of curved layers.'},
+lysosome:{n:'Lysosome',d:'The cell’s cleanup crew. It breaks down waste and worn-out parts.',f:'The small yellow circle.'},
+pseudopod:{n:'Pseudopod (“false foot”)',d:'A temporary bulge that an amoeba stretches out to move and to wrap around food. It is part of the SAME cell, not a separate cell.',f:'The finger-like bumps sticking out of the body.'},
+foodvac:{n:'Food vacuole',d:'A small bubble that holds food the cell has swallowed while it is being digested.',f:'The yellow bubble with a dark dot (the food).'},
+contvac:{n:'Contractile vacuole',d:'A tiny pump. Freshwater cells take in water all the time. This part pumps the extra water out so the cell does not burst.',f:'The clear circle (in Paramecium it looks like a star).'},
+cilia:{n:'Cilia',d:'Tiny hairs that cover the cell. They beat like oars to make the Paramecium swim and to sweep food toward its mouth.',f:'The dotted fringe around the edge.'},
+oral:{n:'Oral groove',d:'The cell’s “mouth”: a groove where food swept in by the cilia is taken into the cell.',f:'The brown groove on the lower side.'},
+macro:{n:'Macronucleus (the large nucleus)',d:'The big nucleus of the Paramecium. It runs the cell’s everyday activities. This is the nucleus to look for first.',f:'A large dark oval in the middle of the cell.'},
+micro:{n:'Micronucleus (the small nucleus)',d:'A tiny second nucleus next to the big one, used in reproduction. It is very hard to see with a school microscope.',f:'A small dot beside the macronucleus.'},
+cellwall:{n:'Cell wall (onion)',d:'The stiff outer layer of a plant cell. In onion skin the walls look like dark lines that make box shapes. Each box is ONE cell.',f:'The dark lines between the boxes.'},
+vacuole:{n:'Vacuole',d:'A big fluid-filled sac in a plant cell that stores water and other materials. In red onions it holds the purple color.',f:'The large colored area inside each box.'}
+};
+function L(t,x,y,p,ln){return '<text x="'+x+'" y="'+y+'" font-size="14" fill="#333" data-p="'+p+'">'+t+'</text>'+(ln?'<line x1="'+ln[0]+'" y1="'+ln[1]+'" x2="'+ln[2]+'" y2="'+ln[3]+'" stroke="#888" stroke-width="1.5"/>':'')}
+var SPRO='<svg viewBox="0 0 570 300" xmlns="http://www.w3.org/2000/svg">'+
+'<g data-p="capsule"><rect x="125" y="50" width="300" height="190" rx="45" fill="#fff6cc" stroke="#e0bf4a" stroke-width="3"/></g>'+
+'<g data-p="wall"><rect x="137" y="62" width="276" height="166" rx="37" fill="#fff" stroke="#8a6d3b" stroke-width="7"/></g>'+
+'<g data-p="membrane"><rect x="146" y="71" width="258" height="148" rx="30" fill="#cfeedd" stroke="#1f7a4d" stroke-width="4"/></g>'+
+'<g data-p="cytoplasm"><rect x="152" y="77" width="246" height="136" rx="25" fill="#e3f6ec"/></g>'+
+'<g data-p="nucleoid"><ellipse cx="275" cy="145" rx="72" ry="42" fill="#f9d9b8" stroke="#d9731a" stroke-dasharray="5 4" stroke-width="2"/></g>'+
+'<g data-p="dna" fill="none" stroke="#c0541a" stroke-width="4"><path d="M215 140 q15 -35 30 0 t30 0 t30 0 t30 0"/><path d="M225 158 q15 -30 30 0 t30 0 t30 0"/></g>'+
+'<g data-p="ribosome" fill="#1d4e89"><circle cx="185" cy="105" r="5"/><circle cx="215" cy="195" r="5"/><circle cx="335" cy="100" r="5"/><circle cx="355" cy="195" r="5"/><circle cx="262" cy="205" r="5"/><circle cx="372" cy="140" r="5"/></g>'+
+'<g data-p="flagellum"><path d="M425 145 q30 -40 60 0 t60 0" fill="none" stroke="#555" stroke-width="6"/></g>'+
+'<g data-p="pili" stroke="#555" stroke-width="3"><line x1="190" y1="62" x2="190" y2="38"/><line x1="235" y1="62" x2="235" y2="38"/><line x1="340" y1="62" x2="340" y2="38"/><line x1="385" y1="62" x2="385" y2="38"/></g>'+
+L('Capsule',5,40,'capsule',[58,36,128,110])+L('Cell wall',5,100,'wall',[58,96,141,150])+L('Cell membrane',5,200,'membrane',[100,196,148,190])+L('Cytoplasm',5,255,'cytoplasm',[70,251,185,180])+
+L('Pili',285,22,'pili',[300,26,340,40])+L('Flagellum',478,88,'flagellum',[510,94,500,122])+L('DNA / nucleoid',440,225,'nucleoid',[470,215,335,160])+L('Ribosomes',440,275,'ribosome',[480,265,356,198])+'</svg>';
+var SEUK='<svg viewBox="0 0 570 300" xmlns="http://www.w3.org/2000/svg">'+
+'<g data-p="membrane"><ellipse cx="285" cy="150" rx="165" ry="118" fill="#fdf1e3" stroke="#d9731a" stroke-width="6"/></g>'+
+'<g data-p="cytoplasm"><ellipse cx="285" cy="150" rx="157" ry="110" fill="#fff9f0"/></g>'+
+'<g data-p="nucleus"><circle cx="270" cy="135" r="52" fill="#c9dcf2" stroke="#1d4e89" stroke-width="5"/><circle cx="275" cy="135" r="16" fill="#6b8cc4"/></g>'+
+'<g data-p="er" fill="none" stroke="#5a9e3a" stroke-width="5"><path d="M335 120 q18 10 0 20 t0 20 t0 20 t0 20"/><path d="M349 115 q18 10 0 20 t0 20 t0 20"/></g>'+
+'<g data-p="mito"><ellipse cx="195" cy="210" rx="32" ry="16" transform="rotate(-20 195 210)" fill="#f7b3b3" stroke="#b33" stroke-width="3"/><path d="M175 212 q8 -10 14 0 t14 0 t14 0" fill="none" stroke="#b33" stroke-width="2"/></g>'+
+'<g data-p="golgi" fill="none" stroke="#9b50c0" stroke-width="6"><path d="M335 218 q30 -14 60 0"/><path d="M340 230 q25 -14 50 0"/><path d="M345 242 q20 -14 40 0"/></g>'+
+'<g data-p="lysosome"><circle cx="355" cy="80" r="13" fill="#f2c94c" stroke="#b8901a" stroke-width="2"/></g>'+
+'<g data-p="ribosome" fill="#1d4e89"><circle cx="200" cy="165" r="4"/><circle cx="222" cy="190" r="4"/><circle cx="318" cy="195" r="4"/><circle cx="160" cy="130" r="4"/></g>'+
+L('Cell membrane',5,45,'membrane',[100,42,165,70])+L('Cytoplasm',5,140,'cytoplasm',[65,137,180,150])+L('Ribosomes',5,190,'ribosome',[62,187,198,167])+L('Mitochondrion',5,255,'mito',[90,252,172,218])+
+L('Lysosome',470,40,'lysosome',[466,38,368,76])+L('Nucleus',470,105,'nucleus',[466,102,320,122])+L('Endoplasmic',470,165,'er',[466,170,360,170])+L('reticulum',470,181,'er')+L('Golgi complex',470,250,'golgi',[466,246,396,232])+'</svg>';
+var SAMO='<svg viewBox="0 0 520 300" xmlns="http://www.w3.org/2000/svg">'+
+'<g data-p="membrane"><path d="M120 120 C95 85 45 100 55 135 C62 160 100 165 112 190 C115 235 170 262 215 245 C250 265 305 245 300 205 C345 200 365 150 330 130 C355 95 330 60 290 75 C270 45 200 40 170 70 C145 70 130 95 120 120 Z" fill="#e6f1fb" stroke="#1d4e89" stroke-width="5"/></g>'+
+'<g data-p="cytoplasm"><ellipse cx="205" cy="160" rx="92" ry="62" fill="#d4e6f7"/></g>'+
+'<g data-p="nucleus"><circle cx="215" cy="150" r="32" fill="#8fb0e0" stroke="#1d4e89" stroke-width="3"/><circle cx="220" cy="150" r="9" fill="#4a6ea8"/></g>'+
+'<g data-p="foodvac"><circle cx="150" cy="195" r="16" fill="#f9e0a0" stroke="#b8901a" stroke-width="2"/><circle cx="150" cy="195" r="5" fill="#8a5a1a"/></g>'+
+'<g data-p="contvac"><circle cx="268" cy="205" r="14" fill="#fff" stroke="#1d4e89" stroke-width="2" stroke-dasharray="3 3"/></g>'+
+'<g data-p="pseudopod" fill="rgba(0,0,0,0.001)"><ellipse cx="82" cy="130" rx="36" ry="30"/><ellipse cx="325" cy="100" rx="38" ry="30"/></g>'+
+L('Pseudopods',5,45,'pseudopod',[62,48,76,108])+L('Cell membrane',5,245,'membrane',[100,240,114,196])+L('Food vacuole',5,285,'foodvac',[90,281,140,208])+
+L('Cytoplasm',395,100,'cytoplasm',[392,98,285,140])+L('Nucleus',395,160,'nucleus',[392,157,247,152])+L('Contractile',395,225,'contvac',[392,222,282,208])+L('vacuole',395,241,'contvac')+'</svg>';
+var SPAR='<svg viewBox="0 0 520 300" xmlns="http://www.w3.org/2000/svg">'+
+'<g data-p="membrane"><ellipse cx="250" cy="150" rx="170" ry="70" transform="rotate(-15 250 150)" fill="#f0f7ea" stroke="#1f7a4d" stroke-width="4"/></g>'+
+'<g data-p="cilia"><ellipse cx="250" cy="150" rx="179" ry="79" transform="rotate(-15 250 150)" fill="none" stroke="#1f7a4d" stroke-width="9" stroke-dasharray="2 6"/></g>'+
+'<g data-p="oral"><path d="M200 172 Q240 170 275 158" fill="none" stroke="#8a5a1a" stroke-width="9" stroke-linecap="round"/></g>'+
+'<g data-p="macro"><ellipse cx="260" cy="135" rx="30" ry="18" transform="rotate(-15 260 135)" fill="#8fb0e0" stroke="#1d4e89" stroke-width="3"/></g>'+
+'<g data-p="micro"><circle cx="297" cy="143" r="6" fill="#1d4e89"/></g>'+
+'<g data-p="contvac" stroke="#1d4e89" stroke-width="2" fill="#fff"><circle cx="140" cy="175" r="13"/><circle cx="365" cy="120" r="13"/></g>'+
+'<g data-p="foodvac" fill="#f9e0a0" stroke="#b8901a" stroke-width="2"><circle cx="205" cy="125" r="11"/><circle cx="312" cy="172" r="11"/></g>'+
+L('Cilia',5,40,'cilia',[35,44,86,177])+L('Cell membrane',5,255,'membrane',[100,250,209,229])+L('Oral groove',200,288,'oral',[240,272,236,176])+
+L('Macronucleus',395,55,'macro',[392,58,288,130])+L('(large nucleus)',395,71,'macro')+L('Micronucleus',395,115,'micro',[392,112,303,142])+L('Contractile vacuole',300,22,'contvac',[345,27,364,108])+L('Food vacuole',395,235,'foodvac',[392,232,322,176])+'</svg>';
+var SONI='<svg viewBox="0 0 520 300" xmlns="http://www.w3.org/2000/svg">';
+[[20,30],[140,30],[260,30],[20,130],[140,130],[260,130]].forEach(function(c,i){SONI+='<g data-p="cellwall"><rect x="'+c[0]+'" y="'+c[1]+'" width="120" height="100" fill="#f9e6ef" stroke="#a05070" stroke-width="6"/></g><g data-p="vacuole"><rect x="'+(c[0]+16)+'" y="'+(c[1]+36)+'" width="88" height="52" rx="10" fill="#f2b7d2"/></g><g data-p="nucleus"><circle cx="'+(c[0]+28+(i%3)*14)+'" cy="'+(c[1]+22)+'" r="11" fill="#7a2e55"/></g>'});
+SONI+=L('Cell wall',400,50,'cellwall',[398,47,380,80])+L('Nucleus',400,125,'nucleus',[398,122,354,62])+L('Vacuole',400,200,'vacuole',[398,197,330,180])+'</svg>';
+var D={
+pro:{tab:'Prokaryotic cell',svg:SPRO,parts:['membrane','cytoplasm','wall','capsule','nucleoid','dna','ribosome','flagellum','pili'],what:'A prokaryotic cell has NO nucleus. Its DNA floats in the nucleoid region. Bacteria and archaeans are prokaryotes. They are tiny and are usually unicellular.',clues:['Click any part or label to read its definition.','Challenge: which part is the cell membrane? Click it!']},
+euk:{tab:'Eukaryotic cell (animal)',svg:SEUK,parts:['membrane','cytoplasm','nucleus','mito','er','golgi','lysosome','ribosome'],what:'A eukaryotic cell HAS a nucleus that holds the DNA, plus membrane-bound parts called organelles. Plants, animals, fungi and protists are eukaryotes. Plant cells also have a cell wall.',clues:['Click any part or label to read its definition.','Compare with the prokaryotic cell: where is the DNA?']},
+amoeba:{tab:'Amoeba',photo:'Amoeba',svg:SAMO,parts:['membrane','cytoplasm','nucleus','pseudopod','foodvac','contvac'],what:'An amoeba is a tiny single-celled organism (a protist) that lives in ponds and wet soil. It has no fixed shape. It moves by stretching out “false feet” called pseudopods and eats by wrapping around food.',clues:['One membrane wraps the WHOLE body.','No walls or lines inside, so it is one continuous cell.','A typical amoeba has one nucleus.','The “arms” are pseudopods, bulges of the same cell.'],tip:'Some photos do not show the nucleus clearly. It shows best in stained slides.',ov:{membrane:{f:'The outline of the whole amoeba. It goes all the way around ONE body, with no lines inside.'}}},
+bact:{tab:'Station 1: Bacteria',photo:'Escherichia coli',svg:SPRO,parts:['membrane','cytoplasm','wall','capsule','nucleoid','dna','ribosome','flagellum','pili'],what:'Bacteria are tiny single-celled prokaryotes. Each rod or dot in the picture is one whole cell.',clues:['One tiny cell = one organism.','No nucleus: the DNA floats in the nucleoid.'],tip:'At school magnification bacteria look like tiny dots or rods. You will NOT see a nucleus because bacteria do not have one. The sketch shows what a bacterium looks like inside.'},
+onion:{tab:'Station 2: Onion skin',photo:'Onion epidermal cell',svg:SONI,parts:['cellwall','nucleus','vacuole'],what:'Onion skin is a thin see-through layer of plant cells. Each box shape is one cell, so an onion is multicellular. Plant cells are eukaryotic.',clues:['Many boxes joined side by side = many cells.','Each cell has its own nucleus.','Dark lines between the boxes = cell walls.'],tip:'The nucleus is a small round dot inside each box, often near a wall. In a red onion the purple color is the vacuole, so the nucleus can be hard to spot. A drop of iodine stain makes nuclei show up brown.',ov:{nucleus:{f:'A small round dot inside each box, often pressed against a wall. Iodine stain makes it brown.'}}},
+para:{tab:'Station 3: Paramecium',photo:'Paramecium',svg:SPAR,parts:['membrane','cilia','oral','macro','micro','contvac','foodvac'],what:'A Paramecium is a slipper-shaped, single-celled protist that lives in ponds. Thousands of tiny hairs called cilia beat like oars to make it swim.',clues:['One outline = one cell.','Cilia cover the cell.','It has TWO nuclei: a large macronucleus and a small micronucleus.'],tip:'Cannot find the nucleus? That is normal! In live, unstained pictures it is very hard to see. Look for a slightly darker oval in the middle of the cell. It shows up best in stained slides. The oral groove and the contractile vacuoles are easier to spot.',ov:{membrane:{n:'Cell membrane (with pellicle)',d:'The thin skin around the cell. In Paramecium it is supported by a firm layer called the pellicle that keeps its slipper shape.'}}}
+};
+var G={
+uni:[
+{w:'Amoeba',n:'Amoeba',d:'A tiny single-celled organism (a protist) that lives in ponds and wet soil. It has no fixed shape and moves by stretching out “false feet” called pseudopods.',c:'One continuous body inside one outline, with no walls or lines dividing the inside. The pseudopods are bulges of the same cell.'},
+{w:'Paramecium',n:'Paramecium',d:'A slipper-shaped, single-celled protist that lives in ponds. Thousands of tiny hairs called cilia beat like oars to make it swim.',c:'The whole body sits inside one outline. The hairs on the edge are cilia, part of the same cell.'},
+{w:'Chlamydomonas',n:'Chlamydomonas',d:'A single-celled green alga that lives in fresh water. It makes food from sunlight like a plant and swims with two whip-like tails called flagella.',c:'One round green cell with its two tails attached to it.'},
+{w:'Saccharomyces cerevisiae',n:'Yeast',d:'A tiny single-celled fungus. Bakers use it to make bread rise. Yeast is a eukaryote, so it has a nucleus.',c:'Each oval is ONE yeast cell. Small ovals attached to bigger ones are new cells budding off, and each is still its own cell.'},
+{w:'Escherichia coli',n:'Bacteria',d:'Very tiny single-celled organisms. They are prokaryotes: no nucleus, and the DNA floats in the nucleoid.',c:'Each rod or dot is one complete cell, and it can live on its own.'}],
+multi:[
+{w:'Bellis perennis',n:'Plant (daisy)',d:'Plants are multicellular organisms that make their own food from sunlight. A daisy has roots, a stem, leaves and flowers.',c:'You can see different body parts (petals, stem, leaves). Each part is made of many cells with different jobs.'},
+{w:'Philippine eagle',n:'Animal (Philippine eagle)',d:'A very large bird of prey from the Philippines. Animals are multicellular and get energy by eating other living things.',c:'Big body with different parts: head, wings, feathers, legs. Muscle, nerve, blood and skin cells each do their own job.'},
+{w:'Human',n:'Human',d:'Humans are animals made of trillions of cells that work together.',c:'Many different body parts and organs. Each is made of specialized cells.'},
+{w:'Mushroom',n:'Fungi (mushroom)',d:'A mushroom is a fungus. Most fungi are multicellular, made of many tiny thread-like cells.',c:'A cap, a stalk and many parts. Yeast is the unicellular exception among fungi.'}],
+spec:[
+{w:'Red blood cell',n:'Red blood cell',d:'A round, flat, disc-shaped cell in your blood. It has no nucleus.',c:'Job: carries oxygen around the body. Its shape gives it a large surface to pick up oxygen.'},
+{w:'White blood cell',n:'White blood cell',d:'A blood cell that protects the body from germs.',c:'Job: engulfs (swallows) harmful foreign bodies as part of the body’s defense (immunity).'},
+{w:'Neuron',n:'Nerve cell (neuron)',d:'A cell with a body and long branches called dendrites and an axon.',c:'Job: sends signals through the body. The long branches reach other cells.'},
+{w:'Smooth muscle',n:'Muscle cell',d:'A long, slender cell that can get shorter (contract).',c:'Job: contracts to make the body move. Many cells working together pull with force.'},
+{w:'Epithelium',n:'Skin (epithelial) cell',d:'Flat cells that are stacked tightly together like tiles.',c:'Job: forms a protective barrier on the body surface.'}],
+proimg:[
+{w:'Prokaryote',n:'Prokaryotic cell',d:'A cell with no nucleus. Its DNA is in the nucleoid region.',c:'Look for: no nucleus, a cell wall, DNA loose in the cell.'},
+{w:'Eukaryote',n:'Eukaryotic cell',d:'A cell with a nucleus that holds the DNA, plus organelles.',c:'Look for: a nucleus and organelles like mitochondria.'},
+{w:'Plant cell',n:'Plant cell',d:'A eukaryotic cell with an extra cell wall made of cellulose.',c:'Look for: the cell wall outside the membrane.'}]
+};
+function gallery(el){var its=G[el.dataset.g],hide=el.dataset.hide;
+el.innerHTML='<div class="gt"></div><div class="gm"><div class="gb"><img class="gi"></div><div class="gx"></div></div>';
+var gt=el.querySelector('.gt'),gi=el.querySelector('.gi'),gx=el.querySelector('.gx'),bs=[];
+its.forEach(function(it,i){var b=mk('button','th','<img><span>'+it.n+'</span>');setImg(b.firstChild,it.w);b.onclick=function(){show(i)};gt.appendChild(b);bs.push(b)});
+function show(i){var it=its[i],full='<p><b>What is it?</b> '+it.d+'</p><p><b>Clues in the picture:</b> '+it.c+'</p>';bs.forEach(function(b,k){b.classList.toggle('on',k==i)});setImg(gi,it.w,1);
+if(hide){gx.innerHTML='<div class="gn">'+it.n+'</div><p>👀 Observe first. What do you notice? How many cells? What shape? What might it be doing?</p><button class="t">Reveal: what is it?</button><div style="display:none">'+full+'</div>';
+var bt=gx.querySelector('button');bt.onclick=function(){bt.nextSibling.style.display='block';bt.style.display='none';fit()}}
+else gx.innerHTML='<div class="gn">'+it.n+'</div>'+full;fit()}
+show(0)}
+function diagram(el){var names=el.dataset.d.split(','),hide=el.dataset.hide,cur=0,rev={},tabs=mk('div','gt'),host=mk('div');el.appendChild(tabs);el.appendChild(host);
+names.forEach(function(n,i){var b=mk('button','th tab',D[n].tab);b.onclick=function(){cur=i;render()};tabs.appendChild(b)});
+function render(){var c=D[names[cur]];[].forEach.call(tabs.children,function(b,i){b.classList.toggle('on',i==cur)});host.innerHTML='';
+var row=mk('div','dr'),pn=mk('div','dp'),sb=mk('div','sb',c.svg),hidden=hide&&!rev[cur];
+if(c.photo){var pb=mk('div','gb','<img class="gi">');pb.style.flex='0 0 320px';pb.style.height='300px';row.appendChild(pb);setImg(pb.firstChild,c.photo,1)}
+if(!hidden)row.appendChild(sb);host.appendChild(row);if(c.photo)host.appendChild(pn);else row.appendChild(pn);
+function chips(sel){var s='';c.parts.forEach(function(id){var p=Object.assign({},P[id],(c.ov||{})[id]);s+='<button class="chip'+(sel==id?' on':'')+'" data-c="'+id+'">'+p.n.replace(/ \(.*/,'')+'</button>'});return s}
+function mark(id){sb.querySelectorAll('[data-p]').forEach(function(e){e.classList.toggle('sel',e.dataset.p==id)})}
+function overview(){mark(null);var s=chips()+'<p><b>What is it?</b> '+c.what+'</p>';if(c.clues)s+='<ul>'+c.clues.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>';if(c.tip)s+='<p class="box"><b>Tip:</b> '+c.tip+'</p>';pn.innerHTML=s;fit()}
+function select(id){var p=Object.assign({},P[id],(c.ov||{})[id]);mark(id);pn.innerHTML=chips(id)+'<div class="pn">'+p.n+'</div><p><b>What is it?</b> '+p.d+'</p><p><b>Where to look:</b> '+p.f+'</p><button class="chip" data-c="">← Back</button>';fit()}
+if(hidden){pn.innerHTML='<p>👀 <b>Observe first.</b> Is it one cell or many? Where do you think the nucleus is?</p><button class="t">💡 Help me find it</button>';pn.querySelector('button').onclick=function(){rev[cur]=true;render()};fit();return}
+pn.onclick=function(e){var b=e.target.closest('[data-c]');if(b){b.dataset.c?select(b.dataset.c):overview()}};
+sb.onclick=function(e){var t=e.target.closest('[data-p]');if(t)select(t.dataset.p)};overview()}
+render()}
+function fit(){setTimeout(function(){var s=Reveal.getCurrentSlide();if(!s)return;s.style.zoom='';var H=Reveal.getConfig().height-16;if(s.scrollHeight>H)s.style.zoom=H/s.scrollHeight},60)}
+function quiz(el){var o=el.dataset.opts.split('|'),its=el.dataset.items.split(';').map(function(s){return s.split('|')}),i=0,sc=0;
+function show(){if(i>=its.length){el.innerHTML='<div class="big">Score: '+sc+' / '+its.length+'</div>';var r=mk('button','t','Play again');r.onclick=function(){i=0;sc=0;show()};el.appendChild(r);return}
+var it=its[i];el.innerHTML='<div class="qn">'+(i+1)+' / '+its.length+'</div>'+(it[0]?'<img class="qimg">':'')+'<div class="ql">'+it[1]+'</div><div class="qo"></div><div class="qf"></div>';
+if(it[0])setImg(el.querySelector('.qimg'),it[0],1);var qo=el.querySelector('.qo'),qf=el.querySelector('.qf'),bs=[];
+o.forEach(function(t){var b=mk('button','ob',t);b.onclick=function(){bs.forEach(function(x){x.disabled=true});
+if(t==it[2]){b.classList.add('ok');sc++;qf.innerHTML='✓ Correct!'}else{b.classList.add('no');qf.innerHTML='✗ The answer is <b>'+it[2]+'</b>'}
+var n=mk('button','t',i+1<its.length?'Next ▶':'See score');n.onclick=function(){i++;show()};qf.appendChild(document.createTextNode(' '));qf.appendChild(n)};qo.appendChild(b);bs.push(b)})}
+show()}
+function sortg(el){var c=mk('div','cards');el.appendChild(c);el.dataset.items.split(';').forEach(function(s){var a=s.split('|'),d=mk('div','card','<img><div>'+a[1]+'</div><b></b>'),n=0;setImg(d.firstChild,a[0]);
+d.onclick=function(){n=(n+1)%3;d.className='card'+(n?' s'+n:'');d.lastChild.textContent=['','Group A','Group B'][n]};c.appendChild(d)})}
+function wordle(el){var W=el.dataset.words.split(';').map(function(s){return s.split('|')}),wi=0,r,c;
+function init(){r=0;c=0;el.dataset.done='';var w=W[wi];el.innerHTML='<div class="wh">Round '+(wi+1)+' of '+W.length+' · '+w[1]+'</div><div class="wg"></div><div class="wm"></div><div class="wk"></div>';
+var g=el.querySelector('.wg');for(var i=0;i<30;i++)g.appendChild(mk('div','wc'));
+var kb=el.querySelector('.wk');['QWERTYUIOP','ASDFGHJKL','ZXCVBNM'].forEach(function(row,ri){var d=mk('div');if(ri==2)d.appendChild(key('ENTER','Enter'));row.split('').forEach(function(l){d.appendChild(key(l,l))});if(ri==2)d.appendChild(key('⌫','Backspace'));kb.appendChild(d)})}
+function key(l,k){var b=mk('button','wkey',l);b.dataset.k=l.length==1?l:'';b.onclick=function(){press(k)};return b}
+function paintKey(l,cl){var b=el.querySelector('.wkey[data-k="'+l+'"]');if(!b)return;if(b.classList.contains('g'))return;if(b.classList.contains('y')&&cl=='x')return;b.classList.remove('y','x');b.classList.add(cl)}
+function press(k){if(el.dataset.done)return;var cs=el.querySelectorAll('.wc'),m=el.querySelector('.wm');
+if(k=='Backspace'){if(c>0){c--;cs[r*5+c].textContent=''}return}
+if(k=='Enter'){if(c<5){m.textContent='Need 5 letters';return}m.textContent='';var ans=W[wi][0],gs=[],res=['x','x','x','x','x'],left={},i;
+for(i=0;i<5;i++)gs.push(cs[r*5+i].textContent);
+for(i=0;i<5;i++){if(gs[i]==ans[i])res[i]='g';else left[ans[i]]=(left[ans[i]]||0)+1}
+for(i=0;i<5;i++){if(res[i]!='g'&&left[gs[i]]>0){res[i]='y';left[gs[i]]--}}
+for(i=0;i<5;i++){cs[r*5+i].classList.add(res[i]);paintKey(gs[i],res[i])}
+if(gs.join('')==ans){el.dataset.done='1';m.textContent=W[wi][2];nxt()}else if(++r==6){el.dataset.done='1';m.textContent='The word was '+ans+'. '+W[wi][2].replace(/^Yes! /,'');nxt()}c=0;return}
+if(/^[A-Za-z]$/.test(k)&&c<5){cs[r*5+c].textContent=k.toUpperCase();c++}}
+function nxt(){var b=mk('button','t',wi+1<W.length?'Next word ▶':'Play again');b.onclick=function(){wi=(wi+1)%W.length;init()};el.querySelector('.wm').appendChild(document.createTextNode(' '));el.querySelector('.wm').appendChild(b)}
+el._press=press;init()}
+function pad(el){el.innerHTML='<div class="pb"></div><canvas width="900" height="360"></canvas>';var cv=el.querySelector('canvas'),x=cv.getContext('2d'),pb=el.querySelector('.pb'),col='#1d4e89',sz=4,mode='pen',dr=false;
+el.setAttribute('data-prevent-swipe','');x.fillStyle='#fff';x.fillRect(0,0,900,360);x.lineCap='round';x.lineJoin='round';
+function B(t,f){var b=mk('button','',t);b.onclick=f;pb.appendChild(b);return b}
+['#1d4e89','#1f7a4d','#d9731a','#c0392b','#222'].forEach(function(c){var b=B('●',function(){col=c;mode='pen'});b.style.color=c});
+B('Thin',function(){sz=3});B('Thick',function(){sz=9});B('Eraser',function(){mode='erase'});B('Label',function(){mode='text'});B('Clear',function(){x.fillStyle='#fff';x.fillRect(0,0,900,360)});
+B('Save PNG',function(){var a=document.createElement('a');a.download='my-cell-models.png';a.href=cv.toDataURL();a.click()});
+function pt(e){var r=cv.getBoundingClientRect();return [(e.clientX-r.left)*cv.width/r.width,(e.clientY-r.top)*cv.height/r.height]}
+cv.addEventListener('pointerdown',function(e){var p=pt(e);if(mode=='text'){var t=prompt('Label text (e.g., nucleus):');if(t){x.fillStyle=col;x.font='bold 24px sans-serif';x.fillText(t,p[0],p[1])}return}
+dr=true;cv.setPointerCapture(e.pointerId);x.strokeStyle=mode=='erase'?'#fff':col;x.lineWidth=mode=='erase'?sz*3:sz;x.beginPath();x.moveTo(p[0],p[1])});
+cv.addEventListener('pointermove',function(e){if(!dr)return;var p=pt(e);x.lineTo(p[0],p[1]);x.stroke()});
+cv.addEventListener('pointerup',function(){dr=false})}
+function initAll(){document.querySelectorAll('.gallery').forEach(gallery);document.querySelectorAll('.diagram').forEach(diagram);document.querySelectorAll('.quiz').forEach(quiz);document.querySelectorAll('.sortg').forEach(sortg);document.querySelectorAll('.wordle').forEach(wordle);document.querySelectorAll('.pad').forEach(pad);document.querySelectorAll('img[data-w]').forEach(function(i){setImg(i,i.dataset.w,1)});fit()}
+function credits(){var c=document.getElementById('cr');if(!c)return;Promise.all(Object.keys(IC).map(function(k){return IC[k]})).then(function(a){c.innerHTML=a.filter(function(d){return d.p}).map(function(d){return '<a href="'+d.p+'" target="_blank">'+d.t+'</a>'}).join(' · ')})}
+Reveal.on('ready',initAll);Reveal.on('slidechanged',function(){credits();fit()});Reveal.on('fragmentshown',fit);document.addEventListener('click',function(){fit()});
+document.addEventListener('keydown',function(e){var s=Reveal.getCurrentSlide(),w=s&&s.querySelector('.wordle');if(!w||e.ctrlKey||e.metaKey||e.altKey)return;
+if(/^[a-zA-Z]$/.test(e.key)||e.key=='Enter'||e.key=='Backspace'){e.stopImmediatePropagation();e.preventDefault();w._press(e.key)}},true);
+</script></body></html>
